@@ -1,0 +1,3 @@
+{
+  "ConnectionString": "Server=myserver;User ID=mylogin;Password=mypass;Database=mydatabase"
+}
