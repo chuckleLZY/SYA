@@ -1,3 +1,4 @@
 {
-  "ConnectionString": "Server=myserver;User ID=mylogin;Password=mypass;Database=mydatabase"
+  "ConnectionString": "Server=myserver;User ID=mylogin;Password=mypass;Database=mydatabase",
+  "Pepper": "My Pepper"
 }

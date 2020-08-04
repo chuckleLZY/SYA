@@ -1,4 +1,3 @@
-
 using MySqlConnector;
 
 namespace SyaApi.Plugins
@@ -9,7 +8,7 @@ namespace SyaApi.Plugins
 
         static DatabaseConnector()
         {
-            DatabaseConnector.ConnectionString = ConfigReader.GetConfig("ConnectionString");
+            ConnectionString = ConfigReader.GetConfig("ConnectionString");
         }
 
         public static MySqlConnection Connect()
