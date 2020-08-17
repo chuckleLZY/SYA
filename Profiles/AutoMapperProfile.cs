@@ -10,6 +10,9 @@ namespace SyaApi.Profiles
         public AutoMapperProfile() {
             CreateMap<RegisterRequest, AccountEntity>();
             CreateMap<AccountEntity, AccountResponse>();
+            
+            CreateMap<ResumeRequest, ResumeEntity>();
+            CreateMap<ResumeEntity, ResumeResponse>();
         }
     }
 }
