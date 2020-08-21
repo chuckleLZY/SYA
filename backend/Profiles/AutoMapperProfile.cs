@@ -13,6 +13,8 @@ namespace SyaApi.Profiles
             
             CreateMap<ResumeRequest, ResumeEntity>();
             CreateMap<ResumeEntity, ResumeResponse>();
+
+            CreateMap<WorkEntity, WorkResponse>();
         }
     }
 }
