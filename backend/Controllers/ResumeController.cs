@@ -39,7 +39,7 @@ namespace SyaApi.Controllers
 
 
         [HttpPost("CreateResume")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<int> CreateResume([FromBody] ResumeRequest request)
         {
             //判断request里是否满足前置条件
@@ -105,7 +105,7 @@ namespace SyaApi.Controllers
         }
 
         [HttpGet("GetResume")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<ActionResult<ResumeResponse>> GetResume()
         {
             //取得存在cookie的当前账户id

@@ -66,8 +66,21 @@ namespace SyaApi.Controllers
             return Ok(-1);
         }
 
+        [HttpGet("ViewWorkInfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkResponse>> ViewWorkInfo([FromBody]FindworkResponse temp)
+        {
 
+            var work_info=await WorkAccessor.FindWorkInfo(temp.id);
 
+            if(work_info!=null)
+            {
+                return Ok(_mapper.Map<WorkResponse>(work_info));
+            }
+                return Ok(-1);
+        }
+
+        
 
 
 

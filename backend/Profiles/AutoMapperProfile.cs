@@ -15,6 +15,8 @@ namespace SyaApi.Profiles
             CreateMap<ResumeEntity, ResumeResponse>();
 
             CreateMap<WorkEntity, WorkResponse>();
+
+            CreateMap<LeaveRequest, LeaveEntity>();
         }
     }
 }
