@@ -13,7 +13,7 @@ namespace SyaApi.Responses
         public int collect_num{get; set;}
         public int share_num{get; set;}
     }
-
+    
     public class WorkItemResponse
     {
         public int total{get; set;}
@@ -21,5 +21,9 @@ namespace SyaApi.Responses
 
     }
 
+    public class FindworkResponse
+    {
+        public int id{get;set;}
+    }
 
 }
