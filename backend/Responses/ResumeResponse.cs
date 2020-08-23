@@ -2,6 +2,7 @@ namespace SyaApi.Responses
 {
     public class ResumeResponse
     {
+        public int student_id {get; set;}
         public int age {get; set;}
         public string student_name {get; set;}
         public string city{ get; set;}

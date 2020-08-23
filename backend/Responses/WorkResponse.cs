@@ -4,6 +4,7 @@ namespace SyaApi.Responses
 {
     public class WorkResponse
     {
+        public string work_name{get; set;}
         public string cover{get; set;}
         public string work_description{get; set;}
         public string address{get; set;}
@@ -21,9 +22,6 @@ namespace SyaApi.Responses
 
     }
 
-    public class FindworkResponse
-    {
-        public int id{get;set;}
-    }
+
 
 }

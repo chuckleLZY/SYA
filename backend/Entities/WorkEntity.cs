@@ -7,6 +7,7 @@ namespace SyaApi.Entities
     {
         public int teacher_id{get;set;}
         public int work_id{get; set;}
+        public string work_name{get; set;}
         public string cover{get; set;}
         public string work_description{get; set;}
         public string address{get; set;}

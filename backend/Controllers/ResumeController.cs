@@ -36,36 +36,36 @@ namespace SyaApi.Controllers
         }
 
 
-
-
         [HttpPost("CreateResume")]
         [AllowAnonymous]
-        public async Task<int> CreateResume([FromBody] ResumeRequest request)
+        public async Task<ActionResult<ResumeResponse>> CreateResume([FromBody] ResumeRequest request)
         {
             //判断request里是否满足前置条件
             if (!ModelState.IsValid)
             {
-                return -5;
+                return BadRequest();
             }
             //取得存在cookie的当前账户id
             var resume_stu_id = Int32.Parse(User.Identity.Name);
             //生成resume实例
             var temp_resume = _mapper.Map<ResumeEntity>(request);
-            //查找当前id是否存在resume
+            //查找当前id是否存在resume           
             var temp=await ResumeAccessor.Find(resume_stu_id);
 
+            temp_resume.student_id=resume_stu_id;
             if(temp==null)
             {
                 //新建resume
-                var num= ResumeAccessor.Create(temp_resume);
-                return resume_stu_id;
+                var num = ResumeAccessor.Create(temp_resume);
+                temp_resume.resume_id=num.Result;
+                return Ok(_mapper.Map<ResumeResponse>(temp_resume));
             }
-            return 0;
+            return Ok(-1);
         }
 
         [HttpDelete("DeleteResume")]
         [AllowAnonymous]
-        public async Task<ActionResult<int>> DeleteResume()
+        public async Task<ActionResult<ResumeResponse>> DeleteResume()
         {
             //取得存在cookie的当前账户id
             var resume_stu_id = Int32.Parse(User.Identity.Name);
@@ -75,14 +75,14 @@ namespace SyaApi.Controllers
             if(temp!=null)
             {
                 var num =ResumeAccessor.Delete(resume_stu_id);
-                return Ok(num);
+                return Ok(_mapper.Map<ResumeResponse>(temp));
             }
             return Ok(-1);
         }
 
         [HttpPut("UpdateResume")]
         [AllowAnonymous]
-        public async Task<ActionResult<int>> UpdateResume([FromBody] ResumeRequest request)
+        public async Task<ActionResult<ResumeResponse>> UpdateResume([FromBody] ResumeRequest request)
         {
             //判断request里是否满足前置条件
             if (!ModelState.IsValid)
@@ -90,7 +90,7 @@ namespace SyaApi.Controllers
                 return BadRequest();
             }
             //取得存在cookie的当前账户id
-            var resume_stu_id = 1;//Int32.Parse(User.Identity.Name);
+            var resume_stu_id = Int32.Parse(User.Identity.Name);
             //生成resume实例
             var temp_resume = _mapper.Map<ResumeEntity>(request);
             //查找当前id是否存在resume
@@ -99,7 +99,7 @@ namespace SyaApi.Controllers
             if(temp!=null)
             {
                 var num=ResumeAccessor.Change(temp);
-                return Ok(num);
+                return Ok(_mapper.Map<ResumeResponse>(temp));
             }
             return Ok(-1);
         }
@@ -109,7 +109,7 @@ namespace SyaApi.Controllers
         public async Task<ActionResult<ResumeResponse>> GetResume()
         {
             //取得存在cookie的当前账户id
-            var resume_stu_id = 1;//Int32.Parse(User.Identity.Name);
+            var resume_stu_id = Int32.Parse(User.Identity.Name);
             //查找当前id是否存在resume
             var temp=await ResumeAccessor.Find(resume_stu_id);
 
@@ -119,5 +119,11 @@ namespace SyaApi.Controllers
             }
             return Ok(-1);
         }
+
+
+
+
+
+
     }
 }
