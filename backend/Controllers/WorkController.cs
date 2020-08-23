@@ -43,7 +43,7 @@ namespace SyaApi.Controllers
             workItem.total=0;
             workItem.worklist=new System.Collections.Generic.List<WorkResponse>();
             //取得存在cookie的当前账户id
-            var stu_id = 3;//Int32.Parse(User.Identity.Name);
+            var stu_id = Int32.Parse(User.Identity.Name);
 
             var temp=await WorkAccessor.FindOwnWork(stu_id);
 
@@ -51,6 +51,7 @@ namespace SyaApi.Controllers
             {
                 for(int i=0;i<temp.total;i++)
                 {
+                    
                     var work_info=await WorkAccessor.FindWorkInfo(temp.TakesItem[i].work_id);
                     if(work_info!=null)
                     {
@@ -68,10 +69,10 @@ namespace SyaApi.Controllers
 
         [HttpGet("ViewWorkInfo")]
         [AllowAnonymous]
-        public async Task<ActionResult<WorkResponse>> ViewWorkInfo([FromBody]FindworkResponse temp)
+        public async Task<ActionResult<WorkResponse>> ViewWorkInfo([FromBody]FindworkRequest temp)
         {
 
-            var work_info=await WorkAccessor.FindWorkInfo(temp.id);
+            var work_info=await WorkAccessor.FindWorkInfo(temp.work_id);
 
             if(work_info!=null)
             {

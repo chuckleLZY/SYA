@@ -4,6 +4,7 @@ namespace SyaApi.Entities
 {
     public class TakesEntity
     {
+        public string work_name{get; set;}
         public int student_id{get; set; }
         public int work_id{get; set;}
         public double work_time{get; set;}

@@ -37,7 +37,7 @@ namespace SyaApi.Controllers
 
         [HttpPost("RequestRest")]
         [AllowAnonymous]
-        public async Task<int>RequestRest([FromBody] LeaveRequest request)
+        public async Task<ActionResult<LeaveResponse>>RequestRest([FromBody] LeaveRequest request)
         {
             var stu_id = Int32.Parse(User.Identity.Name);
 
@@ -45,8 +45,15 @@ namespace SyaApi.Controllers
             temp.student_id=stu_id;
 
             var ans =await LeaveAccessor.Create(temp);
-            
-            return ans;
+
+            if(ans>0)
+            {
+                var leavere=await LeaveAccessor.Find(ans);
+                if(leavere!=null)
+                    return Ok(_mapper.Map<LeaveResponse>(leavere));
+                return Ok(-1);
+            }            
+            return Ok(-1);
         } 
 
 

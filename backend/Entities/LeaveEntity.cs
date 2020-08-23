@@ -9,6 +9,10 @@ namespace SyaApi.Entities
         public int student_id{get; set;}
 
         public int work_id{get; set;}
+        
+        public string student_name{get; set;}
+
+        public string work_name{get; set;}
 
         public string content{get; set;}
 

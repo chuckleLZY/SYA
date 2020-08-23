@@ -15,7 +15,7 @@ namespace SyaApi.DataAccessors
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = query;
-            command.Parameters.AddWithValue("id",id);
+            command.Parameters.AddWithValue("@id",id);
 
             using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
@@ -109,6 +109,11 @@ namespace SyaApi.DataAccessors
             }
             return 0;
         }
+
+        //public static async Task<int> CreateApply()
+
+
+
     }
 
 }
