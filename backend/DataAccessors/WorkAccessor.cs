@@ -74,8 +74,49 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
-        /// Is work exists?
-        /// return 1 for exists, return 0 for not exists
+        /// (非学生用户)查看历史发布工作
+        /// dumei 08.23
+        ///</summery>
+        public static async Task<WorkItemEntity> FindHistoryWork(int provider_id)
+        {
+            var provide = new WorkItemEntity();
+            provide.total = 0;
+            provide.workItem = new List<WorkEntity>();
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num FROM work WHERE teacher_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id", provider_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while ( reader.Read())
+            {
+                var temp = new WorkEntity()
+                {
+                    work_name=reader.GetString("work_name"),
+                    teacher_id=reader.GetInt32("teacher_id"),
+                    work_id=reader.GetInt32("work_id"),
+                    cover=reader.GetString("cover"),
+                    work_description=reader.GetString("work_description"),
+                    address=reader.GetString("address"),
+                    salary=reader.GetInt32("salary"),
+                    work_time=reader.GetString("work_time"),
+                    likes_num=reader.GetInt32("likes_num"),
+                    collect_num=reader.GetInt32("collect_num"),
+                    share_num=reader.GetInt32("share_num")
+                };
+                provide.total++;
+                provide.workItem.Add(temp);
+            }
+            return provide;
+        }
+
+        ///<summery>
+        /// 根据id判断work是否存在
+        /// 返回1表示存在，0表示不存在
         /// dumei 08.23
         ///</summery>
         public static async Task<int> IsWorkExists(int id)
@@ -98,8 +139,8 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
-        /// Create work by provider
-        /// set likes_num, collect_num, share_num to 0
+        /// (非学生用户)创建工作
+        /// 设置 likes_num, collect_num, share_num 为 0
         /// dumei 08.23
         ///</summery>
         public static async Task<int> Create(WorkEntity work)
