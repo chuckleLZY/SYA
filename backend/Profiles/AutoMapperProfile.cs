@@ -18,6 +18,9 @@ namespace SyaApi.Profiles
 
             CreateMap<LeaveRequest, LeaveEntity>();
             CreateMap<LeaveEntity, LeaveResponse>();
+
+            CreateMap<UserRequest, UserEntity>();
+            CreateMap<UserEntity, UserResponse>();
         }
     }
 }
