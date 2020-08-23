@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Text;
 using SyaApi.Plugins;
 using SyaApi.Entities;
+using SyaApi.Requests;
 
 namespace SyaApi.DataAccessors
 {
@@ -82,24 +83,21 @@ namespace SyaApi.DataAccessors
             return 0;
         }
 
-        public static async Task<int> Change(UserEntity user)
+        public static async Task<int> Change(int id, UserRequest user)
         {
-            var query = "UPDATE user SET user_name=@name, gender=@gender, avatar=@avatar, email=@email, tel=@tel, bank=@bank WHERE user_id=@id";
+            var query = "UPDATE user SET gender=@gender, avatar=@avatar, tel=@tel, bank=@bank WHERE user_id=@id";
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = query;
-
-            command.Parameters.AddWithValue("@id", user.user_id);
-            command.Parameters.AddWithValue("@name", user.user_name);
+            command.Parameters.AddWithValue("@id", id);
             command.Parameters.AddWithValue("@gender", user.gender);
             command.Parameters.AddWithValue("@avatar", user.avatar);
-            command.Parameters.AddWithValue("@email", user.email);
             command.Parameters.AddWithValue("@tel", user.tel);
             command.Parameters.AddWithValue("@bank", user.bank);
 
             var row = await command.ExecuteNonQueryAsync();
-            if (row>0) return user.user_id;
+            if (row>0) return id;
             else return 0;
         }
 
