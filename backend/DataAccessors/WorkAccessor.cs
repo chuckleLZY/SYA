@@ -73,5 +73,58 @@ namespace SyaApi.DataAccessors
             return null;
         }
 
+        ///<summery>
+        /// Is work exists?
+        /// return 1 for exists, return 0 for not exists
+        /// dumei 08.23
+        ///</summery>
+        public static async Task<int> IsWorkExists(int id)
+        {
+            WorkEntity temp=new WorkEntity();
+            var query = "SELECT work_name FROM work WHERE work_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        ///<summery>
+        /// Create work by provider
+        /// set likes_num, collect_num, share_num to 0
+        /// dumei 08.23
+        ///</summery>
+        public static async Task<int> Create(WorkEntity work)
+        {
+            var query = "INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num) VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,@work_time,@likes,@collect,@share)";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@teacher_id", work.teacher_id);
+            //command.Parameters.AddWithValue("@work_id", work.work_id);
+            command.Parameters.AddWithValue("@work_name", work.work_name);
+            command.Parameters.AddWithValue("@cover", work.cover);
+            command.Parameters.AddWithValue("@description", work.work_description);
+            command.Parameters.AddWithValue("@address", work.address);
+            command.Parameters.AddWithValue("@salary", work.salary);
+            command.Parameters.AddWithValue("@work_time", work.work_time);
+            command.Parameters.AddWithValue("@likes", 0);
+            command.Parameters.AddWithValue("@collect", 0);
+            command.Parameters.AddWithValue("@share", 0);
+
+            await command.ExecuteNonQueryAsync();
+            return (int)command.LastInsertedId;
+        }
     }
 }
