@@ -1,5 +1,6 @@
 <template>
     <div>
+        发布系统公告
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;font-size: 12px;">
         <el-breadcrumb-item >首页</el-breadcrumb-item>
         <el-breadcrumb-item>管理员工作台</el-breadcrumb-item>
