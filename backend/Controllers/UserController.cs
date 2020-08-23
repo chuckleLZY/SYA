@@ -48,19 +48,16 @@ namespace SyaApi.Controllers
             }
             //当前账户id
             var u_id = Int32.Parse(User.Identity.Name);
-            //更改的是否为登录用户的信息
-            if (request.user_id != u_id) {
-                return BadRequest(new { message = "User id is different with current login account"});
-            }
+            
             //查找当前id是否存在user
             var temp = await UserAccessor.Find(u_id);
 
             if(temp == 1) // exists
             {
-                var temp_user = _mapper.Map<UserEntity>(request);
-                await UserAccessor.Change(temp_user);
+                await UserAccessor.Change(u_id, request);
                 //成功更新
-                return Ok(_mapper.Map<UserResponse>(temp_user));
+                var user = await UserAccessor.Read(u_id);
+                return Ok(_mapper.Map<UserResponse>(user));
             };
 
             // user不存在
