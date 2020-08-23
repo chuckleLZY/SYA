@@ -77,5 +77,25 @@ namespace SyaApi.DataAccessors
             await command.ExecuteNonQueryAsync();
             return (int)command.LastInsertedId;
         }
+
+        public static async Task<int> Delete(int id)
+        {
+            var query = "DELETE FROM account WHERE id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@id", id);
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return id;
+            }
+            return 0;
+        }
+
+
     }
 }
