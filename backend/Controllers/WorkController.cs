@@ -11,6 +11,7 @@ using SyaApi.DataAccessors;
 using SyaApi.Entities;
 using SyaApi.Requests;
 using SyaApi.Responses;
+using SyaApi.Constants;
 
 namespace SyaApi.Controllers
 {
@@ -81,8 +82,31 @@ namespace SyaApi.Controllers
                 return Ok(-1);
         }
 
-        
+        ///<summery>
+        /// Create work by provider
+        /// Check role as provider
+        /// dumei 08.23
+        ///</summery>
+        [HttpPost("CreateWork")]
+        //[Authorize(Roles = "Provider")]
+        public async Task<ActionResult<WorkResponse>> CreateWork([FromBody] ProvideWorkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var provider_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(provider_id) == Role.Student)
+            {
+                return BadRequest(new { message = "Student cannot create work"});
+            }
+            var work = _mapper.Map<WorkEntity>(request);
+            work.teacher_id = provider_id;
+            await WorkAccessor.Create(work); //return work_id
 
+            return Ok(_mapper.Map<WorkResponse>(work));
+        }
 
 
 

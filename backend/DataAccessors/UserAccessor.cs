@@ -33,7 +33,7 @@ namespace SyaApi.DataAccessors
                     bank = reader.GetString("bank"),
                 };
             }
-
+            
             return null;
         }
 
@@ -55,10 +55,27 @@ namespace SyaApi.DataAccessors
             return 0; // not exists
         }
 
+        public static async Task<int> CheckRole(int id)
+        {
+            var query = "SELECT user_role FROM user WHERE user_id = @Id";
 
-        // id 重复、跳跃在Controller判断
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@Id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32("user_role");
+            }
+            return -1; // not exists
+        }
+        
         public static async Task<int> Create(AccountEntity account)
         {
+            // id 重复、跳跃在Controller判断
             var query = "INSERT INTO user VALUES(@id, @role, @name, @gender, @avatar, @email, @tel, @bank)";
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
