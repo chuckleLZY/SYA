@@ -56,28 +56,28 @@ namespace SyaApi.DataAccessors
 
 
         // id 重复、跳跃在Controller判断
-        public static async Task<int> Create(UserEntity user)
+        public static async Task<int> Create(AccountEntity account)
         {
             var query = "INSERT INTO user VALUES(@id, @role, @name, @gender, @avatar, @email, @tel, @bank)";
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = query;
-            command.Parameters.AddWithValue("@id", user.user_id);
-            command.Parameters.AddWithValue("@role", user.user_role);
-            command.Parameters.AddWithValue("@name", user.user_name);
-            command.Parameters.AddWithValue("@gender", user.gender);
-            command.Parameters.AddWithValue("@avatar", user.avatar);
-            command.Parameters.AddWithValue("@email", user.email);
-            command.Parameters.AddWithValue("@tel", user.tel);
-            command.Parameters.AddWithValue("@bank", user.bank);
+            command.Parameters.AddWithValue("@id", account.Id);
+            command.Parameters.AddWithValue("@role", account.Role);
+            command.Parameters.AddWithValue("@name", account.Username);
+            command.Parameters.AddWithValue("@gender", false);
+            command.Parameters.AddWithValue("@avatar", "");
+            command.Parameters.AddWithValue("@email", account.Email);
+            command.Parameters.AddWithValue("@tel", "");
+            command.Parameters.AddWithValue("@bank", "");
 
             //await command.ExecuteNonQueryAsync();
             //return (int)command.LastInsertedId;
             var row = await command.ExecuteNonQueryAsync();
             if(row>0)
             {
-                return user.user_id;
+                return account.Id;
             }
             return 0;
         }
