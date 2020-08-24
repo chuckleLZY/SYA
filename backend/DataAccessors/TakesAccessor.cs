@@ -63,6 +63,26 @@ namespace SyaApi.DataAccessors
             return null; // the student have no takes
         }
 
+        ///<summery>
+        /// 增加请假次数和请假时间
+        /// 由LeaveController.ProManageLeave调用
+        /// dumei 08.24
+        public static async Task<int> UpdateAbsent(int stu_id, int work_id, decimal ab_time)
+        {
+            var query = @"UPDATE takes SET absent_num=absent_num+1, absent_time=absent_time+@ab_time
+            WHERE student_id=@stu_id AND work_id=@work_id";
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@ab_time", ab_time);
+            command.Parameters.AddWithValue("@stu_id", stu_id);
+            command.Parameters.AddWithValue("@work_id", work_id);
+
+            var row = await command.ExecuteNonQueryAsync();
+            if (row>0) return 1; //success
+            else return 0;
+        }
 
     }
 }
