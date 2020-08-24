@@ -11,6 +11,7 @@ using SyaApi.DataAccessors;
 using SyaApi.Entities;
 using SyaApi.Requests;
 using SyaApi.Responses;
+using SyaApi.Constants;
 
 namespace SyaApi.Controllers
 {
@@ -81,10 +82,64 @@ namespace SyaApi.Controllers
                 return Ok(-1);
         }
 
-        
+        ///<summery>
+        /// (非学生用户)创建工作
+        /// 检查user.role
+        /// dumei 08.23
+        ///</summery>
+        [HttpPost("CreateWork")]
+        //[Authorize(Roles = "Provider")]
+        public async Task<ActionResult<WorkResponse>> CreateWork([FromBody] ProvideWorkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var provider_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(provider_id) == Role.Student)
+            {
+                return BadRequest(new { message = "Student cannot create work"});
+            }
+            var work = _mapper.Map<WorkEntity>(request);
+            work.teacher_id = provider_id;
+            await WorkAccessor.Create(work); //return work_id
 
+            return Ok(_mapper.Map<WorkResponse>(work));
+        }
 
+        ///<summery>
+        /// (非学生用户)查看历史发布工作
+        /// 检查user.role
+        /// dumei 08.23
+        [HttpGet("ViewHistoryWork")]
+        //[AllowAnonymous]
+        public async Task<ActionResult<WorkItemResponse>> ViewHistoryWork()
+        {
+            var pro_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(pro_id) == Role.Student)
+            {
+                return BadRequest(new { message = "ViewHistoryWork is not for students. Students please try ViewOwnWork."});
+            }
 
+            WorkItemResponse workItem = new WorkItemResponse();
+            workItem.total = 0;
+            workItem.worklist = new System.Collections.Generic.List<WorkResponse>();
+
+            var provide_list = await WorkAccessor.FindHistoryWork(pro_id);
+
+            if(provide_list != null)
+            {
+                for(int i=0; i<provide_list.total; i++)
+                {
+                    WorkResponse wr = _mapper.Map<WorkResponse>(provide_list.workItem[i]);           
+                    workItem.worklist.Add(wr);
+                    workItem.total++;
+                }
+                return Ok(workItem);
+            }
+            return Ok(-1); // Never arrive there
+        }
 
     }
 }

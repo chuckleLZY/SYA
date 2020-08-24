@@ -14,6 +14,7 @@ namespace SyaApi.Profiles
             CreateMap<ResumeRequest, ResumeEntity>();
             CreateMap<ResumeEntity, ResumeResponse>();
 
+            CreateMap<ProvideWorkRequest, WorkEntity>();
             CreateMap<WorkEntity, WorkResponse>();
 
             CreateMap<LeaveRequest, LeaveEntity>();
@@ -29,6 +30,10 @@ namespace SyaApi.Profiles
             CreateMap<HistoryRequest, HistoryEntity>();
             CreateMap<HistoryEntity, HistoryResponse>();
 
+            CreateMap<UserEntity, UserInfoResponse>();
+
+            //CreateMap<ApplyRequest, ApplyEntity>();
+            CreateMap<ApplyEntity, ApplyResponse>();
         }
     }
 }
