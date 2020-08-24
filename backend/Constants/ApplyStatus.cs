@@ -1,6 +1,9 @@
 
 namespace SyaApi.Constants
 {
+    ///<summery>
+    /// Status for apply.status and leave_information.status
+    ///</summery>
     public static class ApplyStatus
     {
         public const int Applying = 0; //正在申请
