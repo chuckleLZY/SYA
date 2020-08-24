@@ -11,7 +11,7 @@ namespace SyaApi.DataAccessors
         /// 查询student总收入
         /// dumei 08.24
         ///</summery>
-        public static async Task<double> GetSumOfSalary(int stu_id)
+        public static async Task<decimal> GetSumOfSalary(int stu_id)
         {
             var query = "SELECT sum(num) AS sum_salary FROM salary WHERE student_id=@id";
 
@@ -24,7 +24,7 @@ namespace SyaApi.DataAccessors
             using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return reader["sum_salary"] is System.DBNull ? 0 : reader.GetDouble("sum_salary");
+                return reader["sum_salary"] is System.DBNull ? 0 : reader.GetDecimal("sum_salary");
             }
             return 0; // the student have no salary record
         }
