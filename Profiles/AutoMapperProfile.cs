@@ -13,6 +13,15 @@ namespace SyaApi.Profiles
             
             CreateMap<ResumeRequest, ResumeEntity>();
             CreateMap<ResumeEntity, ResumeResponse>();
+            CreateMap<CommentRequest, CommentEntity>();
+            CreateMap<CommentEntity, CommentResponse>();
+            CreateMap<AnnounceRequest, AnnounceEntity>();
+            CreateMap<AnnounceEntity, AnnounceResponse>();
+            CreateMap<FavoriteRequest, FavoriteEntity>();
+            CreateMap<FavoriteEntity, FavoriteResponse>();
+            CreateMap<HistoryRequest, HistoryEntity>();
+            CreateMap<HistoryEntity, HistoryResponse>();
+
         }
     }
 }
