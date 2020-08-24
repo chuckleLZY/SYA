@@ -22,7 +22,7 @@ namespace SyaApi.Entities
 
         public int status{get; set;}
 
-        //request_time 申请时间
+        public System.DateTime request_time{get; set;} //申请时间
 
         public decimal leave_duration{get; set;} //请假的持续时长
     }
