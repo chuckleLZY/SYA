@@ -34,6 +34,7 @@ namespace SyaApi.Profiles
 
             //CreateMap<ApplyRequest, ApplyEntity>();
             CreateMap<ApplyEntity, ApplyResponse>();
+
         }
     }
 }
