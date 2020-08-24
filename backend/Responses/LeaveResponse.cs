@@ -17,6 +17,8 @@ namespace SyaApi.Responses
         public string leave_time{get; set;}
 
         public string proof{get; set;}
+
+        public int status {get; set;}
         
     }
 }
