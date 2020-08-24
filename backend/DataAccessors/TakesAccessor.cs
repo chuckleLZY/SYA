@@ -35,6 +35,7 @@ namespace SyaApi.DataAccessors
 
         ///<summery>
         /// 查询student工作总时长和请假总次数
+        /// 更改：double to decimal
         /// dumei 08.24
         ///</summery>
         public static async Task<SumWorkAndAbsent> GetSumOfWorkAndAbsent(int stu_id)
@@ -54,7 +55,7 @@ namespace SyaApi.DataAccessors
             {
                 SumWorkAndAbsent temp = new SumWorkAndAbsent()
                 {
-                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDouble("sum_work_time"),
+                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_work_time"),
                     sum_absent_num = reader["sum_absent_num"] is System.DBNull ? 0 : Convert.ToInt32(reader.GetInt64("sum_absent_num"))
                     
                 };
@@ -63,6 +64,26 @@ namespace SyaApi.DataAccessors
             return null; // the student have no takes
         }
 
+        ///<summery>
+        /// 增加请假次数和请假时间
+        /// 由LeaveController.ProManageLeave调用
+        /// dumei 08.24
+        public static async Task<int> UpdateAbsent(int stu_id, int work_id, decimal ab_time)
+        {
+            var query = @"UPDATE takes SET absent_num=absent_num+1, absent_time=absent_time+@ab_time
+            WHERE student_id=@stu_id AND work_id=@work_id";
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@ab_time", ab_time);
+            command.Parameters.AddWithValue("@stu_id", stu_id);
+            command.Parameters.AddWithValue("@work_id", work_id);
+
+            var row = await command.ExecuteNonQueryAsync();
+            if (row>0) return 1; //success
+            else return 0;
+        }
 
     }
 }

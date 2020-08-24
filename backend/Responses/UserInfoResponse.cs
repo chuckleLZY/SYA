@@ -18,9 +18,9 @@ namespace SyaApi.Responses
         public int nof_absent { get; set; }
 
         /// 工作总时长
-        public double work_time { get; set; }
+        public decimal work_time { get; set; }
 
         /// 已获得薪水总量
-        public double income { get; set; }
+        public decimal income { get; set; }
     }
 }

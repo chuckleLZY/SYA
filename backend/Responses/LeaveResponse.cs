@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 
 namespace SyaApi.Responses
 {
@@ -20,5 +20,15 @@ namespace SyaApi.Responses
 
         public int status {get; set;}
         
+        public int status{get; set;}
+        
+        public decimal leave_duration{get; set;}
+    }
+
+    public class LeaveItemResponse
+    {
+        public int total{get; set;}
+        public List<LeaveResponse> leavelist{get;set;}
+
     }
 }
