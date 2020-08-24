@@ -33,7 +33,7 @@ namespace SyaApi.DataAccessors
                     bank = reader.GetString("bank"),
                 };
             }
-
+            
             return null;
         }
 
@@ -55,10 +55,55 @@ namespace SyaApi.DataAccessors
             return 0; // not exists
         }
 
+        ///<summery>
+        /// 根据用户id查找Role
+        /// 返回-1表示用户不存在
+        /// dumei 08.23
+        ///</summery>
+        public static async Task<int> CheckRole(int id)
+        {
+            var query = "SELECT user_role FROM user WHERE user_id = @Id";
 
-        // id 重复、跳跃在Controller判断
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@Id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32("user_role");
+            }
+            return -1; // not exists
+        }
+        
+        ///<summery>
+        /// 根据用户id查找用户名
+        /// 返回Constants.Error.NotFindString表示用户不存在
+        /// dumei 08.24
+        ///</summery>
+        public static async Task<string> GetUserName(int id)
+        {
+            var query = "SELECT user_name FROM user WHERE user_id = @Id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@Id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetString("user_name");
+            }
+            return Constants.Error.NotFindString; // user not exists
+        }
+
         public static async Task<int> Create(AccountEntity account)
         {
+            // id 重复、跳跃在Controller判断
             var query = "INSERT INTO user VALUES(@id, @role, @name, @gender, @avatar, @email, @tel, @bank)";
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();

@@ -19,7 +19,7 @@ namespace SyaApi.Entities
     }
 
 
-        public class WorkItemEntity
+    public class WorkItemEntity
     {
         public int total{get; set;}
         public List<WorkEntity> workItem{get;set;}
