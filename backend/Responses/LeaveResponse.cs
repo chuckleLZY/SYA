@@ -20,8 +20,6 @@ namespace SyaApi.Responses
 
         public int status {get; set;}
         
-        public int status{get; set;}
-        
         public decimal leave_duration{get; set;}
 
         public System.DateTime request_time{get; set;}
