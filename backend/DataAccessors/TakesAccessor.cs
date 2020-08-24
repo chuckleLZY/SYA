@@ -35,6 +35,7 @@ namespace SyaApi.DataAccessors
 
         ///<summery>
         /// 查询student工作总时长和请假总次数
+        /// 更改：double to decimal
         /// dumei 08.24
         ///</summery>
         public static async Task<SumWorkAndAbsent> GetSumOfWorkAndAbsent(int stu_id)
@@ -54,7 +55,7 @@ namespace SyaApi.DataAccessors
             {
                 SumWorkAndAbsent temp = new SumWorkAndAbsent()
                 {
-                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDouble("sum_work_time"),
+                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_work_time"),
                     sum_absent_num = reader["sum_absent_num"] is System.DBNull ? 0 : Convert.ToInt32(reader.GetInt64("sum_absent_num"))
                     
                 };
