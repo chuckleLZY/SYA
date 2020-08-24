@@ -16,4 +16,10 @@ namespace SyaApi.Entities
         public int total{get; set;}
         public List<TakesEntity> TakesItem{get; set;}
     }
+
+    public class SumWorkAndAbsent
+    {
+        public double sum_work_time {get; set;}
+        public int sum_absent_num {get; set;}
+    }
 }

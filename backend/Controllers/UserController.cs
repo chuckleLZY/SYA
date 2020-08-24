@@ -74,33 +74,25 @@ namespace SyaApi.Controllers
 
             if(temp != null)
             {    
-            var user_res = new UserInfoResponse {
-                user_id = temp.user_id,
-                user_role = temp.user_role,
-                user_name = temp.user_name,
-                gender = temp.gender,
-                avatar = temp.avatar,
-                email = temp.email,
-                tel = temp.tel,
-                bank = temp.bank,
-                
-                /* /// 申请总次数
-                nof_apply = count(apply.work_id)
-
-                /// 请假总次数
-                nof_absent = takes.absent_num
-
-                /// 工作总时长
-                work_time = sum(takes.work_time)
-
-                /// 已获得薪水总量
-                income = sum(salary.salary_id)
-                */
-                nof_apply = 0,
-                nof_absent = 0,
-                work_time = 0,
-                income = 0,
-            };
+                var user_res = _mapper.Map<UserInfoResponse>(temp);
+                if (temp.user_role == Constants.Role.Student)
+                {
+                    //is student
+                    user_res.nof_apply = await ApplyAccessor.GetNumOfApp(u_id); //count(apply.apply_id)
+                    user_res.income = await SalaryAccessor.GetSumOfSalary(u_id); //sum(salary.num)
+                    var waa = await TakesAccessor.GetSumOfWorkAndAbsent(u_id);
+                    user_res.nof_absent = waa.sum_absent_num; //sum(takes.absent_num)
+                    user_res.work_time = waa.sum_work_time; //sum(takes.work_time)
+                }
+                else
+                {
+                    //not student
+                    user_res.nof_apply = 0;
+                    user_res.nof_absent = 0;
+                    user_res.work_time = 0;
+                    user_res.income = 0;
+                }
+           
                 return Ok(user_res);
             }
 

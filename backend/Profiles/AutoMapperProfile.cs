@@ -22,6 +22,7 @@ namespace SyaApi.Profiles
 
             CreateMap<UserRequest, UserEntity>();
             CreateMap<UserEntity, UserResponse>();
+            CreateMap<UserEntity, UserInfoResponse>();
 
             //CreateMap<ApplyRequest, ApplyEntity>();
             CreateMap<ApplyEntity, ApplyResponse>();

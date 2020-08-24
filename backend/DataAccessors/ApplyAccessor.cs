@@ -39,6 +39,28 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
+        /// 查询student申请总数
+        /// dumei 08.24
+        ///</summery>
+        public static async Task<int> GetNumOfApp(int stu_id)
+        {
+            var query = "SELECT count(apply_id) AS nof_app FROM apply WHERE student_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id", stu_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32("nof_app");
+            }
+            return -1; // the student have no application
+        }
+
+        ///<summery>
         /// Provider views all applications
         /// (非学生用户)查看所有申请
         /// dumei 08.23
@@ -91,7 +113,7 @@ namespace SyaApi.DataAccessors
 
             var row = await command.ExecuteNonQueryAsync();
             if (row>0) return apply_id;
-            else return -1; //apply not exist
+            else return -1; // the apply not exists
         }
     }
 }

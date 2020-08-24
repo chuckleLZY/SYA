@@ -77,7 +77,7 @@ namespace SyaApi.Controllers
 
         ///<summery>
         /// (非学生用户)处理申请, 录用/拒录
-        /// 检查user.role
+        /// 若录用，则增添takes
         /// dumei 08.24
         ///</summery>
         [HttpPost("ProManageApp")]
@@ -87,23 +87,46 @@ namespace SyaApi.Controllers
             var pro_id = Int32.Parse(User.Identity.Name);
             if (await UserAccessor.CheckRole(pro_id) == Role.Student)
             {
-                return BadRequest(new { message = "ProViewApps is not for students."});
+                return BadRequest(new { message = "Students cannot manage application."});
             }
 
+            ApplyEntity ae = await ApplyAccessor.Read(request.apply_id);
+            if (ae == null) 
+            {
+                return BadRequest(new {message = "Apply id not found."});
+            }
+            if (ae.status != Constants.ApplyStatus.Applying)
+            {
+                return BadRequest(new {message = "Application have been managed."});
+            }
             var success_change = await ApplyAccessor.SetApplyStatus(request.apply_id, request.status);
             if (success_change > 0)
-            {
-                ApplyEntity ae = await ApplyAccessor.Read(request.apply_id);
+            {  
+                ae.status = request.status; //减少查询
                 ApplyResponse ar = _mapper.Map<ApplyResponse>(ae);
                 // 未检查id是否存在
                 ar.student_name = await UserAccessor.GetUserName(ae.student_id);
                 ar.teacher_name = await UserAccessor.GetUserName(ae.teacher_id);
                 ar.work_name = await WorkAccessor.GetWorkName(ae.work_id);
 
+                if (request.status == Constants.ApplyStatus.Accepted)
+                {
+                    // 录用，创建takes
+                    var take = new TakesEntity
+                    {
+                        work_name = ar.work_name,
+                        student_id = ae.student_id,
+                        work_id = ae.work_id
+                    };
+                    await TakesAccessor.Create(take);
+                }
+                
                 return ar;
             }
-            return BadRequest(new {message = "Apply id not found"});
+
+            return BadRequest(new {message = "Update failed"});
         }
+
 
     }
 
