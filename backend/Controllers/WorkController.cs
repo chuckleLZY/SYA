@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 using AutoMapper;
 using SyaApi.Plugins;
 using SyaApi.DataAccessors;
@@ -36,13 +37,19 @@ namespace SyaApi.Controllers
             };
         }
 
-        [HttpPost("ViewOwnWork")]
+        ///<summery>
+        /// 学生用户创建工作
+        /// chuckle 8.25
+        ///</summery>
+        [HttpGet("ViewOwnWork")]
         [AllowAnonymous]
-        public async Task<ActionResult<WorkItemResponse>> ViewOwnWork()
+        public async Task<ActionResult<WorkItemResponse>> ViewOwnWork([FromBody] ViewWorkRequest request)
         {
             WorkItemResponse workItem=new WorkItemResponse();
-            workItem.total=0;
-            workItem.worklist=new System.Collections.Generic.List<WorkResponse>();
+            workItem.totalpage=0;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist=new List<WorkResponse>();
+
             //取得存在cookie的当前账户id
             var stu_id = Int32.Parse(User.Identity.Name);
 
@@ -59,7 +66,7 @@ namespace SyaApi.Controllers
                         WorkResponse a=_mapper.Map<WorkResponse>(work_info);
                         
                         workItem.worklist.Add(a);
-                        workItem.total++;
+                        workItem.totalpage++;
                     }
                 }
 
@@ -68,10 +75,19 @@ namespace SyaApi.Controllers
             return Ok(-1);
         }
 
+        ///<summery>
+        /// 用户查看工作详细信息
+        /// chuckle 8.25
+        ///</summery>
         [HttpGet("ViewWorkInfo")]
         [AllowAnonymous]
         public async Task<ActionResult<WorkResponse>> ViewWorkInfo([FromBody]FindworkRequest temp)
         {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
             var work_info=await WorkAccessor.FindWorkInfo(temp.work_id);
 
@@ -81,6 +97,77 @@ namespace SyaApi.Controllers
             }
                 return Ok(-1);
         }
+
+        ///<summery>
+        /// 用户查看所有工作
+        /// chuckle 8.25
+        ///</summery>
+        [HttpGet("ViewAllWork")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkItemResponse>> ViewAllWork([FromBody] ViewWorkRequest request)
+        {
+            WorkItemResponse workItem=new WorkItemResponse();
+            workItem.totalpage=0;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist=new List<WorkResponse>();
+
+            //取得存在cookie的当前账户id
+            var stu_id = Int32.Parse(User.Identity.Name);
+
+            var temp=await WorkAccessor.FindAllWork();
+
+            if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);
+                        
+                        workItem.worklist.Add(a);
+                        workItem.totalpage++;
+                    
+                }
+
+                return Ok(workItem);
+            }
+            return Ok(-1);
+        }
+
+        ///<summery>
+        /// 用户搜索工作
+        /// chuckle 8.25
+        ///</summery>
+        [HttpGet("FindWork")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkItemResponse>> FindWork([FromBody] ViewWorkRequest request)
+        {
+            WorkItemResponse workItem=new WorkItemResponse();
+            workItem.totalpage=0;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist=new List<WorkResponse>();
+
+            //取得存在cookie的当前账户id
+            var stu_id = Int32.Parse(User.Identity.Name);
+            string search='%'+request.query+'%';
+            var temp=await WorkAccessor.FindWork(search);
+
+            if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                    WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);
+                        
+                    workItem.worklist.Add(a);
+                    workItem.totalpage++;
+                    
+                }
+
+                return Ok(workItem);
+            }
+            return Ok(-1);
+        }
+
+
+
 
         ///<summery>
         /// (非学生用户)创建工作
@@ -123,7 +210,7 @@ namespace SyaApi.Controllers
             }
 
             WorkItemResponse workItem = new WorkItemResponse();
-            workItem.total = 0;
+            workItem.totalpage=0;
             workItem.worklist = new System.Collections.Generic.List<WorkResponse>();
 
             var provide_list = await WorkAccessor.FindHistoryWork(pro_id);
@@ -134,7 +221,7 @@ namespace SyaApi.Controllers
                 {
                     WorkResponse wr = _mapper.Map<WorkResponse>(provide_list.workItem[i]);           
                     workItem.worklist.Add(wr);
-                    workItem.total++;
+                    workItem.totalpage++;
                 }
                 return Ok(workItem);
             }

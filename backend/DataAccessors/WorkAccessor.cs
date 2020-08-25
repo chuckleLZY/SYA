@@ -191,5 +191,87 @@ namespace SyaApi.DataAccessors
             await command.ExecuteNonQueryAsync();
             return (int)command.LastInsertedId;
         }
+
+        ///<summery>
+        /// 用户查看所有工作
+        /// chuckle 8.25
+        ///</summery>
+        public static async Task<WorkItemEntity> FindAllWork()
+        {
+            WorkItemEntity work=new WorkItemEntity();
+            work.total=0;
+            work.workItem=new List<WorkEntity>();
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,work_time,salary,likes_num,collect_num,share_num FROM work";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while ( reader.Read())
+            {
+                WorkEntity temp=new WorkEntity();
+                
+                temp.teacher_id=reader.GetInt32("teacher_id");
+                temp.work_id=reader.GetInt32("work_id");
+                temp.work_name=reader.GetString("work_name");
+                temp.cover=reader.GetString("cover");
+                temp.work_description=reader.GetString("work_description");
+                temp.address=reader.GetString("address");
+                temp.work_time=reader.GetString("work_time");
+                temp.salary=reader.GetInt32("salary");
+                temp.likes_num=reader.GetInt32("likes_num");
+                temp.collect_num=reader.GetInt32("collect_num");
+                temp.share_num=reader.GetInt32("share_num");
+                
+                work.total++;
+                work.workItem.Add(temp);
+            }
+            return work;
+        }
+
+        ///<summery>
+        /// 用户搜索工作
+        /// chuckle 8.25
+        ///</summery>
+        public static async Task<WorkItemEntity> FindWork(string search)
+        {
+            WorkItemEntity work=new WorkItemEntity();
+            work.total=0;
+            work.workItem=new List<WorkEntity>();
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,work_time,salary,likes_num,collect_num,share_num FROM work WHERE work_name LIKE @search OR work_description LIKE @search OR address LIKE @search ";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@search",search);
+            using var reader = await command.ExecuteReaderAsync();
+
+            while ( reader.Read())
+            {
+                WorkEntity temp=new WorkEntity();
+                
+                temp.teacher_id=reader.GetInt32("teacher_id");
+                temp.work_id=reader.GetInt32("work_id");
+                temp.work_name=reader.GetString("work_name");
+                temp.cover=reader.GetString("cover");
+                temp.work_description=reader.GetString("work_description");
+                temp.address=reader.GetString("address");
+                temp.work_time=reader.GetString("work_time");
+                temp.salary=reader.GetInt32("salary");
+                temp.likes_num=reader.GetInt32("likes_num");
+                temp.collect_num=reader.GetInt32("collect_num");
+                temp.share_num=reader.GetInt32("share_num");
+                
+                work.total++;
+                work.workItem.Add(temp);
+            }
+            return work;
+        }
+
+
     }
 }

@@ -5,6 +5,7 @@ namespace SyaApi.Requests
 {
     public class FindworkRequest
     {
+        [Required]
         public int work_id{get;set;}
     }
 
@@ -29,4 +30,15 @@ namespace SyaApi.Requests
         public string work_time{get; set;}
     }
 
+    public class ViewWorkRequest
+    {
+        [Required]
+        public int pagenum{get; set;}
+
+        [Required]
+        public int pagesize{get; set;}
+
+        [Required]
+        public string query{get; set;}
+    }
 }
