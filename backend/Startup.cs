@@ -35,15 +35,7 @@ namespace SyaApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseCors(cfg =>
-            {
-                cfg.AllowAnyOrigin(); //对应跨域请求的地址
-                cfg.AllowAnyMethod(); //对应请求方法的Method
-                cfg.AllowAnyHeader(); //对应请求方法的Headers
-                                      //cfg.AllowCredentials(); //对应请求的withCredentials 值
-            });
-            
+        {   
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -54,7 +46,7 @@ namespace SyaApi
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             app.UseAuthentication();
             app.UseAuthorization();
