@@ -17,7 +17,10 @@ namespace SyaApi.Responses
     
     public class WorkItemResponse
     {
-        public int total{get; set;}
+        public int totalpage{get; set;}
+
+        public int pagenum{get; set;}
+        
         public List<WorkResponse> worklist{get;set;}
 
     }
