@@ -4,6 +4,7 @@ namespace SyaApi.Responses
 {
     public class WorkResponse
     {
+        public int work_id{get; set;}
         public string work_name{get; set;}
         public string cover{get; set;}
         public string work_description{get; set;}
@@ -20,7 +21,7 @@ namespace SyaApi.Responses
         public int totalpage{get; set;}
 
         public int pagenum{get; set;}
-        
+
         public List<WorkResponse> worklist{get;set;}
 
     }
