@@ -1,21 +1,26 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+  <el-container style="height: 100%">
+    <el-header style="padding-left: 0px;padding-right: 0px;">
+      <!-- 导航栏 -->
+      <Header></Header>
+    </el-header>
+    <el-main style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px">
+      <!-- 路由跳转 -->
+      <router-view></router-view>
+    </el-main>
+    <el-footer style="padding-left: 0px;padding-right: 0px;">Footer</el-footer>
+  </el-container>
 </template>
 
-
 <script>
-import Main from "./components/Main.vue";
+import Header from "../components/Header.vue";
 export default {
-  name: "App",
+  name: "Main",
   components: {
-    Main
+    Header,
   }
 };
 </script>
-
-
 
 <style scoped>
 #app {
