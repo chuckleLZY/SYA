@@ -38,7 +38,7 @@ namespace SyaApi.Requests
         [Required]
         public int pagesize{get; set;}
 
-        [Required]
+        
         public string query{get; set;}
     }
 }
