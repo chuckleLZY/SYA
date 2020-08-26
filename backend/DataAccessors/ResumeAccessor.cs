@@ -134,6 +134,37 @@ namespace SyaApi.DataAccessors
             return -1; // work not exists
         }
 
+
+        public static async Task<ResumeEntity> FindInfo(int id)
+        {
+            var query = "SELECT resume_id,student_id,age,name,city,education,community,project,academic,skill,introduction FROM resume WHERE resume_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new ResumeEntity
+                {
+                    resume_id=reader.GetInt32("resume_id"),
+                    student_id=reader.GetInt32("student_id"),
+                    age=reader.GetInt32("age"),
+                    student_name=reader.GetString("name"),
+                    city=reader.GetString("city"),
+                    education=reader.GetString("education"),
+                    community=reader.GetString("community"),
+                    project=reader.GetString("project"),
+                    academic=reader.GetString("academic"),
+                    skill=reader.GetString("skill"),
+                    introduction=reader.GetString("introduction")               
+                };
+            }
+            return null;
+        }
     }
 
 }

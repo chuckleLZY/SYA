@@ -34,4 +34,9 @@ namespace SyaApi.Requests
         public string introduction{get; set;}
     }
 
+    public class ViewResumeRequest
+    {
+        [Required]
+        public int resume_id {get; set;}
+    }
 }
