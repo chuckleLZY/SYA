@@ -38,7 +38,7 @@ namespace SyaApi.Controllers
         }
 
         ///<summery>
-        /// 学生用户创建工作
+        /// 学生用户查看个人拥有工作
         /// chuckle 8.25
         ///</summery>
         [HttpGet("ViewOwnWork")]
@@ -165,9 +165,6 @@ namespace SyaApi.Controllers
             }
             return Ok(-1);
         }
-
-
-
 
         ///<summery>
         /// (非学生用户)创建工作

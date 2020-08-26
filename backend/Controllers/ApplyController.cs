@@ -129,7 +129,7 @@ namespace SyaApi.Controllers
 
         ///<summery>
         /// 学生用户提交工作申请
-        /// dumei 08.26
+        /// chuckle 08.26
         ///</summery>
         [HttpPost("CreateApply")]
         [AllowAnonymous]

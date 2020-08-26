@@ -35,6 +35,10 @@ namespace SyaApi.Controllers
             };
         }
 
+        ///<summery>
+        ///学生发布请假请求
+        /// chuckle 8.22
+        ///</summery>
         [HttpPost("RequestRest")]
         [AllowAnonymous]
         public async Task<ActionResult<LeaveResponse>>RequestRest([FromBody] LeaveRequest request)
