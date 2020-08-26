@@ -120,7 +120,20 @@ namespace SyaApi.Controllers
             return Ok(-1);
         }
 
+        [HttpGet("GetResumeInfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ResumeResponse>> GetResumeInfo([FromBody] ViewResumeRequest request)
+        {
 
+            //查找当前id是否存在resume
+            var temp=await ResumeAccessor.FindInfo(request.resume_id);
+
+            if(temp!=null)
+            {            
+                return Ok(_mapper.Map<ResumeResponse>(temp));
+            }
+            return Ok(-1);
+        }
 
 
 
