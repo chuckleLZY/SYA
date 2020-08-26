@@ -127,6 +127,32 @@ namespace SyaApi.Controllers
             return BadRequest(new {message = "Update failed"});
         }
 
+        ///<summery>
+        /// 学生用户提交工作申请
+        /// dumei 08.26
+        ///</summery>
+        [HttpPost("CreateApply")]
+        [AllowAnonymous]
+         public async Task<ActionResult<int>> CreateApply(ApplyRequest request)
+         {
+            var pro_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(pro_id) != Role.Student)
+            {
+                return BadRequest(new { message = "CreateApply is for students."});
+            }
+            var temp=_mapper.Map<ApplyEntity>(request);
+            temp.student_id=pro_id;
+            temp.teacher_id= await WorkAccessor.GetTeacher(temp.work_id);
+            temp.resume_id= await ResumeAccessor.GetResume(temp.student_id);
+
+            var ans=await ApplyAccessor.Create(temp);
+            if(ans>0)
+            {  
+               return Ok(ans); 
+            }
+            return Ok(-1);
+         }
+
 
     }
 

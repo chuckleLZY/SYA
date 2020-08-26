@@ -116,6 +116,27 @@ namespace SyaApi.DataAccessors
             else return -1; // the apply not exists
         }
 
+        public static async Task<int> Create(ApplyEntity apply)
+        {
+            var query = "INSERT INTO apply(student_id,teacher_id,work_id,resume_id,status)VALUES(@student_id,@teacher_id,@work_id,@resume_id,@status)";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@student_id",apply.student_id);
+            command.Parameters.AddWithValue("@teacher_id",apply.teacher_id);
+            command.Parameters.AddWithValue("@work_id",apply.work_id);
+            command.Parameters.AddWithValue("@resume_id",apply.resume_id);
+            command.Parameters.AddWithValue("@status",0);
+
+            await command.ExecuteNonQueryAsync();
+            return (int)command.LastInsertedId;
+
+        }
+
+
         
     }
 }

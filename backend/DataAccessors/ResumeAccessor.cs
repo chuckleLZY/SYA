@@ -110,9 +110,29 @@ namespace SyaApi.DataAccessors
             return 0;
         }
 
-        //public static async Task<int> CreateApply()
+        
+        ///<summery>
+        /// 根据student_id查找resume_id
+        /// chuckle 8.26
+        ///</summery>
+        public static async Task<int> GetResume(int id)
+        {
+            
+            var query = "SELECT resume_id FROM resume WHERE student_id=@id";
 
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",id);
 
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32("resume_id");
+            }
+            return -1; // work not exists
+        }
 
     }
 

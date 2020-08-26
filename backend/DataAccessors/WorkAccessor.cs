@@ -272,6 +272,27 @@ namespace SyaApi.DataAccessors
             return work;
         }
 
+        ///<summery>
+        /// 根据work_id查找teacher_id
+        /// chuckle 8.26
+        ///</summery>
+        public static async Task<int> GetTeacher(int id)
+        {
+            var query = "SELECT teacher_id FROM work WHERE work_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetInt32("teacher_id");
+            }
+            return -1; // work not exists
+        }
 
     }
 }
