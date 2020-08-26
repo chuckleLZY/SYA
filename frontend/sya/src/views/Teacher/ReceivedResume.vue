@@ -10,7 +10,12 @@
     </el-breadcrumb>-->
 
     <el-card>
-      <el-table :data="tableData" style="width: 100%" v-loading="loading">
+      <el-table
+        :data="tableData"
+        style="width: 100%"
+        v-loading="loading"
+        :row-class-name="tableRowClassName"
+      >
         <el-table-column label="#" type="index" width="180px"></el-table-column>
         <el-table-column prop="work_name" label="工作名称" width="280px"></el-table-column>
         <el-table-column prop="student_name" label="学生姓名" width="280px"></el-table-column>
@@ -109,7 +114,7 @@ export default {
       tableData: [],
       checkDialogVisible: false,
       reSumeData: {},
-      loading: true,
+      loading: true
     };
   },
   methods: {
@@ -120,7 +125,7 @@ export default {
         "http://localhost:5000/Apply/ProManageApp",
         {
           apply_id: this.reSumeData.apply_id,
-          status: 1//同意
+          status: 1 //同意
         },
         {
           withCredentials: true
@@ -130,7 +135,7 @@ export default {
       // console.log(this.reSumeData);
 
       //刷新
-      this.loading=true;
+      this.loading = true;
       await this.getReceivedResume();
     },
     //拒绝申请
@@ -141,7 +146,7 @@ export default {
         "http://localhost:5000/Apply/ProManageApp",
         {
           apply_id: this.reSumeData.apply_id,
-          status: 2//拒绝
+          status: 2 //拒绝
         },
         {
           withCredentials: true
@@ -151,7 +156,7 @@ export default {
       // console.log(this.reSumeData);
 
       //刷新
-      this.loading=true;
+      this.loading = true;
       await this.getReceivedResume();
     },
     //查看简历详情
@@ -213,6 +218,17 @@ export default {
       }
       //取消加载的转圈圈
       this.loading = false;
+    },
+
+    //每一行的颜色
+    tableRowClassName({ row, rowIndex }) {
+      console.log(row);
+      if (row.status === 2) {
+        return "warning-row";
+      } else if (row.status === 1) {
+        return "success-row";
+      }
+      return "";
     }
   },
 
@@ -224,11 +240,11 @@ export default {
 </script>
 
 
-<style scoped>
-.el-card {
+<style>
+/* .el-card {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
-}
-.demo-table-expand {
+} */
+/* .demo-table-expand {
   font-size: 0;
 }
 .demo-table-expand label {
@@ -239,5 +255,12 @@ export default {
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+} */
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>
