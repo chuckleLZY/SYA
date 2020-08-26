@@ -40,8 +40,8 @@ export default {
     return {
       //登录表单
       logInForm: {
-        username: "",
-        Password: ""
+        username: "student",
+        Password: "123456"
       },
 
       // 图片地址数组
