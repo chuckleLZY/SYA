@@ -4,7 +4,9 @@ namespace SyaApi.Requests
 {
     public class ApplyRequest
     {
-        //public 
+        [Required]
+        public int work_id {get; set;}
+        
     }
 
     public class ManageApplyRequest
