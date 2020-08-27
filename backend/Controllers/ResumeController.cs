@@ -104,7 +104,7 @@ namespace SyaApi.Controllers
             return Ok(-1);
         }
 
-        [HttpGet("GetResume")]
+        [HttpPost("GetResume")]
         [AllowAnonymous]
         public async Task<ActionResult<ResumeResponse>> GetResume()
         {
@@ -120,7 +120,7 @@ namespace SyaApi.Controllers
             return Ok(-1);
         }
 
-        [HttpGet("GetResumeInfo")]
+        [HttpPost("GetResumeInfo")]
         [AllowAnonymous]
         public async Task<ActionResult<ResumeResponse>> GetResumeInfo([FromBody] ViewResumeRequest request)
         {

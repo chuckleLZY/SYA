@@ -41,7 +41,7 @@ namespace SyaApi.Controllers
         /// 检查user.role
         /// dumei 08.24
         ///</summery>
-        [HttpGet("ProViewApps")]
+        [HttpPost("ProViewApps")]
         //[AllowAnonymous]
         public async Task<ActionResult<ApplyItemResponse>> ProViewApps()
         {

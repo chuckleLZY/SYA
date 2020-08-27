@@ -55,7 +55,7 @@ namespace SyaApi.Controllers
            return student_id;
         }
 
-        [HttpGet("GetHistory")]
+        [HttpPost("GetHistory")]
         [AllowAnonymous]
         public async Task<ActionResult<HistoryResponse>> GetHistory()
         {

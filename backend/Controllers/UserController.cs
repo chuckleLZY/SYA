@@ -64,7 +64,7 @@ namespace SyaApi.Controllers
             return BadRequest(new { message = "The user donot exist"});
         }
 
-        [HttpGet("GetUserInfo")]
+        [HttpPost("GetUserInfo")]
         public async Task<ActionResult<UserInfoResponse>> GetUserInfo()
         {
             //取得存在cookie的当前账户id

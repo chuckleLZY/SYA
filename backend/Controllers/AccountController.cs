@@ -103,7 +103,7 @@ namespace SyaApi.Controllers
             return NoContent();
         }
 
-        [HttpGet("LoginStatus")]
+        [HttpPost("LoginStatus")]
         public async Task<ActionResult> GetLoginStatus()
         {
             var account = await AccountAccessor.Read(Int32.Parse(User.Identity.Name));
