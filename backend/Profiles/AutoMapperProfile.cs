@@ -40,6 +40,10 @@ namespace SyaApi.Profiles
             CreateMap<MessageRequest, MessageEntity>();
             CreateMap<MessageEntity, MessageResponse>();
 
+            CreateMap<AnnounceStatusRequest, AnnounceEntity>();
+            CreateMap<AnnounceRequest, AnnounceEntity>();
+            CreateMap<AnnounceEntity, AnnounceResponse>();
+
         }
     }
 }

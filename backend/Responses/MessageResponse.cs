@@ -25,7 +25,9 @@ namespace SyaApi.Responses
 
     public class MessageItemResponse
     {
-        public int total{get; set;}
+        public int totalpage{get; set;}
+
+        public int pagenum{get; set;}
 
         public List<MessageResponse> messageItem {get; set;}
     }

@@ -20,4 +20,15 @@ namespace SyaApi.Requests
         [Required]
         public int message_id {get; set;}
     }
+        public class ViewMessageRequest
+    {
+        [Required]
+        public int pagenum{get; set;}
+
+        [Required]
+        public int pagesize{get; set;}
+
+        
+        public string query{get; set;}
+    }
 }

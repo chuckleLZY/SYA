@@ -110,22 +110,31 @@ namespace SyaApi.Controllers
         ///</summery>
         [HttpPost("FindSendMessage")]
         [AllowAnonymous]
-        public async Task<ActionResult<MessageItemResponse>> FindSendMessage()
+        public async Task<ActionResult<MessageItemResponse>> FindSendMessage([FromBody]ViewMessageRequest request)
         {
             MessageItemResponse ans=new MessageItemResponse();
-            ans.total=0;
+            ans.totalpage=0;
+            ans.pagenum=request.pagenum;
             ans.messageItem=new List<MessageResponse>();
+            
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
             //取得存在cookie的当前账户id
             var temp_id = Int32.Parse(User.Identity.Name);
           
             var temp=await MessageAccessor.FindSend(temp_id);
             for(int i=0;i<temp.total;i++)
-            {
-                var response =_mapper.Map<MessageResponse>(temp.messageItem[i]);
-                response.sender_name=await UserAccessor.GetUserName(response.sender_id);
-                response.receiver_name=await UserAccessor.GetUserName(response.receiver_id);
-                ans.total++;
-                ans.messageItem.Add(response);
+            {                    
+                ans.totalpage++;
+                if(i>=start&&i<=end)
+                {
+                    var response =_mapper.Map<MessageResponse>(temp.messageItem[i]);
+                    response.sender_name=await UserAccessor.GetUserName(response.sender_id);
+                    response.receiver_name=await UserAccessor.GetUserName(response.receiver_id);
+                    ans.messageItem.Add(response);
+                }
+
             }
             return Ok(ans);
         }
@@ -136,22 +145,30 @@ namespace SyaApi.Controllers
         ///</summery>
         [HttpPost("FindReceiveMessage")]
         [AllowAnonymous]
-        public async Task<ActionResult<MessageItemResponse>> FindReceiveMessage()
+        public async Task<ActionResult<MessageItemResponse>> FindReceiveMessage([FromBody]ViewMessageRequest request)
         {
             MessageItemResponse ans=new MessageItemResponse();
-            ans.total=0;
+            ans.totalpage=0;
+            ans.pagenum=request.pagenum;
             ans.messageItem=new List<MessageResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
             //取得存在cookie的当前账户id
             var temp_id = Int32.Parse(User.Identity.Name);
           
             var temp=await MessageAccessor.FindReceive(temp_id);
             for(int i=0;i<temp.total;i++)
             {
-                var response =_mapper.Map<MessageResponse>(temp.messageItem[i]);
-                response.sender_name=await UserAccessor.GetUserName(response.sender_id);
-                response.receiver_name=await UserAccessor.GetUserName(response.receiver_id);
-                ans.total++;
-                ans.messageItem.Add(response);
+                ans.totalpage++;
+                if(i>=start&&i<=end)
+                {
+                    var response =_mapper.Map<MessageResponse>(temp.messageItem[i]);
+                    response.sender_name=await UserAccessor.GetUserName(response.sender_id);
+                    response.receiver_name=await UserAccessor.GetUserName(response.receiver_id);
+                    ans.messageItem.Add(response);
+                }
             }
             return Ok(ans);
         }
