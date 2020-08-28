@@ -10,19 +10,19 @@
       <div class="avatar_box">
         <img src alt />
       </div>
-      <el-form label-width="0px" class="login_form" :model="logInForm">
+      <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input prefix-icon="el-icon-user" v-model="logInForm.username"></el-input>
         </el-form-item>
         <!-- 密码 -->
-        <el-form-item>
-          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password"></el-input>
+        <el-form-item prop="Password">
+          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" type="password"></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
           <el-button type="primary" @click="login()">登录</el-button>
-          <el-button type="info">退出</el-button>
+          <el-button type="info" @click="register()">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -42,6 +42,12 @@ export default {
       logInForm: {
         username: "student",
         Password: "123456"
+      },
+      loginFormRules:{
+        username:[ { required: true, message: '请输入用户名', trigger: 'blur' },
+         { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
+        Password:[{ required: true, message: '请输入密码', trigger: 'blur' }
+        ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }]
       },
 
       // 图片地址数组
@@ -79,6 +85,9 @@ export default {
         this.$message.success("登录成功");
         this.$router.push("/Main");
       }
+    },
+    register(){
+      this.$router.push("/Register");
     }
   }
 };
