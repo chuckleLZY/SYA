@@ -41,4 +41,29 @@ namespace SyaApi.Requests
         
         public string query{get; set;}
     }
+
+    public class UpdateWorkRequest
+    {
+        [Required]
+        public int work_id{get;set;}
+        [Required]
+        public string work_name{get; set;}
+
+        [Required]
+        public string cover{get; set;}
+
+        [Required]
+        public string work_description{get; set;}
+
+        [Required]
+        public string address{get; set;}
+
+        [Required]
+        public int salary{get; set;}
+
+        [Required]
+        public string work_time{get; set;}
+    }
+
+
 }
