@@ -131,7 +131,7 @@ export default {
           withCredentials: true
         }
       );
-      console.log(result);
+      // console.log(result);
       // console.log(this.reSumeData);
 
       //刷新
@@ -152,7 +152,7 @@ export default {
           withCredentials: true
         }
       );
-      console.log(result);
+      // console.log(result);
       // console.log(this.reSumeData);
 
       //刷新
@@ -161,7 +161,7 @@ export default {
     },
     //查看简历详情
     getMoreInfo(row) {
-      console.log(row);
+      // console.log(row);
       this.reSumeData = row;
       this.checkDialogVisible = true;
     },
@@ -195,8 +195,8 @@ export default {
 
     //获得申请信息
     async getReceivedResume() {
-      const result = await axios.get(
-        "http://localhost:5000/Apply/ProViewApps",
+      const result = await axios.post(
+        "http://localhost:5000/Apply/ProViewApps",{},
         {
           withCredentials: true
         }
@@ -222,7 +222,7 @@ export default {
 
     //每一行的颜色
     tableRowClassName({ row, rowIndex }) {
-      console.log(row);
+      // console.log(row);
       if (row.status === 2) {
         return "warning-row";
       } else if (row.status === 1) {
@@ -234,7 +234,7 @@ export default {
 
   async mounted() {
     await this.getReceivedResume();
-    console.log(this.tableData);
+    // console.log(this.tableData);
   }
 };
 </script>
