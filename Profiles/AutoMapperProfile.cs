@@ -13,14 +13,37 @@ namespace SyaApi.Profiles
             
             CreateMap<ResumeRequest, ResumeEntity>();
             CreateMap<ResumeEntity, ResumeResponse>();
+
+            CreateMap<ProvideWorkRequest, WorkEntity>();
+            CreateMap<WorkEntity, WorkResponse>();
+
+            CreateMap<LeaveRequest, LeaveEntity>();
+            CreateMap<LeaveEntity, LeaveResponse>();
+
+            CreateMap<UserRequest, UserEntity>();
+            CreateMap<UserEntity, UserResponse>();
             CreateMap<CommentRequest, CommentEntity>();
             CreateMap<CommentEntity, CommentResponse>();
             CreateMap<AnnounceRequest, AnnounceEntity>();
             CreateMap<AnnounceEntity, AnnounceResponse>();
-            CreateMap<FavoriteRequest, FavoriteEntity>();
-            CreateMap<FavoriteEntity, FavoriteResponse>();
+
             CreateMap<HistoryRequest, HistoryEntity>();
             CreateMap<HistoryEntity, HistoryResponse>();
+
+            CreateMap<UserEntity, UserInfoResponse>();
+
+            CreateMap<ApplyRequest, ApplyEntity>();
+            CreateMap<ApplyEntity, ApplyResponse>();
+
+            CreateMap<FavoriteRequest, FavoriteEntity>();
+            CreateMap<FavoriteEntity, FavoriteResponse>();
+            CreateMap<CFavoriteRequest, FavoriteEntity>();
+            CreateMap<FavoriteEntity, FavoriteResponse>();
+
+            CreateMap<FhasworkRequest, FhasworkEntity>();
+            CreateMap<FhasworkEntity, FhasworkResponse>();
+            
+
 
         }
     }
