@@ -294,5 +294,36 @@ namespace SyaApi.DataAccessors
             return -1; // work not exists
         }
 
+        ///<summery>
+        /// (非学生用户)修改工作信息
+        /// 设置 likes_num, collect_num, share_num 为 0
+        /// chuckle 8.28
+        ///</summery>
+        public static async Task<int> Update(WorkEntity work)
+        {
+            var query = "UPDATE work SET teacher_id=@teacher_id,work_name=@work_name,cover=@cover,work_description=@work_description,address=@address,salary=@salary,work_time=@work_time WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@teacher_id", work.teacher_id);
+            command.Parameters.AddWithValue("@work_id", work.work_id);
+            command.Parameters.AddWithValue("@work_name", work.work_name);
+            command.Parameters.AddWithValue("@cover", work.cover);
+            command.Parameters.AddWithValue("@work_description", work.work_description);
+            command.Parameters.AddWithValue("@address", work.address);
+            command.Parameters.AddWithValue("@salary", work.salary);
+            command.Parameters.AddWithValue("@work_time", work.work_time);
+
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return work.work_id;
+            }
+            return 0;
+        }
     }
 }

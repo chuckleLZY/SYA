@@ -238,5 +238,33 @@ namespace SyaApi.Controllers
             return Ok(-1); // Never arrive there
         }
 
+        ///<summery>
+        /// 老师修改工作信息
+        /// chuckle 8.28
+        ///</summery>
+        [HttpPost("ChangeWorkInfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkResponse>> ChangeWorkInfo([FromBody] UpdateWorkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var provider_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(provider_id) == Role.Student)
+            {
+                return BadRequest(new { message = "Student cannot update work"});
+            }
+            var work = _mapper.Map<WorkEntity>(request);
+            work.teacher_id = provider_id;
+            work.work_id=request.work_id;
+            await WorkAccessor.Update(work); //return work_id
+
+            return Ok(_mapper.Map<WorkResponse>(work));
+        }
+
+
     }
 }
