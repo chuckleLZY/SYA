@@ -1,14 +1,5 @@
 <template>
   <div>
-    <!-- <el-breadcrumb
-      separator-class="el-icon-arrow-right"
-      style="margin-bottom: 15px;font-size: 12px;"
-    >
-      <el-breadcrumb-item>首页</el-breadcrumb-item>
-      <el-breadcrumb-item>工作台</el-breadcrumb-item>
-      <el-breadcrumb-item>查看收到的简历</el-breadcrumb-item>
-    </el-breadcrumb>-->
-
     <el-card>
       <el-table
         :data="tableData"
@@ -27,40 +18,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- <template>
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="商品名称">
-                  <span>{{ props.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="所属店铺">
-                  <span>{{ props.row.shop }}</span>
-                </el-form-item>
-                <el-form-item label="商品 ID">
-                  <span>{{ props.row.id }}</span>
-                </el-form-item>
-                <el-form-item label="店铺 ID">
-                  <span>{{ props.row.shopId }}</span>
-                </el-form-item>
-                <el-form-item label="商品分类">
-                  <span>{{ props.row.category }}</span>
-                </el-form-item>
-                <el-form-item label="店铺地址">
-                  <span>{{ props.row.address }}</span>
-                </el-form-item>
-                <el-form-item label="商品描述">
-                  <span>{{ props.row.desc }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
-          </el-table-column>
-          <el-table-column label="#" type="index" width="180px"></el-table-column>
-          <el-table-column label="工作名称" prop="work_name" width="280px"></el-table-column>
-          <el-table-column label="学生姓名" prop="student_name" width="280px"></el-table-column>
-        </el-table>
-      </template>-->
+      <!-- 分页 -->
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageInfo.pagenum"
+          :page-sizes="[1, 2, 5, 10]"
+          :page-size="pageInfo.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="this.total"
+        ></el-pagination>
+      </div>
     </el-card>
 
     <el-dialog title="详情" :visible.sync="checkDialogVisible" width="30%" center>
@@ -114,7 +83,12 @@ export default {
       tableData: [],
       checkDialogVisible: false,
       reSumeData: {},
-      loading: true
+      loading: true,
+      total: 0,
+      pageInfo: {
+        pagenum: 1,
+        pagesize: 10
+      }
     };
   },
   methods: {
@@ -133,7 +107,6 @@ export default {
       );
       // console.log(result);
       // console.log(this.reSumeData);
-
       //刷新
       this.loading = true;
       await this.getReceivedResume();
@@ -154,7 +127,6 @@ export default {
       );
       // console.log(result);
       // console.log(this.reSumeData);
-
       //刷新
       this.loading = true;
       await this.getReceivedResume();
@@ -178,29 +150,17 @@ export default {
       );
       return result;
     },
-
-    //resume
-    // {
-    //     "student_id": 3,
-    //     "age": 1,
-    //     "student_name": "lzy",
-    //     "city": "shanghai",
-    //     "education": "none",
-    //     "community": "none",
-    //     "project": "none",
-    //     "academic": "none",
-    //     "skill": "none",
-    //     "introduction": "none"
-    // }
-
-    //获得申请信息
+    //获得所有申请信息
     async getReceivedResume() {
       const result = await axios.post(
-        "http://localhost:5000/Apply/ProViewApps",{},
+        "http://localhost:5000/Apply/ProViewApps",
+        this.pageInfo,
         {
           withCredentials: true
         }
       );
+      this.total = result.data.totalpage;
+      console.log(result);
       this.tableData = result.data.applist;
       for (var i = 0; i < this.tableData.length; i++) {
         // console.log(this.tableData[i].resume_id);
@@ -219,7 +179,34 @@ export default {
       //取消加载的转圈圈
       this.loading = false;
     },
-
+    //获取一页的申请信息
+    async getOnePageReceivedResume() {
+      const result = await axios.post(
+        "http://localhost:5000/Apply/ProViewApps",
+        this.pageInfo,
+        {
+          withCredentials: true
+        }
+      );
+      console.log(result);
+      this.tableData = result.data.applist;
+      for (var i = 0; i < this.tableData.length; i++) {
+        // console.log(this.tableData[i].resume_id);
+        const resume = await this.getResume(this.tableData[i].resume_id);
+        this.tableData[i]["student_name"] = resume.data.student_name;
+        this.tableData[i]["age"] = resume.data.age;
+        this.tableData[i]["city"] = resume.data.city;
+        this.tableData[i]["education"] = resume.data.education;
+        this.tableData[i]["community"] = resume.data.community;
+        this.tableData[i]["project"] = resume.data.project;
+        this.tableData[i]["academic"] = resume.data.academic;
+        this.tableData[i]["skill"] = resume.data.skill;
+        this.tableData[i]["introduction"] = resume.data.introduction;
+        // console.log(this.tableData[i]);
+      }
+      //取消加载的转圈圈
+      this.loading = false;
+    },
     //每一行的颜色
     tableRowClassName({ row, rowIndex }) {
       // console.log(row);
@@ -229,6 +216,20 @@ export default {
         return "success-row";
       }
       return "";
+    },
+    async handleSizeChange(val) {
+      this.loading=true;
+      this.pageInfo.pagesize = val;
+      await this.getOnePageReceivedResume();
+      // console.log(`每页 ${val} 条`);
+      this.loading=false;
+    },
+    async handleCurrentChange(val) {
+      this.loading=true;
+      this.pageInfo.pagenum = val;
+      await this.getOnePageReceivedResume();
+      // console.log(`当前页: ${val}`);
+      this.loading=false;
     }
   },
 
