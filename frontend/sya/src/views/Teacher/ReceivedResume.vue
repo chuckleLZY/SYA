@@ -32,43 +32,52 @@
       </div>
     </el-card>
 
-    <el-dialog title="详情" :visible.sync="checkDialogVisible" width="30%" center>
-      <!-- <span>这是一段信息</span> -->
-      <el-form status-icon label-width="100px" :model="reSumeData">
-        <el-form-item label="姓名">
-          <el-input disabled style="width:300px" v-model="reSumeData.student_name"></el-input>
-        </el-form-item>
-        <el-form-item label="年龄">
-          <el-input disabled style="width:300px" v-model="reSumeData.age"></el-input>
-        </el-form-item>
-        <el-form-item label="城市">
-          <el-input disabled style="width:300px" v-model="reSumeData.city"></el-input>
-        </el-form-item>
-        <el-form-item label="学历">
-          <el-input disabled style="width:300px" v-model="reSumeData.education"></el-input>
-        </el-form-item>
-        <el-form-item label="community">
-          <el-input disabled style="width:300px" v-model="reSumeData.community"></el-input>
-        </el-form-item>
-        <el-form-item label="project">
-          <el-input disabled style="width:300px" v-model="reSumeData.project"></el-input>
-        </el-form-item>
-        <el-form-item label="academic">
-          <el-input disabled style="width:300px" v-model="reSumeData.academic"></el-input>
-        </el-form-item>
-        <el-form-item label="skill">
-          <el-input disabled style="width:300px" v-model="reSumeData.skill"></el-input>
-        </el-form-item>
-        <el-form-item label="简介">
-          <el-input disabled style="width:300px" v-model="reSumeData.introduction"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-tag type="success" v-if="reSumeData.status==1">已同意</el-tag>
-        <el-tag type="danger" v-if="reSumeData.status==2">已拒绝</el-tag>
-        <el-button type="primary" @click="accept()" v-if="!reSumeData.status">同 意</el-button>
-        <el-button @click="refuse()" v-if="!reSumeData.status">拒绝</el-button>
-      </span>
+    <el-dialog title="详情" :visible.sync="checkDialogVisible" width="35%">
+      <div style="width:400px;margin:auto;">
+        <el-form status-icon label-width="auto" :model="reSumeData">
+          <div style="width:300px;margin:auto;">
+            <el-form-item label="姓名">
+              <el-input disabled v-model="reSumeData.student_name"></el-input>
+            </el-form-item>
+          </div>
+          <div style="width:300px;margin:auto;">
+            <el-form-item label="年龄">
+              <el-input disabled v-model="reSumeData.age"></el-input>
+            </el-form-item>
+          </div>
+          <div style="width:300px;margin:auto;">
+            <el-form-item label="城市">
+              <el-input disabled v-model="reSumeData.city"></el-input>
+            </el-form-item>
+          </div>
+          <div style="width:300px;margin:auto;">
+            <el-form-item label="学历">
+              <el-input disabled v-model="reSumeData.education"></el-input>
+            </el-form-item>
+          </div>
+          <el-form-item label="技能">
+            <el-input type="textarea" disabled v-model="reSumeData.skill"></el-input>
+          </el-form-item>
+          <el-form-item label="简介">
+            <el-input type="textarea" disabled v-model="reSumeData.introduction"></el-input>
+          </el-form-item>
+          <el-form-item label="社区经历">
+            <el-input type="textarea" disabled v-model="reSumeData.community"></el-input>
+          </el-form-item>
+          <el-form-item label="项目经历">
+            <el-input type="textarea" disabled v-model="reSumeData.project"></el-input>
+          </el-form-item>
+          <el-form-item label="学术经历">
+            <el-input type="textarea" disabled v-model="reSumeData.academic"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-tag type="success" v-if="reSumeData.status==1">已同意</el-tag>
+          <el-tag type="danger" v-if="reSumeData.status==2">已拒绝</el-tag>
+          <el-button type="primary" @click="accept()" v-if="!reSumeData.status">同 意</el-button>
+          <el-button @click="refuse()" v-if="!reSumeData.status">拒绝</el-button>
+        </span>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -108,6 +117,7 @@ export default {
       // console.log(result);
       // console.log(this.reSumeData);
       //刷新
+      this.$message.success("接受成功");
       this.loading = true;
       await this.getReceivedResume();
     },
@@ -128,6 +138,7 @@ export default {
       // console.log(result);
       // console.log(this.reSumeData);
       //刷新
+      this.$message.success("拒绝成功");
       this.loading = true;
       await this.getReceivedResume();
     },
@@ -218,18 +229,18 @@ export default {
       return "";
     },
     async handleSizeChange(val) {
-      this.loading=true;
+      this.loading = true;
       this.pageInfo.pagesize = val;
       await this.getOnePageReceivedResume();
       // console.log(`每页 ${val} 条`);
-      this.loading=false;
+      this.loading = false;
     },
     async handleCurrentChange(val) {
-      this.loading=true;
+      this.loading = true;
       this.pageInfo.pagenum = val;
       await this.getOnePageReceivedResume();
       // console.log(`当前页: ${val}`);
-      this.loading=false;
+      this.loading = false;
     }
   },
 
