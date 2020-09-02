@@ -98,7 +98,7 @@ export default {
       console.log(result);
       if (result.status == 200) {
         this.$message.success("注册成功");
-        this.$router.push("/Main");
+        this.$router.push("/");
       }
       else{
         this.$message.success("该账户已经被占用");
