@@ -26,7 +26,7 @@
             </el-row>
             -->
 
-                  <el-row>
+                <!--  <el-row>
                 <el-col :span="7">
                     <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select" clearable @clear="getWorkMessageList">
                         
@@ -34,10 +34,10 @@
                     </el-input>
                 </el-col>
                 <el-col :span="4"></el-col>
-            </el-row>
+            </el-row>-->
 
             <!-- 列表区域 -->
-            <el-table :data="workMessageList" :row-class-name="tableRowClassName">
+            <el-table :data="workMessageList" :row-class-name="tableRowClassName" v-loading="loading">
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="发件人" prop="sender_name">
 
@@ -90,13 +90,14 @@
         <el-form status-icon label-width="auto" :model="messageData">
           
           <el-form-item label="内容">
-            <el-input type="textarea" disabled v-model="messageData.content"></el-input>
+            <el-input disabled v-model="messageData.content"></el-input>
           </el-form-item>
+          
           <el-form-item label="发送时间">
-            <el-input type="textarea" disabled v-model="messageData.message_time"></el-input>
+            <el-input  disabled v-model="messageData.message_time"></el-input>
           </el-form-item>
           <el-form-item label="发送人">
-            <el-input type="textarea" disabled v-model="messageData.sender_name"></el-input>
+            <el-input disabled v-model="messageData.sender_name"></el-input>
           </el-form-item>
 
           
@@ -119,6 +120,7 @@ export default {
       select: '',
       checkDialogVisible: false,
       messageData:{},
+      loading: true,
     //获取工作列表的参数对象
       queryInfo:{
           
@@ -148,14 +150,18 @@ export default {
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
         //console.log(newSize)
+        this.loading = true;
         this.queryInfo.pagesize=newSize
         this.getWorkMessageList()
+        this.loading = false;
       },
       //监听页码改变的事件
       handleCurrentChange(newPage){
        // console.log(newPage)
+       this.loading = true;
         this.queryInfo.pagenum=newPage
         this.getWorkMessageList()
+        this.loading = false;
       },
   //获取工作列表的函数
   //   async getWorkList(){
@@ -180,6 +186,7 @@ export default {
         this.total=res.data.totalpage;
         this.pagesize=res.data.totalpage/res.data.pagenum;
         this.pagenum=res.data.pagenum;
+        this.loading = false;
       //  console.log(this.pagesize);
        // console.log(res);
       },
@@ -199,7 +206,7 @@ export default {
       console.log(res);
       },
 
-      async findWorkMes(){
+    /*  async findWorkMes(){
         const res=await axios.post('http://localhost:5000/Message/FindSendMessage',{
                     pagenum: this.queryInfo.pagenum,
                      pagesize: this.queryInfo.pagesize,
@@ -212,7 +219,7 @@ export default {
         this.workMessageList=res.data.messageItem;
         this.total=res.data.totalpage;
         console.log(res);
-    },
+    },*/
 
 
       async removeMesById(id){
