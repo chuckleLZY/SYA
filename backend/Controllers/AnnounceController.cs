@@ -141,6 +141,39 @@ namespace SyaApi.Controllers
 
             return temp;
         }
+
+        //管理员查看自己发布的所有公告
+        [HttpPost("GetSendAnnounce")]
+        [AllowAnonymous]
+        public async Task<ActionResult<AnnounceItemResponse>> GetSendAnnounce([FromBody]ViewAnnounceRequest request)
+        {
+            AnnounceItemResponse ans=new AnnounceItemResponse();
+            ans.totalpage=0;
+            ans.pagenum=request.pagenum;
+            ans.AnnounceItem=new List<AnnounceResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
+            //取得存在cookie的当前账户id
+            var user_id = Int32.Parse(User.Identity.Name);
+            // var role=await UserAccessor.CheckRole(user_id);
+            // if (role == Role.Student ||role==Role.Provider )
+            // {
+            //     return -10;
+            // }
+            var temp=await AnnounceAccessor.FindSend(user_id);
+            for(int i=0;i<temp.totalpage;i++)
+            {                    
+                ans.totalpage++;
+                if(i>=start&&i<=end)
+                {
+                    var response =_mapper.Map<AnnounceResponse>(temp.AnnounceItem[i]);
+                    ans.AnnounceItem.Add(response);
+                }
+            }
+            return Ok(ans);
+        }
     
     
     }
