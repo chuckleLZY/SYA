@@ -11,7 +11,7 @@
 
         <el-card class="student_card">
             
-            <el-row>
+           <!-- <el-row>
                 <el-col :span="7">
                     <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select">
                         
@@ -19,20 +19,25 @@
                     </el-input>
                 </el-col>
                 <el-col :span="4"></el-col>
-            </el-row>
+            </el-row>-->
             
             <!-- 列表区域 -->
-            <el-table :data="sysMessageList" stripe>
+            <el-table :data="sysMessageList" :row-class-name="tableRowClassName" v-loading="loading">
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column
                     prop="title"
                     label="公告标题"
-                    width="380">
+                    width="280">
                 </el-table-column>
                 <el-table-column
                     prop="send_time"
                     label="发送时间"
-                    width="380">
+                    width="280">
+                </el-table-column>
+                <el-table-column
+                    prop="status"
+                    label="状态"
+                    width="280">
                 </el-table-column>
                <!-- <el-table-column
                     prop="address"
@@ -47,7 +52,7 @@
                                 <el-button type="primary" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" circle></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-delete" size="mini" circle></el-button>
+                                <el-button type="primary" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.announcement_id)" circle></el-button>
                             </el-tooltip>
                     </template>
 
@@ -73,10 +78,10 @@
         <el-form status-icon label-width="auto" :model="messageData">
           
           <el-form-item label="内容">
-            <el-input type="textarea" disabled v-model="messageData.title"></el-input>
+            <el-input  disabled v-model="messageData.content"></el-input>
           </el-form-item>
           <el-form-item label="发送时间">
-            <el-input type="textarea" disabled v-model="messageData.send_time"></el-input>
+            <el-input  disabled v-model="messageData.send_time"></el-input>
           </el-form-item>
           
           
@@ -101,6 +106,7 @@ export default {
       select: '',
       checkDialogVisible: false,
       messageData:{},
+      loading: true,
     //获取工作列表的参数对象
       queryInfo:{
           query: '',
@@ -134,17 +140,30 @@ export default {
       this.getSysMessageList()
   },
   methods:{
+    tableRowClassName({ row,rowIndex }) {
+      // console.log(row);
+      if (row.status === 0) {
+        return "havenot-row";
+      } else if (row.status === 1) {
+        return "have-row";
+      }
+      return "";
+    },
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
-        console.log(newSize)
+        //console.log(newSize)
+        this.loading = true;
         this.queryInfo.pagesize=newSize
         this.getSysMessageList()
+        this.loading = false;
       },
       //监听页码改变的事件
       handleCurrentChange(newPage){
-        //console.log(newPage)
+       // console.log(newPage)
+       this.loading = true;
         this.queryInfo.pagenum=newPage
         this.getSysMessageList()
+        this.loading = false;
       },
   //获取工作列表的函数
    async getSysMessageList(){
@@ -167,12 +186,56 @@ export default {
         this.pagesize=res.data.totalpage/res.data.pagenum;
         this.pagenum=res.data.pagenum;
         //console.log(this.pagesize);
-        console.log(this.sysMessageList);
+      //  console.log(this.sysMessageList);
+        this.loading = false;
       },
-      viewMesInfo(row){
+
+      async removeMesById(id){
+        const confirmResulte=await this.$confirm('此操作将永久删除该工作消息, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err=>err)
+        //console.log(confirmResulte);
+        if(confirmResulte!=='confirm'){
+          return this.$message.info("已取消删除");
+        }
+        const res = await axios.post(
+        "http://localhost:5000/Announce/DeleteAnnounce",
+        {
+          announcement_id: id
+          
+        },
+        {
+          withCredentials: true
+        }
+      );
+
+      if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+      this.$message.info("已成功删除");
+      console.log(res);
+      this.getSysMessageList();
+
+      },
+
+      async viewMesInfo(row){
         this.messageData = row;
         this.checkDialogVisible = true;
-      }
+        const res = await axios.post(
+        "http://localhost:5000/Announce/GetAnnounceContent",
+        {
+          announcement_id: row.announcement_id
+        },
+        {
+          withCredentials: true
+        }
+      );
+      this.getSysMessageList();
+    //  console.log(res);
+      },
   }
 }
 </script>
@@ -180,4 +243,15 @@ export default {
 
 <style scoped>
 
+</style>
+
+<style>
+
+.el-table .havenot-row {
+  background: oldlace;
+}
+
+.el-table .have-row {
+  background: #f0f9eb;
+}
 </style>

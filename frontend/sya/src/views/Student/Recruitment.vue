@@ -58,11 +58,11 @@
             <!-- 工作卡片-->
             <el-row>
                 <!--<el-col :span="8" v-for="(o, index) in 9" :key="o" :offset="index > 0 ? 0 : 0">-->
-                    <div v-for="work in workList" :key="work.work_name">
+                    <div v-for="work in workList" :key="work.work_name" >
                     <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
                         
                     <el-card :body-style="{ padding: '10px'}" class="recruitment_card2">
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598253953884&di=e2f6539dab30a056e78b20b7ad15202f&imgtype=0&src=http%3A%2F%2Fwww.xuewei.net%2Fuploadfile%2F2018%2F0911%2F20180911024428180.jpg" class="image">
+                    <img src= "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598253953884&di=e2f6539dab30a056e78b20b7ad15202f&imgtype=0&src=http%3A%2F%2Fwww.xuewei.net%2Fuploadfile%2F2018%2F0911%2F20180911024428180.jpg" class="image">
                     <div style="padding: 14px;" > 
                         <p >工作名称: {{work.work_name}}</p>
                         <p>点赞: {{work.likes_num}}</p>
@@ -108,7 +108,7 @@
             <el-drawer
                 title="工作详情"
                 :visible.sync="drawer"
-                :direction="direction"
+                
                 :before-close="handleClose">
                 
                 <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
@@ -119,7 +119,7 @@
                 </div>
                       <div>
                           <br/>
-                <el-form :model="workInfo" :rules="workInfoRules" ref="workInfoRef" label-width="75px" class="demo-ruleForm">
+                <el-form :model="workInfo" label-width="75px" class="demo-ruleForm">
                 <el-form-item label="工作名称:" prop="work_name" class="demo-ruleFormItem">
                     <el-input v-model="workInfo.work_name" disabled></el-input>
                 </el-form-item>
@@ -282,7 +282,7 @@ export default {
         }
         this.workList=res.data.worklist;
         this.total=res.data.totalpage;
-       // console.log(res);
+        console.log(res);
     },
     async appWork(){
         const res=await axios.post('http://localhost:5000/Apply/CreateApply',{work_id:this.workInfo.work_id},{
@@ -292,7 +292,7 @@ export default {
         this.$message.error("Unexpected response");
         return;
         }
-        console.log(res);
+        //console.log(res);
         this.$message.success('申请此工作成功');
     }
      
@@ -306,5 +306,82 @@ export default {
 </script>
 
 <style scoped>
+  .recruitment_breadcrumb{
+  position: relative;
+  left:20px;
+  margin-bottom: 15px;
+  font-size:12px;
+  width:100% !important;
+}
 
+.recruitment_card{
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15) !important;
+  position: relative;
+  left:10px;
+  width:100% !important;
+}
+
+.recruitment_card2{
+  box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
+  /*margin-left:70px;
+  margin-top:30px;*/
+  width:400px !important;
+  margin: auto;
+  margin-top:30px;
+  
+}
+
+.recruitment_card3{
+  box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
+  margin: auto;
+  width:350px !important;
+  height:90% !important;
+}
+
+
+.el-select .el-input {
+  width: 130px;
+}
+.input-with-select .el-input-group__prepend {
+  background-color: #fff;
+}
+
+.el-pagination{
+  margin-top: 15px;
+}
+
+
+.time {
+  font-size: 13px;
+  color: #999;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 8px;
+}
+
+.button {
+  padding: 0;
+  float: right;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.clearfix:before,
+.clearfix:after {
+    display: table;
+    content: "";
+}
+
+.clearfix:after {
+    clear: both
+}
+
+.demo-ruleFormItem{
+  margin-left: -10px;
+}
 </style>
