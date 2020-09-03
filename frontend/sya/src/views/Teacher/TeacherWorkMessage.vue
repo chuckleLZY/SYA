@@ -25,7 +25,8 @@
                 <el-col :span="4"></el-col>
             </el-row>
             -->
-             <el-row>
+
+                  <el-row>
                 <el-col :span="7">
                     <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select">
                         
@@ -34,10 +35,12 @@
                 </el-col>
                 <el-col :span="4"></el-col>
             </el-row>
+
             <!-- 列表区域 -->
             <el-table :data="workMessageList" stripe>
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="发件人" prop="sender_name">
+
                 </el-table-column>
 
                 
@@ -54,7 +57,7 @@
 
                     
                             <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-edit" size="mini" circle></el-button>
+                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" circle></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
                                 <el-button type="primary" icon="el-icon-delete" size="mini" circle></el-button>
@@ -77,6 +80,26 @@
                 :total="total">
             </el-pagination>
         </el-card>
+
+        <el-dialog title="详情" :visible.sync="checkDialogVisible" width="35%">
+      <div style="width:400px;margin:auto;">
+        <el-form status-icon label-width="auto" :model="messageData">
+          
+          <el-form-item label="内容">
+            <el-input type="textarea" disabled v-model="messageData.content"></el-input>
+          </el-form-item>
+          <el-form-item label="发送时间">
+            <el-input type="textarea" disabled v-model="messageData.message_time"></el-input>
+          </el-form-item>
+          <el-form-item label="发送人">
+            <el-input type="textarea" disabled v-model="messageData.sender_name"></el-input>
+          </el-form-item>
+          
+        </el-form>
+        
+      </div>
+    </el-dialog>
+
     </div>
 </template>
 
@@ -90,14 +113,17 @@ export default {
       input2: '',
       input3: '',
       select: '',
-
+      checkDialogVisible: false,
+      messageData:{},
     //获取工作列表的参数对象
       queryInfo:{
-          query: '',
+          
           pagenum: 1,
-          pagesize: 2
+          pagesize: 5,
+          query: ''
       },
       workMessageList:[],
+      total:0,
     }
   },
   created(){
@@ -109,18 +135,24 @@ export default {
       handleSizeChange(newSize){
         console.log(newSize)
         this.queryInfo.pagesize=newSize
+        this.getWorkMessageList()
       },
       //监听页码改变的事件
       handleCurrentChange(newPage){
         console.log(newPage)
         this.queryInfo.pagenum=newPage
+        this.getWorkMessageList()
       },
+  //获取工作列表的函数
+  //   async getWorkList(){
+  //      const {data:res}= await this.$http.get('URL',{params:this.queryInfo})
+   //   }
    async getWorkMessageList(){
          const res = await axios.post(
         "http://localhost:5000/Message/FindReceiveMessage",
         {
-          /*pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize*/
+          pagenum: this.queryInfo.pagenum,
+          pagesize: this.queryInfo.pagesize
         },
         {
           withCredentials: true
@@ -131,12 +163,16 @@ export default {
         return;
         }
         this.workMessageList=res.data.messageItem;
-        this.total=res.data.total;
-      //  this.pagesize=res.data.totalpage/res.data.pagenum;
-      //  this.pagenum=res.data.pagenum;
-       // console.log(this.pagesize);
-        console.log(res);
+        this.total=res.data.totalpage;
+        this.pagesize=res.data.totalpage/res.data.pagenum;
+        this.pagenum=res.data.pagenum;
+      //  console.log(this.pagesize);
+       // console.log(res);
       },
+      viewMesInfo(row){
+        this.messageData = row;
+        this.checkDialogVisible = true;
+      }
   }
 }
 </script>
