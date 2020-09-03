@@ -1,20 +1,20 @@
 <template>
   <div>
     <el-card>
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        v-loading="loading"
-        :row-class-name="tableRowClassName"
-      >
+      <el-table :data="tableData" style="width: 100%" v-loading="loading">
         <el-table-column label="#" type="index" width="180px"></el-table-column>
         <el-table-column prop="work_name" label="工作名称" width="280px"></el-table-column>
         <el-table-column prop="student_name" label="学生姓名" width="280px"></el-table-column>
         <el-table-column prop="edit" label="状态" width="280px">
           <template slot-scope="scope">
-            <!-- <el-tooltip effect="dark" content="查看" placement="top"> -->
+            <el-tag type="success" v-if="scope.row.status==1">已接受</el-tag>
+            <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>
+            <el-tag type="info" v-if="scope.row.status==0">待操作</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label width="280px">
+          <template slot-scope="scope">
             <el-button type="text" size="mini" @click="getMoreInfo(scope.row)">查看详情</el-button>
-            <!-- </el-tooltip> -->
           </template>
         </el-table-column>
       </el-table>
@@ -72,10 +72,10 @@
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-tag type="success" v-if="reSumeData.status==1">已同意</el-tag>
+          <el-tag type="success" v-if="reSumeData.status==1">已接受</el-tag>
           <el-tag type="danger" v-if="reSumeData.status==2">已拒绝</el-tag>
-          <el-button type="primary" @click="accept()" v-if="!reSumeData.status">同 意</el-button>
-          <el-button @click="refuse()" v-if="!reSumeData.status">拒绝</el-button>
+          <el-button type="primary" @click="accept()" v-if="!reSumeData.status">接 受</el-button>
+          <el-button @click="refuse()" v-if="!reSumeData.status">拒 绝</el-button>
         </span>
       </div>
     </el-dialog>
@@ -218,16 +218,16 @@ export default {
       //取消加载的转圈圈
       this.loading = false;
     },
-    //每一行的颜色
-    tableRowClassName({ row, rowIndex }) {
-      // console.log(row);
-      if (row.status === 2) {
-        return "warning-row";
-      } else if (row.status === 1) {
-        return "success-row";
-      }
-      return "";
-    },
+    // //每一行的颜色
+    // tableRowClassName({ row, rowIndex }) {
+    //   // console.log(row);
+    //   if (row.status === 2) {
+    //     return "warning-row";
+    //   } else if (row.status === 1) {
+    //     return "success-row";
+    //   }
+    //   return "";
+    // },
     async handleSizeChange(val) {
       this.loading = true;
       this.pageInfo.pagesize = val;
@@ -268,11 +268,11 @@ export default {
   margin-bottom: 0;
   width: 50%;
 } */
-.el-table .warning-row {
+/* .el-table .warning-row {
   background: oldlace;
 }
 
 .el-table .success-row {
   background: #f0f9eb;
-}
+} */
 </style>
