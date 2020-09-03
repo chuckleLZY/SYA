@@ -55,19 +55,19 @@
               <el-input disabled v-model="reSumeData.education"></el-input>
             </el-form-item>
           </div>
-          <el-form-item label="技能">
+          <el-form-item label="技能" autosize>
             <el-input type="textarea" disabled v-model="reSumeData.skill"></el-input>
           </el-form-item>
-          <el-form-item label="简介">
+          <el-form-item label="简介" autosize>
             <el-input type="textarea" disabled v-model="reSumeData.introduction"></el-input>
           </el-form-item>
-          <el-form-item label="社区经历">
+          <el-form-item label="社区经历" autosize>
             <el-input type="textarea" disabled v-model="reSumeData.community"></el-input>
           </el-form-item>
-          <el-form-item label="项目经历">
+          <el-form-item label="项目经历" autosize>
             <el-input type="textarea" disabled v-model="reSumeData.project"></el-input>
           </el-form-item>
-          <el-form-item label="学术经历">
+          <el-form-item label="学术经历" autosize>
             <el-input type="textarea" disabled v-model="reSumeData.academic"></el-input>
           </el-form-item>
         </el-form>
