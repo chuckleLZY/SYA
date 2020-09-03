@@ -64,6 +64,43 @@ namespace SyaApi.DataAccessors
             return announce;
         }
 
+
+        ///<summery>
+        ///管理员接收所有公告信息
+        /// chuckle 8.28
+        ///</summery>
+        public static async Task<AnnounceItemEntity> FindSend(int id)
+        {
+            AnnounceItemEntity announce=new AnnounceItemEntity();
+            announce.totalpage=0;
+            announce.AnnounceItem=new List<AnnounceEntity>();
+
+            var query = "SELECT announcement_id,user_id,title,content,status,send_time FROM announcement  WHERE user_id=@id ";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id", id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (reader.Read())
+            {
+                announce.totalpage++;
+                AnnounceEntity temp=new AnnounceEntity();
+                temp.announcement_id=reader.GetInt32("announcement_id");
+                temp.user_id=reader.GetInt32("user_id");
+                temp.title=reader.GetString("title");
+                temp.content=reader.GetString("content");
+                temp.send_time=reader.GetDateTime("send_time").ToString();
+                temp.status=reader.GetInt32("status");
+                announce.AnnounceItem.Add(temp);
+
+            }
+            return announce;
+        }
+
+
         ///<summery>
         /// 用户查看公告具体信息
         /// chuckle 8.28
