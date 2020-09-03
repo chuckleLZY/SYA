@@ -9,7 +9,7 @@
         </el-col>
       </el-row>
       <template>
-        <el-table :data="tableData" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%" v-loading="loading">
           <el-table-column label="#" type="index" width="180px"></el-table-column>
           <el-table-column prop="title" label="标题" width="280px"></el-table-column>
           <el-table-column prop="date" label="时间" width="280px"></el-table-column>
@@ -25,6 +25,18 @@
           </el-table-column>
         </el-table>
       </template>
+      <!-- 分页 -->
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageInfo.pagenum"
+          :page-sizes="[1, 2, 5, 10]"
+          :page-size="pageInfo.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="this.total"
+        ></el-pagination>
+      </div>
     </el-card>
 
     <!-- 发布公告弹窗 -->
@@ -66,10 +78,17 @@ export default {
         title: "",
         content: ""
       },
+      //转圈圈
+      loading:true,
       //规则
       addFormRules: {},
       //引用
-      addFormRef: {}
+      addFormRef: {},
+      total: 0,
+      pageInfo: {
+        pagenum: 1,
+        pagesize: 10
+      }
     };
   },
   methods: {
@@ -93,10 +112,29 @@ export default {
       if (result.status == 200) {
         this.$message.success("公告发布成功");
         this.dialogVisible = false;
-        this.addForm={};
+        this.addForm = {};
       }
     },
-    
+    async getAllAnnounce() {
+      const result = await axios.post(
+        "http://localhost:5000/Announce/GetAnnounce",
+        {
+          pagenum: 1,
+          pagesize: 20
+        },
+        { withCredentials: true }
+      );
+      console.log(result.data);
+    },
+    async handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    async handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    }
+  },
+  async mounted() {
+    // await this.getAllAnnounce();
   }
 };
 </script>
