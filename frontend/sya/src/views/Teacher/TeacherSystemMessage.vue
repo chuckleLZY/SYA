@@ -10,44 +10,48 @@
 
 
         <el-card class="student_card">
-            <!--
+            
             <el-row>
                 <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                        <el-select v-model="select" slot="prepend" placeholder="搜索类型">
-                        <el-option label="工作类型" value="1"></el-option>
-                        <el-option label="工作时间" value="2"></el-option>
-                        <el-option label="工作地点" value="3"></el-option>
-                        </el-select>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                    <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select">
+                        
+                        <el-button slot="append" icon="el-icon-search" @click="getSysMessageList"></el-button>
                     </el-input>
                 </el-col>
                 <el-col :span="4"></el-col>
             </el-row>
-            -->
+            
             <!-- 列表区域 -->
-            <el-table :data="workList" stripe>
+            <el-table :data="sysMessageList" stripe>
                 <el-table-column label="#" type="index"></el-table-column>
-                <el-table-column label="发件人" prop="sender_id">
-
+                <el-table-column
+                    prop="title"
+                    label="公告标题"
+                    width="380">
                 </el-table-column>
-
-                
-                <el-table-column label="消息内容" prop="content">
-
+                <el-table-column
+                    prop="send_time"
+                    label="发送时间"
+                    width="380">
                 </el-table-column>
-
-                <el-table-column label="发送时间" prop="message_time">
-
-                </el-table-column>
+               <!-- <el-table-column
+                    prop="address"
+                    label="地址">
+                </el-table-column>-->
                 <el-table-column label="操作">
-                    <template v-slot:default="scope"></template>
+                    <template v-slot:default="scope">
+                       
+
+                    
                             <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-edit" size="mini" circle></el-button>
+                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" circle></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
                                 <el-button type="primary" icon="el-icon-delete" size="mini" circle></el-button>
                             </el-tooltip>
+                    </template>
+
+                            
                 </el-table-column> 
 
             </el-table>
@@ -63,12 +67,31 @@
                 :total="total">
             </el-pagination>
         </el-card>
+
+        <el-dialog title="详情" :visible.sync="checkDialogVisible" width="35%">
+      <div style="width:400px;margin:auto;">
+        <el-form status-icon label-width="auto" :model="messageData">
+          
+          <el-form-item label="内容">
+            <el-input type="textarea" disabled v-model="messageData.title"></el-input>
+          </el-form-item>
+          <el-form-item label="发送时间">
+            <el-input type="textarea" disabled v-model="messageData.send_time"></el-input>
+          </el-form-item>
+          
+          
+        </el-form>
         
+      </div>
+    </el-dialog>
+
+
     </div>
 </template>
 
 
 <script>
+import axios from 'axios';
 export default {
     data() {
     return {
@@ -76,35 +99,80 @@ export default {
       input2: '',
       input3: '',
       select: '',
-
+      checkDialogVisible: false,
+      messageData:{},
     //获取工作列表的参数对象
       queryInfo:{
           query: '',
           pagenum: 1,
-          pagesize: 2
+          pagesize: 5
       },
-      workList:[],
+      sysMessageList:[],
+      total:0,
+
+     /* workList: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄'
+          }]*/
     }
   },
   created(){
       //调用获取发布的工作的API函数
-     // this.getWorkList()
+      this.getSysMessageList()
   },
   methods:{
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
         console.log(newSize)
         this.queryInfo.pagesize=newSize
+        this.getSysMessageList()
       },
       //监听页码改变的事件
       handleCurrentChange(newPage){
-        console.log(newPage)
+        //console.log(newPage)
         this.queryInfo.pagenum=newPage
-      }
+        this.getSysMessageList()
+      },
   //获取工作列表的函数
-  //   async getWorkList(){
-  //      const {data:res}= await this.$http.get('URL',{params:this.queryInfo})
-   //   }
+   async getSysMessageList(){
+         const res = await axios.post(
+        "http://localhost:5000/Announce/GetAnnounce",
+        {
+          pagenum: this.queryInfo.pagenum,
+          pagesize: this.queryInfo.pagesize
+        },
+        {
+          withCredentials: true
+        }
+      );
+      if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        this.sysMessageList=res.data.announceItem;
+        this.total=res.data.totalpage;
+        this.pagesize=res.data.totalpage/res.data.pagenum;
+        this.pagenum=res.data.pagenum;
+        //console.log(this.pagesize);
+        console.log(this.sysMessageList);
+      },
+      viewMesInfo(row){
+        this.messageData = row;
+        this.checkDialogVisible = true;
+      }
   }
 }
 </script>

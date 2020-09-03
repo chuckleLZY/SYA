@@ -117,8 +117,6 @@
                             
                         <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
                 </div>
-
-
                       <div>
                           <br/>
                 <el-form :model="workInfo" :rules="workInfoRules" ref="workInfoRef" label-width="75px" class="demo-ruleForm">
