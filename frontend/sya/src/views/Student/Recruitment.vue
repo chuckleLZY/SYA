@@ -62,7 +62,7 @@
                     <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
                         
                     <el-card :body-style="{ padding: '10px'}" class="recruitment_card2">
-                    <img src= "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598253953884&di=e2f6539dab30a056e78b20b7ad15202f&imgtype=0&src=http%3A%2F%2Fwww.xuewei.net%2Fuploadfile%2F2018%2F0911%2F20180911024428180.jpg" class="image">
+                    <img :src= work.cover class="image">
                     <div style="padding: 14px;" > 
                         <p >工作名称: {{work.work_name}}</p>
                         <p>点赞: {{work.likes_num}}</p>
@@ -112,7 +112,7 @@
                 :before-close="handleClose">
                 
                 <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
-                    <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598253953884&di=e2f6539dab30a056e78b20b7ad15202f&imgtype=0&src=http%3A%2F%2Fwww.xuewei.net%2Fuploadfile%2F2018%2F0911%2F20180911024428180.jpg" class="image">
+                    <img :src=workInfo.cover class="image">
                 <div slot="header" class="clearfix">
                             
                         <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
@@ -335,7 +335,8 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width:350px !important;
-  height:90% !important;
+  height:600px !important;
+  overflow: auto;
 }
 
 
