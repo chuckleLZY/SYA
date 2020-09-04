@@ -13,7 +13,7 @@
         <el-menu-item index="/AdminTable" v-if="this.$store.state.role==2">管理员工作台</el-menu-item>
         <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">学生消息</el-menu-item>
         <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">老师消息</el-menu-item>
-        <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>
+      <!--  <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>-->
         <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">学生我的</el-menu-item>
         <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">老师我的</el-menu-item>
         <el-menu-item index="/AdminMine" v-if="this.$store.state.role==2">管理员我的</el-menu-item>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        这里是管理员系统通知
+        这里是管理员系统通知 --已作废
     <el-card class="student_card">
             
            <!-- <el-row>
