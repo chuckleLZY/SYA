@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+
+
 namespace SyaApi.Entities
 {
 
@@ -8,6 +12,12 @@ namespace SyaApi.Entities
         public string favorite_name { get; set; }
         public int work_num { get; set; }
 
+
+    }
+    public class FavoriteItemEntity
+    {
+        public int total{get; set;}
+        public List<FavoriteEntity> FavoriteItem{get;set;}
 
     }
 }

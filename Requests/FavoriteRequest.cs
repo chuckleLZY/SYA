@@ -11,6 +11,12 @@ namespace SyaApi.Requests
     }
      public class CFavoriteRequest
     {
+        public string query{get; set;}
+    
+    }
+     public class CrFavoriteRequest
+    {
+        
         public string favorite_name{get; set;}
         public int work_num{get; set;}
     

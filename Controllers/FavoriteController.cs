@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 using AutoMapper;
 using SyaApi.Plugins;
 using SyaApi.DataAccessors;
 using SyaApi.Entities;
 using SyaApi.Requests;
 using SyaApi.Responses;
+using SyaApi.Constants;
 
 namespace SyaApi.Controllers
 {
@@ -38,7 +40,7 @@ namespace SyaApi.Controllers
 
 
 
-        [HttpGet("CreateFavorite")]
+        [HttpPost("CreateFavorite")]
         [AllowAnonymous]
         public async Task<int> CreateFavorite([FromBody] FavoriteRequest request)
         {
@@ -58,7 +60,7 @@ namespace SyaApi.Controllers
             return  favorite.favorite_id;
         }
 
-        [HttpDelete("DeleteFavorite")]
+        [HttpPost("DeleteFavorite")]
         [AllowAnonymous]
         public async Task<ActionResult<int>> DeleteFavorite(FavoriteRequest request)
         {
@@ -103,7 +105,7 @@ namespace SyaApi.Controllers
 
 
 
-        [HttpGet("GetFavorite")]
+        [HttpPost("GetFavorite")]
         [AllowAnonymous]
         public async Task<ActionResult<FavoriteResponse>> GetFavorite(FavoriteRequest request)
         {
@@ -119,5 +121,37 @@ namespace SyaApi.Controllers
             }
             return Ok(-1);
         }
+
+
+        [HttpPost("ViewFavorite")]
+        [AllowAnonymous]
+        public async Task<ActionResult<FavoriteResponse>> ViewFavorite([FromBody] CFavoriteRequest request)
+        {
+            FavoriteItemResponse FavoriteItem=new FavoriteItemResponse();
+            
+            FavoriteItem.favoritelist=new List<FavoriteResponse>();
+
+            //取得存在cookie的当前账户id
+            var user_id =3;//Int32.Parse(User.Identity.Name);
+
+            var temp=await FavoriteAccessor.ViewFavorite(user_id);
+
+             if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                    var list=await FavoriteAccessor.Find(temp.FavoriteItem[i].favorite_id);
+                   
+                    FavoriteResponse a=_mapper.Map<FavoriteResponse>(list);
+                        
+                    FavoriteItem.favoritelist.Add(a);
+                    
+                }
+
+                return Ok(FavoriteItem);
+            }
+            return Ok(-1);
+        }
+
     }
 }

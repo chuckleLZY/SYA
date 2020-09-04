@@ -29,6 +29,9 @@ namespace SyaApi.Profiles
 
             CreateMap<HistoryRequest, HistoryEntity>();
             CreateMap<HistoryEntity, HistoryResponse>();
+            CreateMap<ViewHistoryRequest, HistoryItemEntity>();
+            CreateMap<HistoryItemEntity, HistoryResponse>();
+
 
             CreateMap<UserEntity, UserInfoResponse>();
 
@@ -37,11 +40,15 @@ namespace SyaApi.Profiles
 
             CreateMap<FavoriteRequest, FavoriteEntity>();
             CreateMap<FavoriteEntity, FavoriteResponse>();
-            CreateMap<CFavoriteRequest, FavoriteEntity>();
+            CreateMap<CFavoriteRequest, FavoriteItemEntity>();
+            CreateMap<FavoriteItemEntity, FavoriteResponse>();
+            CreateMap<CrFavoriteRequest, FavoriteEntity>();
             CreateMap<FavoriteEntity, FavoriteResponse>();
 
             CreateMap<FhasworkRequest, FhasworkEntity>();
             CreateMap<FhasworkEntity, FhasworkResponse>();
+            CreateMap<ViewRequest, FhasworkItemEntity>();
+            CreateMap<FhasworkItemEntity, FhasworkItemResponse>();
             
 
 
