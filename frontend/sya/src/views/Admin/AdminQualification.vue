@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outside">
     <span>
       <i class="el-icon-s-tools"></i>&emsp;管理员资格验证
     </span>
@@ -27,5 +27,10 @@ export default {
 .el-input {
   width: 20%;
   margin-bottom: 20px;
+}
+.outside {
+  margin-left: 100px;
+  margin-right: 350px;
+  margin-top: 20px;
 }
 </style>

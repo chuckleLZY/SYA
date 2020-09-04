@@ -28,4 +28,9 @@ export default {
   width: 20%;
   margin-bottom: 20px;
 }
+.outside {
+  margin-left: 100px;
+  margin-right: 350px;
+  margin-top: 20px;
+}
 </style>
