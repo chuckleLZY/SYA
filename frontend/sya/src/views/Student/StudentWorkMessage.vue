@@ -9,7 +9,7 @@
         </el-breadcrumb>
 
 
-        <el-card class="student_card">
+        <el-card class="student_card" style="margin-top:20px;">
             <!--
             <el-row>
                 <el-col :span="7">
@@ -37,7 +37,7 @@
             </el-row>-->
 
             <!-- 列表区域 -->
-            <el-table :data="workMessageList" :row-class-name="tableRowClassName" v-loading="loading">
+            <el-table :data="workMessageList" v-loading="loading">
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="发件人" prop="sender_name">
 
@@ -52,7 +52,10 @@
 
                 </el-table-column>
                 <el-table-column label="状态" prop="status">
-
+                  <template slot-scope="scope">
+                    <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>
+                    <el-tag type="info" v-if="scope.row.status==0">未读</el-tag>
+                  </template>
                 </el-table-column>
 
                 <el-table-column label="操作">
@@ -61,10 +64,10 @@
 
                     
                             <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" circle></el-button>
+                                <el-button type="success" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" ></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.message_id)"></el-button>
+                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.message_id)"></el-button>
                             </el-tooltip>
                     </template>
 
@@ -81,7 +84,8 @@
                 :page-sizes="[1, 2, 5, 10]"
                 :page-size="queryInfo.pagesize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="total">
+                :total="total"
+                style="margin-top:10px">
             </el-pagination>
         </el-card>
         
@@ -137,15 +141,7 @@ export default {
      this.getWorkMessageList()
   },
   methods:{
-    tableRowClassName({ row,rowIndex }) {
-      // console.log(row);
-      if (row.status === 0) {
-        return "havenot-row";
-      } else if (row.status === 1) {
-        return "have-row";
-      }
-      return "";
-    },
+    
 
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
@@ -260,14 +256,5 @@ export default {
 
 </style>
 
-<style>
 
-.el-table .havenot-row {
-  background: oldlace;
-}
-
-.el-table .have-row {
-  background: #f0f9eb;
-}
-</style>
 
