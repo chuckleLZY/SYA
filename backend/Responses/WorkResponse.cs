@@ -25,7 +25,15 @@ namespace SyaApi.Responses
         public List<WorkResponse> worklist{get;set;}
 
     }
+    public class FavoriteWorkResponse
+    {
+        public int totalpage{get; set;}
 
+        public int pagenum{get; set;}
+
+        public List<WorkResponse> worklist{get;set;}
+
+    }
 
 
 }
