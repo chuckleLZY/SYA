@@ -63,10 +63,10 @@
 
                     
                             <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="success" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" circle></el-button>
+                                <el-button type="success" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" ></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
-                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.message_id)" circle></el-button>
+                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.message_id)" ></el-button>
                             </el-tooltip>
                     </template>
 

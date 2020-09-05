@@ -42,14 +42,7 @@
                         
                         </div> 
 
-                        <!--<el-table :data="workList" stripe>
-                            <el-table-column label="操作">
-                                <template v-slot:default="scope">
-
-                                        <el-button type="text" class="button" @click="showDrawer(scope.row.work_name)" >查看详情</el-button>
-                                </template>
-                            </el-table-column> 
-                        </el-table>-->
+                       
                     </div>
                     </el-card>
                     
@@ -196,15 +189,7 @@ export default {
     },
   //获取工作列表的函数
     async getWorkList(){
-      /*  const res= await axios.post("http://localhost:5000/Work/ViewOwnWork",{pagenum: 1,
-          pagesize: 2},{withCredetials: true });
-        if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-        }
-        this.workList=res.data.worklist;
-        this.total=res.data.totalpage;
-        console.log(res);*/
+
 
         const res = await axios.post(
         "http://localhost:5000/Work/ViewAllWork",
