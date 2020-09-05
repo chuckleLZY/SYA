@@ -1,6 +1,6 @@
 <template>
     <div>
-        这里是学生系统通知
+        
         <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
             <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
             <el-breadcrumb-item>消息</el-breadcrumb-item>
