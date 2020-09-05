@@ -80,7 +80,7 @@ export default {
         },
         { withCredentials: true }
       );
-      console.log(result);
+      // console.log(result);
       if (result.status == 200) {
         this.$store.commit("logIn", result.data.role);
         this.$message.success("登录成功");
