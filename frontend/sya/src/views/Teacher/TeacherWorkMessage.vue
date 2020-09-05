@@ -1,6 +1,6 @@
 <template>
     <div>
-        这里是老师工作通知
+
 
         <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
             <el-breadcrumb-item :to="{ path: '/home' }">老师</el-breadcrumb-item>
