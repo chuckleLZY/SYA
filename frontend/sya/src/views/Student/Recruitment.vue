@@ -1,101 +1,48 @@
 <template>
     <div>
-        这里是招聘会
+        
         <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
             <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
             <el-breadcrumb-item>招聘会</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-card class="recruitment_card">
+        <el-card class="recruitment_card" v-loading="loading">
             
             <el-row>
                 <el-col :span="7">
                     <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select" clearable @clear="findWork">
-                        <!--<el-select v-model="select" slot="prepend" placeholder="搜索类型">
-                        <el-option label="工作类型" value="1"></el-option>
-                        <el-option label="工作时间" value="2"></el-option>
-                        <el-option label="工作地点" value="3"></el-option>
-                        </el-select>-->
                         <el-button slot="append" icon="el-icon-search" @click="findWork"></el-button>
                     </el-input>
                 </el-col>
                 <el-col :span="4"></el-col>
             </el-row>
 
-            <!-- 列表区域 -->
-           <!-- <el-table :data="workList" stripe>
-                <el-table-column label="#" type="index"></el-table-column>
-                <el-table-column label="工作ID" prop="WORK_ID">
-
-                </el-table-column>
-
-                
-                <el-table-column label="工作地点" prop="ADDRESS">
-
-                </el-table-column>
-
-                <el-table-column label="时薪" prop="SALARY">
-
-                </el-table-column>
-
-                <el-table-column label="工作时间" prop="TIME">
-
-                </el-table-column> 
-
-                <el-table-column label="操作">
-                    <template v-slot:default="scope"></template>
-                            <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-edit" size="mini" circle></el-button>
-                            </el-tooltip>
-                            <el-tooltip  effect="dark" content="直接申请" placement="top-start" :enterable="false">
-                                <el-button type="primary" icon="el-icon-check" size="mini" circle></el-button>
-                            </el-tooltip>
-                </el-table-column> 
-
-            </el-table>-->
+  
 
 
             <!-- 工作卡片-->
-            <el-row>
-                <!--<el-col :span="8" v-for="(o, index) in 9" :key="o" :offset="index > 0 ? 0 : 0">-->
-                    <div v-for="work in workList" :key="work.work_name" >
+            <el-row v-loading="loading">
+                
+                    <div v-for="work in workList" :key="work.work_id" >
                     <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
                         
-                    <el-card :body-style="{ padding: '10px'}" class="recruitment_card2">
+                    <el-card :body-style="{ padding: '0px'}" class="recruitment_card2" >
                     <img :src= work.cover class="image">
                     <div style="padding: 14px;" > 
-                        <p >工作名称: {{work.work_name}}</p>
-                        <p>点赞: {{work.likes_num}}</p>
-                        <p>收藏: {{work.collect_num}}</p>
-                        <p>分享: {{work.share_num}}</p>
-                        <!--<el-table :data="workList" stripe>
-                                    <el-table-column
-                            prop="work_name"
-                            label="工作名字"
-                            width="180">
-                        </el-table-column>
-                        <el-table-column
-                            prop="salary"
-                            label="薪资"
-                            width="180">
-                        </el-table-column>
-                        </el-table>-->
+                        <p ><el-tag >工作名称</el-tag> : {{work.work_name}}</p>
+                        <p><el-tag type="success">点赞</el-tag> : {{work.likes_num}}</p>
+                        <p><el-tag type="warning">收藏</el-tag> : {{work.collect_num}}</p>
+                        <p><el-tag type="danger">分享</el-tag> : {{work.share_num}}</p>
+                        
                         <div class="bottom clearfix">
-                            <el-card>
+                         
                         
-                        <el-button type="text" class="button" @click="showDrawer(work.work_id)" >查看详情</el-button>
+                        <el-button type="info" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
                         
-                        </el-card>
+                        
                         </div> 
 
-                        <!--<el-table :data="workList" stripe>
-                            <el-table-column label="操作">
-                                <template v-slot:default="scope">
-
-                                        <el-button type="text" class="button" @click="showDrawer(scope.row.work_name)" >查看详情</el-button>
-                                </template>
-                            </el-table-column> 
-                        </el-table>-->
+                       
                     </div>
                     </el-card>
                     
@@ -147,7 +94,7 @@
 
                 <div class="demo-drawer__footer">
                         
-                        <el-button type="primary"  @click="appWork()" style="margin-top: 16px;">提交简历</el-button>
+                        <el-button type="primary"  @click="appWork()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
                         
                 </div>
             </el-drawer>
@@ -177,7 +124,7 @@ export default {
       input2: '',
       input3: '',
       select: '',
-
+      loading: true,
     //获取工作列表的参数对象
       queryInfo:{
           
@@ -200,15 +147,19 @@ export default {
   methods:{
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
+        this.loading = true;
         console.log(newSize)
         this.queryInfo.pagesize=newSize
-        this.getWorkList()
+        this.getWorkList();
+        this.loading = false;
       },
       //监听页码改变的事件
       handleCurrentChange(newPage){
+        this.loading = true;
         //console.log(newPage)
         this.queryInfo.pagenum=newPage
-        this.getWorkList()
+        this.getWorkList();
+        this.loading = false;
       },
       
         handleClose(done) {
@@ -238,15 +189,7 @@ export default {
     },
   //获取工作列表的函数
     async getWorkList(){
-      /*  const res= await axios.post("http://localhost:5000/Work/ViewOwnWork",{pagenum: 1,
-          pagesize: 2},{withCredetials: true });
-        if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-        }
-        this.workList=res.data.worklist;
-        this.total=res.data.totalpage;
-        console.log(res);*/
+
 
         const res = await axios.post(
         "http://localhost:5000/Work/ViewAllWork",
@@ -266,6 +209,7 @@ export default {
         this.total=res.data.totalpage;
         this.pagesize=res.data.totalpage/res.data.pagenum;
         this.pagenum=res.data.pagenum;
+        this.loading = false;
        // console.log(this.pagesize);
       //  console.log(res);
       },
@@ -310,7 +254,7 @@ export default {
   position: relative;
   left:20px;
   margin-bottom: 15px;
-  font-size:12px;
+  margin-top: 20px;
   width:100% !important;
 }
 
@@ -328,13 +272,14 @@ export default {
   width:400px !important;
   margin: auto;
   margin-top:30px;
+
   
 }
 
 .recruitment_card3{
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
-  width:350px !important;
+  width:390px !important;
   height:600px !important;
   overflow: auto;
 }
@@ -364,7 +309,9 @@ export default {
 
 .button {
   padding: 0;
-  float: right;
+  float: center;
+  width: 100px;
+  height:40px
 }
 
 .image {
