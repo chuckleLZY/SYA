@@ -6,7 +6,7 @@
     <el-divider></el-divider>工号：
     <el-input v-model="input" placeholder="请输入您的教师工号"></el-input>
     <el-row>
-    <el-button type="primary">提交</el-button>
+      <el-button type="primary">提交</el-button>
     </el-row>
   </div>
 </template>
@@ -16,9 +16,9 @@
 export default {
   data() {
     return {
-      input: "",
+      input: ""
     };
-  },
+  }
 };
 </script>
 

@@ -46,11 +46,7 @@
 
     <!-- 发布公告弹窗 -->
     <el-dialog title="发布公告" :visible.sync="dialogVisible" width="30%">
-      <el-form
-        :model="addForm"
-        status-icon
-        label-width="90px"
-      >
+      <el-form :model="addForm" status-icon label-width="90px">
         <el-form-item label="标题">
           <el-input v-model="addForm.title" autocomplete="off"></el-input>
         </el-form-item>
