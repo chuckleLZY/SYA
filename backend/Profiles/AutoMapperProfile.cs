@@ -41,13 +41,13 @@ namespace SyaApi.Profiles
             CreateMap<MessageEntity, MessageResponse>();
 
             CreateMap<AnnounceStatusRequest, AnnounceEntity>();
-            CreateMap<AnnounceRequest, AnnounceEntity>();
-            CreateMap<AnnounceEntity, AnnounceResponse>();
+
             CreateMap<FavoriteRequest, FavoriteEntity>();
             CreateMap<FavoriteEntity, FavoriteResponse>();
             CreateMap<CFavoriteRequest, FavoriteEntity>();
             CreateMap<FavoriteEntity, FavoriteResponse>();
-
+            CreateMap<HasFavoriteRequest, HasFavoriteEntity>();
+            
             
 
 
