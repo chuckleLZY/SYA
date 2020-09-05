@@ -128,29 +128,46 @@ export default {
           withCredentials: true
         }
       );
-      console.log(res);
+      // console.log(res);
       if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
       }
       this.workList = res.data.worklist;
+      // console.log("worklist", this.workList);
       // this.pagesize=res.data.totalpage/res.data.pagenum;
       // this.pagenum=res.data.pagenum;
       //console.log(this.workList);
       //console.log(res);
     },
     async getAnnounce() {
-      const res = await axios.post(
-        "http://localhost:5000/Announce/GetAnnounce",
-        {
-          pagenum: 1,
-          pagesize: 4
-        },
-        {
-          withCredentials: true
-        }
-      );
-      console.log(res);
+      if (this.$store.state.role == 0) {
+        var res;
+        res = await axios.post(
+          "http://localhost:5000/Announce/GetSendAnnounce",
+          {
+            pagenum: 1,
+            pagesize: 4
+          },
+          {
+            withCredentials: true
+          }
+        );
+        // console.log("res111", res);
+      } else {
+        res = await axios.post(
+          "http://localhost:5000/Announce/GetAnnounce",
+          {
+            pagenum: 1,
+            pagesize: 4
+          },
+          {
+            withCredentials: true
+          }
+        );
+        // console.log("res222", res);
+      }
+      console.log("res",res);
       if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
@@ -158,8 +175,8 @@ export default {
       this.annoList = res.data.announceItem;
       // this.pagesize=res.data.totalpage/res.data.pagenum;
       // this.pagenum=res.data.pagenum;
-      console.log(this.annoList);
-      console.log(res);
+      // console.log("annolist", this.annoList);
+      // console.log(res);
     },
     moreRecruitment() {
       this.$router.push("/Recruitment");
@@ -167,8 +184,10 @@ export default {
     moreStudentSystemMessage() {
       if (this.$store.state.role == 1) {
         this.$router.push("/StudentSystemMessage");
-      }else if(this.$store.state.role == 2){
+      } else if (this.$store.state.role == 2) {
         this.$router.push("/TeacherSystemMessage");
+      }else{
+        this.$router.push("/PublishSystemMessage");
       }
     }
   },

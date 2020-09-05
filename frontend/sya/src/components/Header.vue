@@ -6,6 +6,7 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
+        :default-active="$route.path"
         router>
         <el-menu-item index="/Home">首页</el-menu-item>
         <el-menu-item index="/Recruitment">招聘会</el-menu-item>
