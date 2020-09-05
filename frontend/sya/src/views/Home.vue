@@ -24,26 +24,30 @@
             <div class="grid-content bg-purple-light">
               <div>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{workList[0].address}}发布新工作:{{workList[0].work_name}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{workList[0].address}}发布新工作:{{workList[0].work_name}}
                 </span>
                 <!-- <p>
                   {{workList[0].work_description}}aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                </p> -->
+                </p>-->
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{workList[1].address}}发布新工作:{{workList[1].work_name}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{workList[1].address}}发布新工作:{{workList[1].work_name}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{workList[2].address}}发布新工作:{{workList[2].work_name}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{workList[2].address}}发布新工作:{{workList[2].work_name}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{workList[3].address}}发布新工作:{{workList[3].work_name}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{workList[3].address}}发布新工作:{{workList[3].work_name}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <el-link type="primary">点击查看更多>></el-link>
+                  <el-link type="primary" @click="moreRecruitment()">点击查看更多>></el-link>
                 </span>
               </div>
             </div>
@@ -52,23 +56,27 @@
             <div class="grid-content bg-purple-light">
               <div>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{annoList[0].send_time}}新公告:{{annoList[0].title}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{annoList[0].send_time}}新公告:{{annoList[0].title}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{annoList[1].send_time}}新公告:{{annoList[1].title}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{annoList[1].send_time}}新公告:{{annoList[1].title}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{annoList[2].send_time}}新公告:{{annoList[2].title}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{annoList[2].send_time}}新公告:{{annoList[2].title}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <i class="el-icon-wallet"></i>&emsp;{{annoList[3].send_time}}新公告:{{annoList[3].title}}
+                  <i class="el-icon-wallet"></i>
+                  &emsp;{{annoList[3].send_time}}新公告:{{annoList[3].title}}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <el-link type="primary">点击查看更多>></el-link>
+                  <el-link type="primary" @click="moreStudentSystemMessage()">点击查看更多>></el-link>
                 </span>
               </div>
             </div>
@@ -83,8 +91,7 @@
 
 <script>
 import axios from "axios";
-export default 
-{
+export default {
   // name: "zmd",
   data() {
     return {
@@ -92,28 +99,26 @@ export default
         { id: 0, idView: require("../assets/imagebox/1.jpeg") },
         { id: 1, idView: require("../assets/imagebox/2.jpeg") },
         { id: 2, idView: require("../assets/imagebox/3.png") },
-        { id: 3, idView: require("../assets/imagebox/4.jpg") },
+        { id: 3, idView: require("../assets/imagebox/4.jpg") }
         //imagebox是assets下一个放图片的文件夹
       ],
       screenWidth: 0,
-      workList:[],
-      annoList:[],
+      workList: [],
+      annoList: []
     };
   },
-  created(){
-      //调用获取发布的工作的API函数
+  created() {
+    //调用获取发布的工作的API函数
     //  this.getWorkInfo()
-      this.getWorkList(),
-      this.getAnnounce()
+    this.getWorkList(), this.getAnnounce();
   },
-  methods: 
-  {
-    setSize: function () {
+  methods: {
+    setSize: function() {
       // 通过浏览器宽度(图片宽度)计算高度
       this.bannerHeight = (400 / 1920) * this.screenWidth;
     },
-    async getWorkList(){
-        const res = await axios.post(
+    async getWorkList() {
+      const res = await axios.post(
         "http://localhost:5000/Work/ViewAllWork",
         {
           pagenum: 1,
@@ -123,37 +128,68 @@ export default
           withCredentials: true
         }
       );
+      // console.log(res);
       if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
-        }
-        this.workList=res.data.worklist;
-        // this.pagesize=res.data.totalpage/res.data.pagenum;
-        // this.pagenum=res.data.pagenum;
-       //console.log(this.workList);
-       //console.log(res);
-      },
-      async getAnnounce(){
-        const res = await axios.post(
-        "http://localhost:5000/Announce/GetAnnounce",
-        {
-          pagenum: 1,
-          pagesize: 4
-        },
-        {
-          withCredentials: true
-        }
-      );
+      }
+      this.workList = res.data.worklist;
+      // console.log("worklist", this.workList);
+      // this.pagesize=res.data.totalpage/res.data.pagenum;
+      // this.pagenum=res.data.pagenum;
+      //console.log(this.workList);
+      //console.log(res);
+    },
+    async getAnnounce() {
+      if (this.$store.state.role == 0) {
+        var res;
+        res = await axios.post(
+          "http://localhost:5000/Announce/GetSendAnnounce",
+          {
+            pagenum: 1,
+            pagesize: 4
+          },
+          {
+            withCredentials: true
+          }
+        );
+        // console.log("res111", res);
+      } else {
+        res = await axios.post(
+          "http://localhost:5000/Announce/GetAnnounce",
+          {
+            pagenum: 1,
+            pagesize: 4
+          },
+          {
+            withCredentials: true
+          }
+        );
+        // console.log("res222", res);
+      }
+      console.log("res",res);
       if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
-        }
-        this.annoList=res.data.announceItem;
-        // this.pagesize=res.data.totalpage/res.data.pagenum;
-        // this.pagenum=res.data.pagenum;
-       console.log(this.annoList);
-       console.log(res);
-      },
+      }
+      this.annoList = res.data.announceItem;
+      // this.pagesize=res.data.totalpage/res.data.pagenum;
+      // this.pagenum=res.data.pagenum;
+      // console.log("annolist", this.annoList);
+      // console.log(res);
+    },
+    moreRecruitment() {
+      this.$router.push("/Recruitment");
+    },
+    moreStudentSystemMessage() {
+      if (this.$store.state.role == 1) {
+        this.$router.push("/StudentSystemMessage");
+      } else if (this.$store.state.role == 2) {
+        this.$router.push("/TeacherSystemMessage");
+      }else{
+        this.$router.push("/PublishSystemMessage");
+      }
+    }
   },
   mounted() {
     // 首次加载时,需要调用一次
@@ -164,7 +200,7 @@ export default
       this.screenWidth = window.innerWidth;
       this.setSize();
     };
-  },
+  }
 };
 </script>
 
