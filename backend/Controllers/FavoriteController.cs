@@ -178,6 +178,9 @@ namespace SyaApi.Controllers
             //取得存在cookie的当前账户id
             var user_id = Int32.Parse(User.Identity.Name);
             var favorite = _mapper.Map<HasFavoriteEntity>(request);
+            
+            var temp_s=await FavoriteAccessor.FindFavorWork(favorite);
+            if(temp_s==1)return -1;
             var temp=await FavoriteAccessor.AddFavorWork(favorite);
             var ans=await FavoriteAccessor.ChangeNum(request.favorite_id);
             if(temp>0)
@@ -207,6 +210,8 @@ namespace SyaApi.Controllers
             }
             return 0;
         }
+
+
 
     }
 }
