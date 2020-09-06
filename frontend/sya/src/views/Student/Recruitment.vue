@@ -294,6 +294,7 @@ export default {
                 done();
             })
             .catch(_ => {})
+      
         },
         handleClose2(done) {
             this.$confirm('确认关闭？')
@@ -301,6 +302,8 @@ export default {
                 done();
             })
             .catch(_ => {})
+        
+            
         },
 
      //展示右侧弹窗
@@ -410,11 +413,13 @@ export default {
         }
         if(res.data!==0){
           this.$message.error('该工作已在收藏夹内，无法添加');
-          this.showFav();
+          
+
         }
         else{
         this.$message.success('加入收藏夹成功');
         this.showFav();
+        this.showFavWork(favoritee_id);
         }
         
          console.log(res);
