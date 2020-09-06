@@ -138,7 +138,29 @@ namespace SyaApi.DataAccessors
             return (int)command.LastInsertedId;
         }
 
+        public static async Task<int> FindFavorWork(HasFavoriteEntity entity)
+        {
+            var query = "SELECT favorite_id,work_id FROM favorite_has_work WHERE favorite_id=@favorite_id AND work_id=@work_id";
 
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@favorite_id",entity.favorite_id);
+            command.Parameters.AddWithValue("@work_id",entity.work_id);
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                HasFavoriteEntity temp=new HasFavoriteEntity
+                {
+                    favorite_id=reader.GetInt32("favorite_id"),
+                    work_id=reader.GetInt32("work_id"),              
+                };
+                return 1;
+            }
+            return 0;
+            
+        }
         public static async Task<int> ChangeNum( int id)
         {
             var query = "UPDATE favorite SET work_num=(SELECT Count(work_id) From favorite_has_work WHERE favorite_id=@id) WHERE favorite_id=@f_id;";
