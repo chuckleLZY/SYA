@@ -138,6 +138,10 @@
 
                 </el-table-column>
 
+                <el-table-column label="收藏夹ID" prop="favorite_id">
+
+                </el-table-column>
+
                 <el-table-column label="操作">
                     <template v-slot:default="scope">
                        
@@ -188,6 +192,10 @@
 
                 </el-table-column>
 
+                <el-table-column label="工作ID" prop="work_id">
+
+                </el-table-column>
+
   
 
             </el-table>
@@ -235,6 +243,7 @@ export default {
       workInfo:{},
       favInfo:{},
       fav_id:-1,
+      favWorkList:[]
 
     }
   },
@@ -386,7 +395,7 @@ export default {
       //  this.$message.success('申请此工作成功');
     },
     async addWorkFav(favoritee_id){
-      console.log(this.workInfo.work_id);
+     
         const res=await axios.post('http://localhost:5000/Favorite/AddFavoriteWork',
         {
         favorite_id:favoritee_id,
@@ -399,9 +408,17 @@ export default {
         this.$message.error("Unexpected response");
         return;
         }
-        
-        //console.log(res);
+        if(res.data!==0){
+          this.$message.error('该工作已在收藏夹内，无法添加');
+          this.showFav();
+        }
+        else{
         this.$message.success('加入收藏夹成功');
+        this.showFav();
+        }
+        
+         console.log(res);
+        
     },
 //展示左侧弹窗
     async showFavWork(favoritee_id){
