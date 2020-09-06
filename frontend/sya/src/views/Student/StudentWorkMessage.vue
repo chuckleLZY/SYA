@@ -102,11 +102,8 @@
           </el-form-item>
           <el-form-item label="发送人">
             <el-input disabled v-model="messageData.sender_name"></el-input>
-          </el-form-item>
-
-          
-        </el-form>
-        
+          </el-form-item>          
+        </el-form>  
       </div>
     </el-dialog>
     </div>
