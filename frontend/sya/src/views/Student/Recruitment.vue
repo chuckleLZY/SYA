@@ -94,7 +94,7 @@
 
                 <div class="demo-drawer__footer">
                         
-                        <el-button type="primary"  @click="appWork()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
+                        <el-button type="info"  @click="appWork()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
                         
                 </div>
             </el-drawer>
