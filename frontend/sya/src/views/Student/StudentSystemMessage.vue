@@ -187,7 +187,7 @@ export default {
        // console.log(this.sysMessageList);
       },
       async removeMesById(id){
-        const confirmResulte=await this.$confirm('此操作将永久删除该工作消息, 是否继续?', '提示', {
+        const confirmResulte=await this.$confirm('此操作将永久删除该系统消息, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
