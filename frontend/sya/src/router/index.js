@@ -67,8 +67,11 @@ const routes = [
     // }
     {
         path: '/',
+        redirect: '/LogIn',
+    },
+    {
+        path: '/LogIn',
         name: 'LogIn',
-        // redirect:'/LogIn',
         component: LogIn,
     },
     {
@@ -82,165 +85,178 @@ const routes = [
         component: Main,
         redirect: '/Home',
         children: [{
-                path: '/Home',
-                name: 'Home',
-                component: Home
+            path: '/Home',
+            name: 'Home',
+            component: Home
+        },
+        {
+            path: '/Recruitment',
+            name: 'Recruitment',
+            component: Recruitment
+        },
+        {
+            path: '/TeacherTable',
+            name: 'TeacherTable',
+            component: TeacherTable,
+            children: [{
+                path: '/ReceivedResume',
+                name: 'ReceivedResume',
+                component: ReceivedResume,
             },
             {
-                path: '/Recruitment',
-                name: 'Recruitment',
-                component: Recruitment
+                path: '/PublishWorkMessage',
+                name: 'PublishWorkMessage',
+                component: PublishWorkMessage,
             },
             {
-                path: '/TeacherTable',
-                name: 'TeacherTable',
-                component: TeacherTable,
-                children: [{
-                        path: '/ReceivedResume',
-                        name: 'ReceivedResume',
-                        component: ReceivedResume,
-                    },
-                    {
-                        path: '/PublishWorkMessage',
-                        name: 'PublishWorkMessage',
-                        component: PublishWorkMessage,
-                    },
-                    {
-                        path: '/MyPublishedWork',
-                        name: 'MyPublishedWork',
-                        component: MyPublishedWork,
-                    }
-                ]
+                path: '/MyPublishedWork',
+                name: 'MyPublishedWork',
+                component: MyPublishedWork,
+            }
+            ]
+        },
+        {
+            path: '/AdminTable',
+            name: 'AdminTable',
+            component: AdminTable,
+            children: [{
+                path: '/PublishSystemMessage',
+                name: 'PublishSystemMessage',
+                component: PublishSystemMessage,
             },
             {
-                path: '/AdminTable',
-                name: 'AdminTable',
-                component: AdminTable,
-                children: [{
-                        path: '/PublishSystemMessage',
-                        name: 'PublishSystemMessage',
-                        component: PublishSystemMessage,
-                    },
-                    {
-                        path: '/AuditWork',
-                        name: 'AuditWork',
-                        component: AuditWork,
-                    }
-                ]
+                path: '/AuditWork',
+                name: 'AuditWork',
+                component: AuditWork,
+            }
+            ]
+        },
+        {
+            path: '/StudentMessage',
+            name: 'StudentMessage',
+            component: StudentMessage,
+            children: [{
+                path: '/StudentSystemMessage',
+                name: 'StudentSystemMessage',
+                component: StudentSystemMessage,
             },
             {
-                path: '/StudentMessage',
-                name: 'StudentMessage',
-                component: StudentMessage,
-                children: [{
-                        path: '/StudentSystemMessage',
-                        name: 'StudentSystemMessage',
-                        component: StudentSystemMessage,
-                    },
-                    {
-                        path: '/StudentWorkMessage',
-                        name: 'StudentWorkMessage',
-                        component: StudentWorkMessage,
-                    }
-                ]
+                path: '/StudentWorkMessage',
+                name: 'StudentWorkMessage',
+                component: StudentWorkMessage,
+            }
+            ]
+        },
+        {
+            path: '/TeacherMessage',
+            name: 'TeacherMessage',
+            component: TeacherMessage,
+            children: [{
+                path: '/TeacherSystemMessage',
+                name: 'TeacherSystemMessage',
+                component: TeacherSystemMessage,
             },
             {
-                path: '/TeacherMessage',
-                name: 'TeacherMessage',
-                component: TeacherMessage,
-                children: [{
-                        path: '/TeacherSystemMessage',
-                        name: 'TeacherSystemMessage',
-                        component: TeacherSystemMessage,
-                    },
-                    {
-                        path: '/TeacherWorkMessage',
-                        name: 'TeacherWorkMessage',
-                        component: TeacherWorkMessage,
-                    }
-                ]
+                path: '/TeacherWorkMessage',
+                name: 'TeacherWorkMessage',
+                component: TeacherWorkMessage,
+            }
+            ]
+        },
+        {
+            path: '/AdminMessage',
+            name: 'AdminMessage',
+            component: AdminMessage,
+            children: [{
+                path: '/AdminSystemMessage',
+                name: 'AdminSystemMessage',
+                component: AdminSystemMessage,
+            },]
+        },
+        {
+            path: '/StudentMine',
+            name: 'StudentMine',
+            component: StudentMine,
+            children: [{
+                path: '/StudentInformation',
+                name: 'StudentInformation',
+                component: StudentInformation,
             },
             {
-                path: '/AdminMessage',
-                name: 'AdminMessage',
-                component: AdminMessage,
-                children: [{
-                    path: '/AdminSystemMessage',
-                    name: 'AdminSystemMessage',
-                    component: AdminSystemMessage,
-                }, ]
+                path: '/StudentResume',
+                name: 'StudentResume',
+                component: StudentResume,
             },
             {
-                path: '/StudentMine',
-                name: 'StudentMine',
-                component: StudentMine,
-                children: [{
-                        path: '/StudentInformation',
-                        name: 'StudentInformation',
-                        component: StudentInformation,
-                    },
-                    {
-                        path: '/StudentResume',
-                        name: 'StudentResume',
-                        component: StudentResume,
-                    },
-                    {
-                        path: '/StudentWorkManagement',
-                        name: 'StudentWorkManagement',
-                        component: StudentWorkManagement,
-                    }
-                ]
+                path: '/StudentWorkManagement',
+                name: 'StudentWorkManagement',
+                component: StudentWorkManagement,
+            }
+            ]
+        },
+        {
+            path: '/TeacherMine',
+            name: 'TeacherMine',
+            component: TeacherMine,
+            children: [{
+                path: '/TeacherInformation',
+                name: 'TeacherInformation',
+                component: TeacherInformation,
             },
             {
-                path: '/TeacherMine',
-                name: 'TeacherMine',
-                component: TeacherMine,
-                children: [{
-                        path: '/TeacherInformation',
-                        name: 'TeacherInformation',
-                        component: TeacherInformation,
-                    },
-                    {
-                        path: '/TeacherQualification',
-                        name: 'TeacherQualification',
-                        component: TeacherQualification,
-                    }
-                ]
+                path: '/TeacherQualification',
+                name: 'TeacherQualification',
+                component: TeacherQualification,
+            }
+            ]
+        },
+        {
+            path: '/AdminMine',
+            name: 'AdminMine',
+            component: AdminMine,
+            children: [{
+                path: '/AdminInformation',
+                name: 'AdminInformation',
+                component: AdminInformation,
             },
             {
-                path: '/AdminMine',
-                name: 'AdminMine',
-                component: AdminMine,
-                children: [{
-                        path: '/AdminInformation',
-                        name: 'AdminInformation',
-                        component: AdminInformation,
-                    },
-                    {
-                        path: '/AdminQualification',
-                        name: 'AdminQualification',
-                        component: AdminQualification,
-                    }
-                ]
-            },
-            {
-                path: '/StudentFavorites',
-                name: 'StudentFavorites',
-                component: StudentFavorites
-            },
-            {
-                path: '/TeacherFavorites',
-                name: 'TeacherFavorites',
-                component: TeacherFavorites
-            },
-
+                path: '/AdminQualification',
+                name: 'AdminQualification',
+                component: AdminQualification,
+            }
+            ]
+        },
+        {
+            path: '/StudentFavorites',
+            name: 'StudentFavorites',
+            component: StudentFavorites
+        },
+        {
+            path: '/TeacherFavorites',
+            name: 'TeacherFavorites',
+            component: TeacherFavorites
+        },
+        {
+            path: '*',
+            name: 'notfount',
+            // component: notfount
+        }
         ]
     },
 
 ]
 
+
+
 const router = new VueRouter({
     routes
 })
 
+router.beforeEach((to, from, next) => {
+    if (to.path === '/LogIn') return next();
+    const store = JSON.parse(sessionStorage.getItem("store"));
+    if (!store) return next('/LogIn');
+    else if (store.isLoggedIn == false) return next('/LogIn');
+    else return next();
+})
 export default router
