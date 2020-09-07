@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 100%">
-    <el-aside width="200px">
+    <!-- <el-aside width="200px">
       <el-menu
         class="el-menu-vertical-demo"
         background-color="#545c64"
@@ -19,10 +19,12 @@
           <span slot="title">审核工作</span>
         </el-menu-item>
       </el-menu>
-    </el-aside>
+    </el-aside> -->
+    <el-aside width="200px"></el-aside>
     <el-main>
       <router-view></router-view>
     </el-main>
+    <el-aside width="200px"></el-aside>
   </el-container>
 </template>
 
@@ -40,7 +42,9 @@
 }
 
 .el-aside {
-  background-color: #d3dce6;
+  /* background-color: #d3dce6;
+  color: #333; */
+  background-color: #e9eef3;
   color: #333;
   text-align: center;
   /* line-height: 200px; */

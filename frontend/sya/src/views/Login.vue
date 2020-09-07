@@ -1,10 +1,10 @@
 <template>
-  <div class="login_container">
-    <el-carousel :height="bannerHeight + 'px'" class="login_img">
+  <div class="login_container" style="height:100%">
+    <el-carousel :height="bannerHeight" class="login_img">
       <!-- 遍历图片地址,动态生成轮播图
       <el-carousel-item v-for="item in imgList" :key="item">
         <img :src="item" alt />
-      </el-carousel-item>-->
+      </el-carousel-item> -->
     </el-carousel>
     <div class="login_box">
       <div class="avatar_box">
@@ -43,11 +43,15 @@ export default {
         username: "student",
         Password: "123456"
       },
-      loginFormRules:{
-        username:[ { required: true, message: '请输入用户名', trigger: 'blur' },
-         { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
-        Password:[{ required: true, message: '请输入密码', trigger: 'blur' }
-        ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }]
+      loginFormRules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ],
+        Password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ]
       },
 
       // 图片地址数组
@@ -63,9 +67,9 @@ export default {
         }
       ],
       //图片父容器高度
-      bannerHeight: 1000,
+      bannerHeight: "100%",
       //浏览器宽度
-      screenWidth: 0
+      // screenWidth: 0
     };
   },
   methods: {
@@ -83,11 +87,13 @@ export default {
       // console.log(result);
       if (result.status == 200) {
         this.$store.commit("logIn", result.data.role);
+        //将vuex里的信息保存到sessionStorage里
+        sessionStorage.setItem("store", JSON.stringify(this.$store.state));
         this.$message.success("登录成功");
         this.$router.push("/Main");
       }
     },
-    register(){
+    register() {
       this.$router.push("/Register");
     }
   }
