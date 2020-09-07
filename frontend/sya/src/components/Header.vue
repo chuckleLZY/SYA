@@ -11,7 +11,8 @@
         <el-menu-item index="/Home">首页</el-menu-item>
         <el-menu-item index="/Recruitment">招聘会</el-menu-item>
         <el-menu-item index="/TeacherTable" v-if="this.$store.state.role==2">老师工作台</el-menu-item>
-        <el-menu-item index="/AdminTable" v-if="this.$store.state.role==0">管理员工作台</el-menu-item>
+        <!-- <el-menu-item index="/AdminTable" v-if="this.$store.state.role==0">管理员工作台</el-menu-item> -->
+        <el-menu-item index="/PublishSystemMessage" v-if="this.$store.state.role==0">管理员工作台</el-menu-item>        
         <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">学生消息</el-menu-item>
         <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">老师消息</el-menu-item>
       <!--  <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>-->

@@ -58,7 +58,7 @@
             <el-drawer
                 title="工作详情"
                 :visible.sync="drawer"
-                
+                :direction="direction"
                 :before-close="handleClose">
                 
                 <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
@@ -98,8 +98,8 @@
 
                 <div class="demo-drawer__footer">
                         
-                        <el-button type="info"  @click="appWork()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
-                        <el-button type="primary"  @click="showFav()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>加入收藏</el-button>
+                        <el-button type="warning"  @click="appWork()" icon="el-icon-user-solid" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
+                        <el-button type="primary"  @click="showFav()" icon="el-icon-star-on" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>加入收藏</el-button>
                 </div>
 
                 
@@ -176,11 +176,12 @@
 
           <!--左侧弹窗-->
           <el-drawer
-                title="工作详情"
+                title="收藏详情"
                 :visible.sync="drawer2"
-                
+                :direction="direction2"
                 :before-close="handleClose2">
                 
+                <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
                  <el-table :data="favWorkList" v-loading="loading" class="addfav" >
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="工作名称" prop="work_name">
@@ -199,9 +200,10 @@
   
 
             </el-table>
+                </el-card>
                 <div class="demo-drawer__footer" style="margin-top:10px">
                          
-                        <el-button type="primary" icon="el-icon-star-on" size="mini" @click="addWorkFav(fav_id)" >加入收藏</el-button>
+                        <el-button type="info" icon="el-icon-star-on" plain @click="addWorkFav(fav_id)" >加入收藏</el-button>
                 </div>
 
             </el-drawer>
@@ -220,6 +222,8 @@ export default {
       input3: '',
       select: '',
       loading: true,
+      direction: 'rtl',
+      direction2: 'ltr',
       checkDialogVisible: false,
     //获取工作列表的参数对象
       queryInfo:{
@@ -308,6 +312,7 @@ export default {
 
      //展示右侧弹窗
     async showDrawer(workid){
+      this.direction='rtl'
         console.log(workid)
         const res = await axios.post(
         "http://localhost:5000/Work/ViewWorkInfo",
@@ -427,6 +432,7 @@ export default {
     },
 //展示左侧弹窗
     async showFavWork(favoritee_id){
+      this.direction2='ltr'
       console.log(this.workInfo.work_id);
         const res=await axios.post('http://localhost:5000/Favorite/GetFavoriteInfo',
         {
@@ -469,6 +475,7 @@ export default {
   position: relative;
   left:10px;
   width:100% !important;
+  height: 90% !important;
 }
 
 .recruitment_card2{
