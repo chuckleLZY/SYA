@@ -1,10 +1,10 @@
 <template>
-  <div class="login_container">
-    <el-carousel :height="bannerHeight + 'px'" class="login_img">
+  <div class="login_container" style="height:100%">
+    <el-carousel :height="bannerHeight" class="login_img">
       <!-- 遍历图片地址,动态生成轮播图
       <el-carousel-item v-for="item in imgList" :key="item">
         <img :src="item" alt />
-      </el-carousel-item>-->
+      </el-carousel-item> -->
     </el-carousel>
     <div class="login_box">
       <div class="avatar_box">
@@ -67,9 +67,9 @@ export default {
         }
       ],
       //图片父容器高度
-      bannerHeight: 1000,
+      bannerHeight: "100%",
       //浏览器宽度
-      screenWidth: 0
+      // screenWidth: 0
     };
   },
   methods: {
