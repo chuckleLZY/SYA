@@ -11,7 +11,7 @@ namespace SyaApi.Responses
         public int student_id{get; set;}
 
         public int work_id{get; set;}
-
+        
         public string content{get; set;}
 
         public string leave_time{get; set;}

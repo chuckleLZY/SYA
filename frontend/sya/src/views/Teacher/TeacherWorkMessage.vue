@@ -39,22 +39,23 @@
             <!-- 列表区域 -->
             <el-table :data="workMessageList"  v-loading="loading">
                 <el-table-column label="#" type="index"></el-table-column>
-                <el-table-column label="发件人" prop="sender_name">
+                <el-table-column label="请假人" prop="student_name">
 
                 </el-table-column>
 
                 
-                <el-table-column label="消息内容" prop="content">
+                <el-table-column label="工作名称" prop="work_name">
 
                 </el-table-column>
 
-                <el-table-column label="发送时间" prop="message_time">
+                <el-table-column label="请假时间" prop="leave_time">
 
                 </el-table-column>
                 <el-table-column label="状态" prop="status">
                   <template slot-scope="scope">
-                    <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>
-                    <el-tag type="info" v-if="scope.row.status==0">未读</el-tag>
+                    <el-tag type="success" v-if="scope.row.status==1">已处理</el-tag>
+                    <el-tag type="success" v-if="scope.row.status==2">已拒绝</el-tag>
+                    <el-tag type="info" v-if="scope.row.status==0">未处理</el-tag>
                   </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -65,9 +66,7 @@
                             <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
                                 <el-button type="success" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" ></el-button>
                             </el-tooltip>
-                            <el-tooltip  effect="dark" content="删除" placement="top-start" :enterable="false">
-                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeMesById(scope.row.message_id)" ></el-button>
-                            </el-tooltip>
+                            
                     </template>
 
                             
@@ -92,15 +91,26 @@
       <div style="width:400px;margin:auto;">
         <el-form status-icon label-width="auto" :model="messageData">
           
-          <el-form-item label="内容">
+          <el-form-item label="请假原因">
             <el-input  disabled v-model="messageData.content"></el-input>
           </el-form-item>
-          <el-form-item label="发送时间">
-            <el-input  disabled v-model="messageData.message_time"></el-input>
+          
+          <el-form-item label="请假人">
+            <el-input  disabled v-model="messageData.student_name"></el-input>
           </el-form-item>
-          <el-form-item label="发送人">
-            <el-input  disabled v-model="messageData.sender_name"></el-input>
+          <el-form-item label="请假工作">
+            <el-input  disabled v-model="messageData.work_name"></el-input>
           </el-form-item>
+          <el-form-item label="证明">
+            <el-input  disabled v-model="messageData.proof"></el-input>
+          </el-form-item>
+          
+          <div class="demo-drawer__footer" style="margin-top:10px">
+                         <el-tag type="success" v-if="messageData.status==1">已接受</el-tag>
+                         <el-tag type="danger" v-if="messageData.status==2">已拒绝</el-tag>
+                        <el-button type="info" icon="el-icon-star-on" plain @click="AgreeLea()" v-if="!messageData.status">同意请假</el-button>
+                        <el-button type="info" icon="el-icon-star-on" plain @click="RefuseLea()" v-if="!messageData.status" >拒绝请假</el-button>
+                </div>
           
         </el-form>
         
@@ -163,10 +173,9 @@ export default {
    //   }
    async getWorkMessageList(){
          const res = await axios.post(
-        "http://localhost:5000/Message/FindReceiveMessage",
+        "http://localhost:5000/Leave/ProViewLeaves",
         {
-          pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
+         
         },
         {
           withCredentials: true
@@ -176,21 +185,22 @@ export default {
         this.$message.error("Unexpected response");
         return;
         }
-        this.workMessageList=res.data.messageItem;
-        this.total=res.data.totalpage;
-        this.pagesize=res.data.totalpage/res.data.pagenum;
-        this.pagenum=res.data.pagenum;
+        this.workMessageList=res.data.leavelist;
+      //  this.total=res.data.totalpage;
+        //this.pagesize=res.data.totalpage/res.data.pagenum;
+       // this.pagenum=res.data.pagenum;
         this.loading = false;
       //  console.log(this.pagesize);
-        //console.log(res);
+       // console.log(res);
       },
       async viewMesInfo(row){
         this.messageData = row;
+        console.log(this.messageData);
         this.checkDialogVisible = true;
         const res = await axios.post(
-        "http://localhost:5000/Message/ViewedMessage",
+        "http://localhost:5000/Leave/ProViewLeaves",
         {
-          message_id: row.message_id
+         
         },
         {
           withCredentials: true
@@ -200,21 +210,16 @@ export default {
      // console.log(res);
       },
 
-      async removeMesById(id){
-        const confirmResulte=await this.$confirm('此操作将永久删除该工作消息, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).catch(err=>err)
+     
+      async AgreeLea(){
+        
         //console.log(confirmResulte);
-        if(confirmResulte!=='confirm'){
-          return this.$message.info("已取消删除");
-        }
+        
         const res = await axios.post(
-        "http://localhost:5000/Message/DeleteMessage",
+        "http://localhost:5000/Apply/ProManageLeave",
         {
-          message_id: id
-          
+          leave_id: this.messageData.leave_id,
+          status:1
         },
         {
           withCredentials: true
@@ -225,10 +230,33 @@ export default {
         this.$message.error("Unexpected response");
         return;
         }
-      this.$message.info("已成功删除");
-      this.getWorkMessageList();
+      this.$message.info("已同意");
+     // console.log(res);
 
-      }
+      },
+      async RefuseLea(){
+        
+        //console.log(confirmResulte);
+        
+        const res = await axios.post(
+        "http://localhost:5000/Apply/ProManageLeave",
+        {
+          leave_id: this.messageData.leave_id,
+          status:2
+        },
+        {
+          withCredentials: true
+        }
+      );
+
+      if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+      this.$message.info("已拒绝");
+     // console.log(res);
+
+      },
   }
 }
 </script>
