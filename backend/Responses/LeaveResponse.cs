@@ -4,6 +4,8 @@ namespace SyaApi.Responses
 {
     public class LeaveResponse
     {
+        public int leave_id{get; set;}
+        
         public string student_name{get; set;}
 
         public string work_name{get; set;}
