@@ -62,7 +62,6 @@ namespace SyaApi.Controllers
             }
 
             apps.applist = new System.Collections.Generic.List<ApplyResponse>();
-            apps.totalpage = start;
             var provide_list = await ApplyAccessor.ProViewApps(pro_id);
 
             if(provide_list != null)
@@ -76,8 +75,8 @@ namespace SyaApi.Controllers
                     ar.work_name = await WorkAccessor.GetWorkName(provide_list.ApplyItem[i].work_id);
 
                     apps.applist.Add(ar);
-                    apps.totalpage++;
                 }
+                apps.totalpage = provide_list.total;
                 return Ok(apps);
             }
             return Ok(-1); // Never arrive there

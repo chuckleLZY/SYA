@@ -266,7 +266,7 @@ namespace SyaApi.Controllers
 
             WorkItemResponse workItem = new WorkItemResponse();
             var start=(request.pagenum-1)*request.pagesize;
-            var end=request.pagenum*request.pagesize-1;
+            var end=request.pagenum*request.pagesize;
             workItem.totalpage=start;
             workItem.pagenum=request.pagenum;
             workItem.worklist = new List<WorkResponse>();
@@ -274,12 +274,12 @@ namespace SyaApi.Controllers
 
             if(provide_list != null)
             {
-                for (int i=start; i<=end && i<provide_list.total; ++i)
+                for (int i=start; i<end && i<provide_list.total; ++i)
                 {
                     WorkResponse wr = _mapper.Map<WorkResponse>(provide_list.workItem[i]);           
                     workItem.worklist.Add(wr);
-                    workItem.totalpage++;
                 }
+                workItem.totalpage = provide_list.total;
                 return Ok(workItem);
             }
             return Ok(-1); // Never arrive there

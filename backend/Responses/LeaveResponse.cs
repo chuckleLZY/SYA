@@ -30,6 +30,9 @@ namespace SyaApi.Responses
     public class LeaveItemResponse
     {
         public int total{get; set;}
+
+        public int pagenum{get; set;}
+
         public List<LeaveResponse> leavelist{get;set;}
 
     }
