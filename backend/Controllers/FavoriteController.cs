@@ -191,7 +191,7 @@ namespace SyaApi.Controllers
         }
 
         //从收藏夹中删除工作
-        [HttpDelete("DeleteFavoriteWork")]
+        [HttpPost("DeleteFavoriteWork")]
         [AllowAnonymous]
         public async Task<int> DeleteFavoriteWork([FromBody]HasFavoriteRequest request)
         {
