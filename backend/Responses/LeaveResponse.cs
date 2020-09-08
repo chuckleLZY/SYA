@@ -4,6 +4,8 @@ namespace SyaApi.Responses
 {
     public class LeaveResponse
     {
+        public int leave_id{get; set;}
+        
         public string student_name{get; set;}
 
         public string work_name{get; set;}
@@ -11,7 +13,7 @@ namespace SyaApi.Responses
         public int student_id{get; set;}
 
         public int work_id{get; set;}
-
+        
         public string content{get; set;}
 
         public string leave_time{get; set;}
@@ -28,6 +30,9 @@ namespace SyaApi.Responses
     public class LeaveItemResponse
     {
         public int total{get; set;}
+
+        public int pagenum{get; set;}
+
         public List<LeaveResponse> leavelist{get;set;}
 
     }
