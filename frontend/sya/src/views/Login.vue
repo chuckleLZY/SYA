@@ -1,32 +1,62 @@
 <template>
   <div class="login_container">
-  <el-carousel :interval="4000" type="card" height="200px" width="300px">
+    <el-carousel :interval="4000" type="card" height="200px" width="300px">
       <el-carousel-item v-for="item in imagebox" :key="item.id">
         <img :src="item.idView" class="image" />
       </el-carousel-item>
-  </el-carousel>
-  <el-divider></el-divider>
-  <el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
-<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+    </el-carousel>
+    <el-divider></el-divider>
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
 
-  <div class="verticalBar">
-  </div>
+    <div class="verticalBar"></div>
     <div class="erweima_box">
       <b>满意的话，请给我们项目一点支持</b>
-      <br>
-      <img src="../assets/imagebox/login_mid.png" alt="" class="mid">
-      <img src="../assets/imagebox/login_left.png" alt="" class="left">
-      <img src="../assets/imagebox/login_right.png" alt="" class="right">
+      <br />
+      <img src="../assets/imagebox/login_mid.png" alt class="mid" />
+      <img src="../assets/imagebox/login_left.png" alt class="left" />
+      <img src="../assets/imagebox/login_right.png" alt class="right" />
     </div>
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/imagebox/1.jpeg" alt="">
+        <img src="../assets/imagebox/1.jpeg" alt />
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -61,17 +91,21 @@ export default {
         username: "student",
         Password: "123456"
       },
-      loginFormRules:{
-        username:[ { required: true, message: '请输入用户名', trigger: 'blur' },
-         { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
-        Password:[{ required: true, message: '请输入密码', trigger: 'blur' }
-        ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }]
+      loginFormRules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ],
+        Password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+        ]
       },
       imagebox: [
         { id: 0, idView: require("../assets/imagebox/1.jpeg") },
         { id: 1, idView: require("../assets/imagebox/2.jpeg") },
         { id: 2, idView: require("../assets/imagebox/3.png") },
-        { id: 3, idView: require("../assets/imagebox/4.jpg") },
+        { id: 3, idView: require("../assets/imagebox/4.jpg") }
         //imagebox是assets下一个放图片的文件夹
       ],
       screenWidth: 0,
@@ -107,11 +141,15 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
+        //将登录信息保存到vuex
+        this.$store.commit("logIn", result.data.role);
+        //将vuex里的信息保存到sessionStorage里
+        sessionStorage.setItem("store", JSON.stringify(this.$store.state));
         this.$message.success("登录成功");
         this.$router.push("/Main");
       }
     },
-    register(){
+    register() {
       this.$router.push("/Register");
     }
   }
@@ -119,29 +157,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.login_container.line{
-float: left;
-border-right: 1px solid #ddd;
-height: 300px;
-margin-top: 28px;
+.login_container.line {
+  float: left;
+  border-right: 1px solid #ddd;
+  height: 300px;
+  margin-top: 28px;
 }
 
 .login_container {
   background-color: #fff;
   //background-image:url("../assets/imagebox/1.jpeg");
-  position:absolute;
+  position: absolute;
   background-size: cover;
-   width:100%; height:100%;
+  width: 100%;
+  height: 100%;
 }
-.erweima_box{ 
+.erweima_box {
   width: 650px;
   height: 400px;
   position: absolute;
   left: 25%;
   top: 60%;
   transform: translate(-50%, -50%);
- .mid{
-   height: 200px;
+  .mid {
+    height: 200px;
     width: 200px;
     transform: translate(70%, 10%);
     img {
@@ -150,9 +189,9 @@ margin-top: 28px;
       border-radius: 50%;
       background-color: #eee;
     }
- }
- .left{
-   height: 140px;
+  }
+  .left {
+    height: 140px;
     width: 140px;
     transform: translate(-130%, 80%);
     img {
@@ -161,8 +200,8 @@ margin-top: 28px;
       border-radius: 50%;
       background-color: #eee;
     }
- }
-  .right{
+  }
+  .right {
     height: 140px;
     width: 140px;
     transform: translate(-15%, 80%);
@@ -172,12 +211,12 @@ margin-top: 28px;
       border-radius: 50%;
       background-color: #eee;
     }
- }
+  }
 }
 .login_box {
   width: 450px;
   height: 300px;
-  background-image:url("../assets/imagebox/1.jpeg");
+  background-image: url("../assets/imagebox/1.jpeg");
   border-radius: 3px;
   position: absolute;
   left: 75%;
@@ -216,13 +255,13 @@ margin-top: 28px;
     padding: 0 20px;
     box-sizing: border-box;
   }
-  .line{
+  .line {
     display: inline-block;
-width: 1px;
-height: 55em;
-margin: 0 8px;
-vertical-align: middle;
-position: relative;
+    width: 1px;
+    height: 55em;
+    margin: 0 8px;
+    vertical-align: middle;
+    position: relative;
   }
 }
 </style>
