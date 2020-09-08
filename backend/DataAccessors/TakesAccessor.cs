@@ -16,7 +16,8 @@ namespace SyaApi.DataAccessors
         ///</summery>
         public static async Task<int> Create(TakesEntity takes)
         {
-            var query = "INSERT INTO takes(student_id,work_id,work_time,absent_num,absent_time) VALUES(@student_id,@work_id,@work_time,@absent_num,@absent_time)";
+            var query = @"INSERT INTO takes(student_id,work_id,work_time,absent_num,absent_time)
+             VALUES(@student_id,@work_id,@work_time,@absent_num,@absent_time)";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -25,7 +26,7 @@ namespace SyaApi.DataAccessors
 
             command.Parameters.AddWithValue("@student_id",takes.student_id);
             command.Parameters.AddWithValue("@work_id",takes.work_id);
-            command.Parameters.AddWithValue("@work_time",0);
+            command.Parameters.AddWithValue("@work_time",takes.work_time);
             command.Parameters.AddWithValue("@absent_num",0);
             command.Parameters.AddWithValue("@absent_time",0);
 
