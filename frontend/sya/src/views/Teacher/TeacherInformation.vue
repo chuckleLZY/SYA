@@ -17,8 +17,8 @@
       <div class="box" id="box1"></div>
       <div class="box" id="box2"></div>
       <el-row class="avaRow">
-        <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" @error="errorHandler">
-          <img id="userAva" :src="UserInfo.avatar" />
+        <el-avatar shape="circle" :size="100" @error="errorHandler">
+          <img id="userAva" @click="drawer = true" :src="userava" />
         </el-avatar>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>
@@ -39,7 +39,7 @@
                 <i class="el-icon-key"></i> SYA-ID ：
               </p>
             </div>
-            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.user_id"></el-input>
+            <el-input class="infoItem" readonly="readonly"  v-model="UserInfo.user_id" disabled></el-input>
           </el-form-item>
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
@@ -47,10 +47,10 @@
                 <i class="el-icon-user"></i> 用户名 ：
               </p>
             </div>
-            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.user_name"></el-input>
+            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.user_name" disabled></el-input>
           </el-form-item>
           <el-form-item class="itemRow" prop="gender">
-             <div class="itemNameContainer">
+            <div class="itemNameContainer">
               <p class="itemName">
                 <i class="el-icon-user"></i> 性别 ：
               </p>
@@ -82,7 +82,7 @@
                 <i class="el-icon-message"></i> 邮箱 :
               </p>
             </div>
-            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.email"></el-input>
+            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.email" disabled></el-input>
           </el-form-item>
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
@@ -94,6 +94,43 @@
           </el-form-item>
         </el-form>
       </el-row>
+      <!-- 右侧弹窗 -->
+
+      
+      <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" :before-close="handleClose">
+        <p>选择你的新头像</p>
+        <el-card class="box-card">
+          <div>
+            <img class="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg"/>
+          </div>
+          <el-radio class="radio" v-model="radio2" label="1">简约男生</el-radio>
+          </el-card>
+          <el-card class="box-card">
+          <div>
+            <img class="image" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3076245205,742402026&fm=26&gp=0.jpg"/>
+          </div>
+          <el-radio class="radio" v-model="radio2" label="2">简约女生</el-radio>
+          </el-card>
+          <el-card class="box-card">
+          <div>
+            <img class="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575929381&di=3bc01b19ce6059ac83dc1679c83c1829&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F05%2F20181105142239_uiyqs.jpg"/>
+          </div>
+          <el-radio class="radio" v-model="radio2" label="3">文艺男生</el-radio>
+          </el-card>
+          
+          <el-card class="box-card">
+          <div>
+            <img class="image" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg"/>
+          </div>
+          <el-radio class="radio" v-model="radio2" label="4">文艺女生</el-radio>
+        </el-card>
+        
+        <div style="margin-bottom: 20px">
+        <p>
+          <el-button type="primary" icon="el-icon-edit" @click="UpdateUser()">点击修改</el-button>
+        </p>
+        </div>
+      </el-drawer>
 
       <div style="text-align:center">
         <p class="syaSup">
@@ -117,8 +154,12 @@ export default {
       UserInfo: [],
       phone: 0,
       bank: 0,
-      radio:"",
-      regender:true,
+      radio: "",
+      radio2:"",
+      regender: true,
+      userava: "",
+      //newuserava: "",
+      drawer: false,
       // userAva:{
       //   src:""
       //   }
@@ -133,6 +174,9 @@ export default {
     this.getUserInfo();
   },
   methods: {
+    handleClose(done){
+    this.$router.go(0);
+    },
     async getUserInfo() {
       const { data: res } = await axios.post(
         "http://localhost:5000/User/GetUserInfo",
@@ -141,17 +185,31 @@ export default {
       );
 
       this.UserInfo = res;
-      console.log(this.UserInfo.gender);
-      if(this.UserInfo.gender==true)
-      {
-        this.radio="0";
+      this.radio2=this.UserInfo.avatar;
+      console.log(this.radio2);
+      if (this.UserInfo.gender == true) {
+        this.radio = "0";
+      } else if (this.UserInfo.gender == false) {
+        this.radio = "1";
       }
-      else if(this.UserInfo.gender==false)
-      {
-        this.radio="1";
+      if (this.UserInfo.avatar == "1") {
+        this.userava =
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg";
+      }
+      if (this.UserInfo.avatar == "2") {
+        this.userava =
+          "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3076245205,742402026&fm=26&gp=0.jpg";
+      }
+      if (this.UserInfo.avatar == "3") {
+        this.userava =
+          "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575929381&di=3bc01b19ce6059ac83dc1679c83c1829&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F05%2F20181105142239_uiyqs.jpg";
+      }
+      if (this.UserInfo.avatar == "4") {
+        this.userava =
+          "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg";
       }
 
-      console.log(this.radio);
+      //console.log(this.newuserava);
     },
     // async init(){
     //      var i=await this.getUserInfo();
@@ -174,16 +232,17 @@ export default {
         this.bank = this.UserInfo.bank;
       }
       if (this.radio == "0") {
-        this.regender=true;
+        this.regender = true;
       }
       if (this.radio == "1") {
-        this.regender=false;
+        this.regender = false;
       }
+      
       const { data: res } = await axios.post(
         "http://localhost:5000/User/UpdateUser",
         {
           gender: this.regender,
-          avatar: "a.png",
+          avatar: this.radio2,
           tel: this.phone,
           bank: this.bank,
         },
@@ -191,7 +250,6 @@ export default {
       );
       //console.log(a);
       //console.log(this.UserInfo2);
-
       //this.UserInfo=res;
       //console.log(res);
     },
@@ -319,4 +377,27 @@ el-card {
   left: 90%;
   background-color: rgb(255, 0, 208, 0.1);
 }
+  .text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 50%;
+    float: left;
+    height: 40%;
+  }
+  .image {
+    width: 100%;
+    display: block;
+  }
+  .radio{
+    margin-top: 30px;
+  }
+  /* .syaSup2{
+    margin-top: 20px;
+  } */
 </style>
