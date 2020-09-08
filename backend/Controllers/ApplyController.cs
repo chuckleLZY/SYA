@@ -124,7 +124,8 @@ namespace SyaApi.Controllers
                     {
                         work_name = ar.work_name,
                         student_id = ae.student_id,
-                        work_id = ae.work_id
+                        work_id = ae.work_id,
+                        work_time = await WorkAccessor.GetWorkTotalTime(ae.work_id)
                     };
                     await TakesAccessor.Create(take);
                 }

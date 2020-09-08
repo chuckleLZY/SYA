@@ -151,6 +151,31 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
+        /// 根据work_id查找work.total_time
+        /// 返回Constants.Error.NotFindString表示work不存在
+        /// dumei 08.24
+        ///</summery>
+        public static async Task<double> GetWorkTotalTime(int id)
+        {
+            WorkEntity temp=new WorkEntity();
+            var query = "SELECT total_time FROM work WHERE work_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return reader.GetDouble("total_time");
+            }
+            return Constants.Error.NotFindDouble; // work not exists
+        }
+
+
+        ///<summery>
         /// (非学生用户)创建工作
         /// 设置 likes_num, collect_num, share_num 为 0
         /// dumei 08.23
