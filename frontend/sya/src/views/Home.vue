@@ -83,6 +83,9 @@
           </el-col>
         </el-row>
         <el-divider></el-divider>
+        <div style="text-align:center">
+            <p class="syaSup">SYA——Show Your Ability</p>
+        </div>
       </el-main>
     </el-container>
   </div>
