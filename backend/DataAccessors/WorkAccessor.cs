@@ -77,12 +77,18 @@ namespace SyaApi.DataAccessors
         /// (非学生用户)查看历史发布工作
         /// dumei 08.23
         ///</summery>
+        ///<summery>
+        /// 更改:增加时间变量
+        /// dumei 09.08
+        ///</summery>
         public static async Task<WorkItemEntity> FindHistoryWork(int provider_id)
         {
             var provide = new WorkItemEntity();
             provide.total = 0;
             provide.workItem = new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num FROM work WHERE teacher_id=@id";
+            var query = @"SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,
+            work_time,likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day
+            FROM work WHERE teacher_id=@id";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -106,36 +112,18 @@ namespace SyaApi.DataAccessors
                     work_time=reader.GetString("work_time"),
                     likes_num=reader.GetInt32("likes_num"),
                     collect_num=reader.GetInt32("collect_num"),
-                    share_num=reader.GetInt32("share_num")
+                    share_num=reader.GetInt32("share_num"),
+                    start_day=reader.GetString("start_day"),
+                    end_day=reader.GetString("end_day"),
+                    start_time=reader.GetString("start_time"),
+                    end_time=reader.GetString("end_time"),
+                    total_time=reader.GetDouble("total_time"),
+                    week_day=reader.GetInt32("week_day")
                 };
                 provide.total++;
                 provide.workItem.Add(temp);
             }
             return provide;
-        }
-
-        ///<summery>
-        /// 根据id判断work是否存在
-        /// 返回1表示存在，0表示不存在
-        /// dumei 08.23
-        ///</summery>
-        public static async Task<int> IsWorkExists(int id)
-        {
-            WorkEntity temp=new WorkEntity();
-            var query = "SELECT work_name FROM work WHERE work_id=@id";
-
-            using var connection = DatabaseConnector.Connect();
-            await connection.OpenAsync();
-            using var command = connection.CreateCommand();
-            command.CommandText = query;
-            command.Parameters.AddWithValue("@id",id);
-
-            using var reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                return 1;
-            }
-            return 0;
         }
 
         ///<summery>
@@ -167,9 +155,16 @@ namespace SyaApi.DataAccessors
         /// 设置 likes_num, collect_num, share_num 为 0
         /// dumei 08.23
         ///</summery>
+        ///<summery>
+        /// 增加start_time,end_time,start_day,end_day,week_day
+        /// dumei 09.08
+        ///</summery>
         public static async Task<int> Create(WorkEntity work)
         {
-            var query = "INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num) VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,@work_time,@likes,@collect,@share)";
+            var query = @"INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,work_time,
+            likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day) 
+            VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,@work_time,
+            @likes,@collect,@share,@start_day,@end_day,@start_time,@end_time,@total_time,@week_day)";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -183,7 +178,14 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@description", work.work_description);
             command.Parameters.AddWithValue("@address", work.address);
             command.Parameters.AddWithValue("@salary", work.salary);
-            command.Parameters.AddWithValue("@work_time", work.work_time);
+            //command.Parameters.AddWithValue("@work_time", work.work_time);
+            command.Parameters.AddWithValue("@work_time", "none"); //to be delete
+            command.Parameters.AddWithValue("@start_day", work.start_day);
+            command.Parameters.AddWithValue("@end_day", work.end_day);
+            command.Parameters.AddWithValue("@start_time", work.start_time);
+            command.Parameters.AddWithValue("@end_time", work.end_time);
+            command.Parameters.AddWithValue("@total_time", work.total_time);
+            command.Parameters.AddWithValue("@week_day", work.week_day);
             command.Parameters.AddWithValue("@likes", 0);
             command.Parameters.AddWithValue("@collect", 0);
             command.Parameters.AddWithValue("@share", 0);
