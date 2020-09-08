@@ -1,4 +1,5 @@
 <template>
+
   <div class="login_container">
   <el-carousel :interval="4000" type="card" height="200px" width="300px">
       <el-carousel-item v-for="item in imagebox" :key="item.id">
