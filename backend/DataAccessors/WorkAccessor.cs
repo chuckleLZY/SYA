@@ -328,7 +328,7 @@ namespace SyaApi.DataAccessors
         ///</summery>
         public static async Task<int> Update(WorkEntity work)
         {
-            var query = "UPDATE work SET teacher_id=@teacher_id,work_name=@work_name,cover=@cover,work_description=@work_description,address=@address,salary=@salary,work_time=@work_time WHERE work_id =@work_id";
+            var query = "UPDATE work SET teacher_id=@teacher_id,work_name=@work_name,cover=@cover,work_description=@work_description,address=@address,salary=@salary,start_day=@start_day,end_day=@end_day,start_time=@start_time,end_time=@end_time,total_time=@total_time,week_day=@week_day WHERE work_id =@work_id";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -342,8 +342,12 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@work_description", work.work_description);
             command.Parameters.AddWithValue("@address", work.address);
             command.Parameters.AddWithValue("@salary", work.salary);
-            command.Parameters.AddWithValue("@work_time", work.work_time);
-
+            command.Parameters.AddWithValue("@start_day", work.start_day);
+            command.Parameters.AddWithValue("@end_day", work.end_day);
+            command.Parameters.AddWithValue("@start_time", work.start_time);
+            command.Parameters.AddWithValue("@end_time", work.end_time);
+            command.Parameters.AddWithValue("@total_time", work.total_time);
+            command.Parameters.AddWithValue("@week_day", work.week_day);
             var row = await command.ExecuteNonQueryAsync();
 
             if(row>0)

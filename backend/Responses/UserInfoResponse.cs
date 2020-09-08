@@ -20,6 +20,9 @@ namespace SyaApi.Responses
         /// 工作总时长
         public decimal work_time { get; set; }
 
+        /// 请假总时长
+        public decimal absent_time {get; set;}
+
         /// 已获得薪水总量
         public decimal income { get; set; }
     }
