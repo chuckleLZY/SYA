@@ -256,7 +256,7 @@ namespace SyaApi.Controllers
         /// dumei 08.23
         [HttpPost("ViewHistoryWork")]
         //[AllowAnonymous]
-        public async Task<ActionResult<WorkItemResponse>> ViewHistoryWork()
+        public async Task<ActionResult<WorkItemResponse>> ViewHistoryWork([FromBody] ViewWorkRequest request)
         {
             var pro_id = Int32.Parse(User.Identity.Name);
             if (await UserAccessor.CheckRole(pro_id) == Role.Student)
@@ -265,14 +265,16 @@ namespace SyaApi.Controllers
             }
 
             WorkItemResponse workItem = new WorkItemResponse();
-            workItem.totalpage=0;
-            workItem.worklist = new System.Collections.Generic.List<WorkResponse>();
-
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+            workItem.totalpage=start;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist = new List<WorkResponse>();
             var provide_list = await WorkAccessor.FindHistoryWork(pro_id);
 
             if(provide_list != null)
             {
-                for(int i=0; i<provide_list.total; i++)
+                for (int i=start; i<=end && i<provide_list.total; ++i)
                 {
                     WorkResponse wr = _mapper.Map<WorkResponse>(provide_list.workItem[i]);           
                     workItem.worklist.Add(wr);
