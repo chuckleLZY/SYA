@@ -63,7 +63,7 @@ namespace SyaApi.Controllers
         ///<summery>
         /// (非学生用户)查看请假申请
         /// dumei 08.24
-        [HttpGet("ProViewLeaves")]
+        [HttpPost("ProViewLeaves")]
         //[AllowAnonymous]
         public async Task<ActionResult<LeaveItemResponse>> ProViewLeaves()
         {

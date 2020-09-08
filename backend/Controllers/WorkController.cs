@@ -41,7 +41,7 @@ namespace SyaApi.Controllers
         /// 学生用户查看个人拥有工作
         /// chuckle 8.25
         ///</summery>
-        [HttpGet("ViewOwnWork")]
+        [HttpPost("ViewOwnWork")]
         [AllowAnonymous]
         public async Task<ActionResult<WorkItemResponse>> ViewOwnWork([FromBody] ViewWorkRequest request)
         {
@@ -49,6 +49,9 @@ namespace SyaApi.Controllers
             workItem.totalpage=0;
             workItem.pagenum=request.pagenum;
             workItem.worklist=new List<WorkResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
 
             //取得存在cookie的当前账户id
             var stu_id = Int32.Parse(User.Identity.Name);
@@ -61,12 +64,13 @@ namespace SyaApi.Controllers
                 {
                     
                     var work_info=await WorkAccessor.FindWorkInfo(temp.TakesItem[i].work_id);
-                    if(work_info!=null)
+                    workItem.totalpage++;
+                    if(i>=start&&i<=end&&work_info!=null)
                     {
                         WorkResponse a=_mapper.Map<WorkResponse>(work_info);
                         
                         workItem.worklist.Add(a);
-                        workItem.totalpage++;
+                        
                     }
                 }
 
@@ -79,7 +83,7 @@ namespace SyaApi.Controllers
         /// 用户查看工作详细信息
         /// chuckle 8.25
         ///</summery>
-        [HttpGet("ViewWorkInfo")]
+        [HttpPost("ViewWorkInfo")]
         [AllowAnonymous]
         public async Task<ActionResult<WorkResponse>> ViewWorkInfo([FromBody]FindworkRequest temp)
         {
@@ -102,7 +106,7 @@ namespace SyaApi.Controllers
         /// 用户查看所有工作
         /// chuckle 8.25
         ///</summery>
-        [HttpGet("ViewAllWork")]
+        [HttpPost("ViewAllWork")]
         [AllowAnonymous]
         public async Task<ActionResult<WorkItemResponse>> ViewAllWork([FromBody] ViewWorkRequest request)
         {
@@ -111,6 +115,8 @@ namespace SyaApi.Controllers
             workItem.pagenum=request.pagenum;
             workItem.worklist=new List<WorkResponse>();
 
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
             //取得存在cookie的当前账户id
             var stu_id = Int32.Parse(User.Identity.Name);
 
@@ -120,10 +126,12 @@ namespace SyaApi.Controllers
             {
                 for(int i=0;i<temp.total;i++)
                 {
-                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);
-                        
+                    workItem.totalpage++;
+                    if(i>=start&&i<=end)
+                    {
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);                       
                         workItem.worklist.Add(a);
-                        workItem.totalpage++;
+                    }
                     
                 }
 
@@ -136,7 +144,7 @@ namespace SyaApi.Controllers
         /// 用户搜索工作
         /// chuckle 8.25
         ///</summery>
-        [HttpGet("FindWork")]
+        [HttpPost("FindWork")]
         [AllowAnonymous]
         public async Task<ActionResult<WorkItemResponse>> FindWork([FromBody] ViewWorkRequest request)
         {
@@ -144,6 +152,9 @@ namespace SyaApi.Controllers
             workItem.totalpage=0;
             workItem.pagenum=request.pagenum;
             workItem.worklist=new List<WorkResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
 
             //取得存在cookie的当前账户id
             var stu_id = Int32.Parse(User.Identity.Name);
@@ -154,10 +165,12 @@ namespace SyaApi.Controllers
             {
                 for(int i=0;i<temp.total;i++)
                 {
-                    WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);
-                        
-                    workItem.worklist.Add(a);
                     workItem.totalpage++;
+                    if(i>=start&&i<=end)
+                    {
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);                       
+                        workItem.worklist.Add(a);
+                    }
                     
                 }
 
@@ -196,7 +209,7 @@ namespace SyaApi.Controllers
         /// (非学生用户)查看历史发布工作
         /// 检查user.role
         /// dumei 08.23
-        [HttpGet("ViewHistoryWork")]
+        [HttpPost("ViewHistoryWork")]
         //[AllowAnonymous]
         public async Task<ActionResult<WorkItemResponse>> ViewHistoryWork()
         {
@@ -224,6 +237,34 @@ namespace SyaApi.Controllers
             }
             return Ok(-1); // Never arrive there
         }
+
+        ///<summery>
+        /// 老师修改工作信息
+        /// chuckle 8.28
+        ///</summery>
+        [HttpPost("ChangeWorkInfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkResponse>> ChangeWorkInfo([FromBody] UpdateWorkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var provider_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(provider_id) == Role.Student)
+            {
+                return BadRequest(new { message = "Student cannot update work"});
+            }
+            var work = _mapper.Map<WorkEntity>(request);
+            work.teacher_id = provider_id;
+            work.work_id=request.work_id;
+            await WorkAccessor.Update(work); //return work_id
+
+            return Ok(_mapper.Map<WorkResponse>(work));
+        }
+
 
     }
 }

@@ -41,9 +41,9 @@ namespace SyaApi.Controllers
         /// 检查user.role
         /// dumei 08.24
         ///</summery>
-        [HttpGet("ProViewApps")]
+        [HttpPost("ProViewApps")]
         //[AllowAnonymous]
-        public async Task<ActionResult<ApplyItemResponse>> ProViewApps()
+        public async Task<ActionResult<ApplyItemResponse>> ProViewApps([FromBody]ViewAppRequest request)
         {
             var pro_id = Int32.Parse(User.Identity.Name);
             if (await UserAccessor.CheckRole(pro_id) == Role.Student)
@@ -52,14 +52,22 @@ namespace SyaApi.Controllers
             }
 
             var apps = new ApplyItemResponse();
-            apps.total = 0;
-            apps.applist = new System.Collections.Generic.List<ApplyResponse>();
+            //apps.totalpage=0;
+            apps.pagenum=request.pagenum;
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize;
+            if (start < 0)
+            {
+                return BadRequest(new { message = "Page num error"});
+            }
 
+            apps.applist = new System.Collections.Generic.List<ApplyResponse>();
+            apps.totalpage = start;
             var provide_list = await ApplyAccessor.ProViewApps(pro_id);
 
             if(provide_list != null)
             {
-                for(int i=0; i<provide_list.total; i++)
+                for(int i=start; i<end && i<provide_list.total; i++)
                 {
                     ApplyResponse ar = _mapper.Map<ApplyResponse>(provide_list.ApplyItem[i]);
                     // 未检查id是否存在
@@ -68,7 +76,7 @@ namespace SyaApi.Controllers
                     ar.work_name = await WorkAccessor.GetWorkName(provide_list.ApplyItem[i].work_id);
 
                     apps.applist.Add(ar);
-                    apps.total++;
+                    apps.totalpage++;
                 }
                 return Ok(apps);
             }

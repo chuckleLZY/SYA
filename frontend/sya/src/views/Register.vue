@@ -13,16 +13,24 @@
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input prefix-icon="el-icon-user" v-model="logInForm.username"></el-input>
+        <el-input prefix-icon="el-icon-user" v-model="logInForm.username" placeholder="请输入用户名，长度为3-10字符"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="Password">
-          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" type="password"></el-input>
+          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" placeholder="请输入密码，长度为3-10字符"></el-input>
+        </el-form-item>
+        <!-- 邮箱 -->
+        <el-form-item prop="email">
+          <el-input prefix-icon="el-icon-user" v-model="logInForm.email" placeholder="请输入邮箱"></el-input>
+        </el-form-item>
+        <!-- 权限选择 -->
+        <el-form-item prop="role">
+          <el-input prefix-icon="el-icon-user" v-model="logInForm.role" placeholder="请输入权限等级"></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login()">登录</el-button>
-          <el-button type="info" @click="register()">注册</el-button>
+          <el-button type="primary" @click="Register()">注册</el-button>
+          <el-button type="info" @click="exit()">退出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -40,14 +48,19 @@ export default {
     return {
       //登录表单
       logInForm: {
-        username: "student",
-        Password: "123456"
+        username: "hzh",
+        Password: "123456",
+        email: "hzh@qq.com",
       },
       loginFormRules:{
         username:[ { required: true, message: '请输入用户名', trigger: 'blur' },
          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
         Password:[{ required: true, message: '请输入密码', trigger: 'blur' }
-        ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }]
+        ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
+        email:[ { required: true, message: '请输入用户名', trigger: 'blur' },
+         { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur' }],
+         role:[ { required: true, message: '请输入权限等级', trigger: 'blur' },
+         { message: '为1或0', trigger: 'blur' }]
       },
 
       // 图片地址数组
@@ -69,25 +82,30 @@ export default {
     };
   },
   methods: {
-    async login() {
+    async Register() {
       console.log(this.logInForm);
       const result = await axios.post(
-        "http://localhost:5000/Account/Login",
+        "http://localhost:5000/Account/Register",
         {
           username: this.logInForm.username,
+          email: this.logInForm.email,
           // 密码哈希
-          Password: sha512(this.logInForm.Password).toString()
+          Password: sha512(this.logInForm.Password).toString(),
+          role:parseInt(this.logInForm.role)
         },
         { withCredentials: true }
       );
       console.log(result);
       if (result.status == 200) {
-        this.$message.success("登录成功");
-        this.$router.push("/Main");
+        this.$message.success("注册成功");
+        this.$router.push("/");
+      }
+      else{
+        this.$message.success("该账户已经被占用");
       }
     },
-    register(){
-      this.$router.push("/Register");
+    exit(){
+      this.$router.push("/");
     }
   }
 };
@@ -102,12 +120,12 @@ export default {
 }
 .login_box {
   width: 450px;
-  height: 300px;
+  height: 430px;
   background-color: #fff;
   border-radius: 3px;
   position: absolute;
   left: 75%;
-  top: 40%;
+  top: 50%;
   transform: translate(-50%, -50%);
 
   .avatar_box {
@@ -137,7 +155,7 @@ export default {
   }
   .login_form {
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;

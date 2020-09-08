@@ -18,7 +18,8 @@ namespace SyaApi.Responses
     
     public class ApplyItemResponse
     {
-        public int total{get; set;}
+        public int totalpage{get; set;}
+        public int pagenum{get; set;}
         public List<ApplyResponse> applist{get;set;}
 
     }
