@@ -1,14 +1,34 @@
 <template>
   <div class="login_container">
-    <el-carousel :height="bannerHeight + 'px'" class="login_img">
-      <!-- 遍历图片地址,动态生成轮播图
-      <el-carousel-item v-for="item in imgList" :key="item">
-        <img :src="item" alt />
-      </el-carousel-item>-->
-    </el-carousel>
-    <div class="login_box">
+  <el-carousel :interval="4000" type="card" height="200px" width="300px">
+      <el-carousel-item v-for="item in imagebox" :key="item.id">
+        <img :src="item.idView" class="image" />
+      </el-carousel-item>
+  </el-carousel>
+  <el-divider></el-divider>
+  <el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+<br><el-divider direction="vertical"  ></el-divider><br><el-divider direction="vertical"  ></el-divider>
+
+  <div class="verticalBar">
+  </div>
+    <div class="erweima_box">
+      <b>满意的话，请给我们项目一点支持</b>
+      <br>
+      <img src="../assets/imagebox/login_mid.png" alt="" class="mid">
+      <img src="../assets/imagebox/login_left.png" alt="" class="left">
+      <img src="../assets/imagebox/login_right.png" alt="" class="right">
+    </div>
+     <div class="login_box">
       <div class="avatar_box">
-        <img src alt />
+        <img src="../assets/imagebox/1.jpeg" alt="">
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -25,10 +45,17 @@
         </el-form-item>
         <!-- 权限选择 -->
         <el-form-item prop="role">
-          <el-input prefix-icon="el-icon-user" v-model="logInForm.role" placeholder="请输入权限等级"></el-input>
+        <el-select v-model="logInForm.role" placeholder="请选择" style="width:100%" >
+             <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+             </el-option>
+        </el-select>
         </el-form-item>
         <!-- 按钮 -->
-        <el-form-item class="btns">
+        <el-form-item class="btns" >
           <el-button type="primary" @click="Register()">注册</el-button>
           <el-button type="info" @click="exit()">退出</el-button>
         </el-form-item>
@@ -46,6 +73,15 @@ export default {
   name: "Banner",
   data() {
     return {
+      //**
+        options: [{
+          value: 1,
+          label: '学生'
+        }, {
+          value: 2,
+          label: '老师'
+        }, ],
+        value: '',
       //登录表单
       logInForm: {
         username: "hzh",
@@ -62,7 +98,14 @@ export default {
          role:[ { required: true, message: '请输入权限等级', trigger: 'blur' },
          { message: '为1或0', trigger: 'blur' }]
       },
-
+      imagebox: [
+        { id: 0, idView: require("../assets/imagebox/1.jpeg") },
+        { id: 1, idView: require("../assets/imagebox/2.jpeg") },
+        { id: 2, idView: require("../assets/imagebox/3.png") },
+        { id: 3, idView: require("../assets/imagebox/4.jpg") },
+        //imagebox是assets下一个放图片的文件夹
+      ],
+      screenWidth: 0,
       // 图片地址数组
       imgList: [
         {
@@ -112,20 +155,69 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.login_container.line{
+float: left;
+border-right: 1px solid #ddd;
+height: 300px;
+margin-top: 28px;
+}
+
 .login_container {
-  background-color: #0e758f;
-  height: 800px;
-  margin: 0px;
+  background-color: #fff;
+  //background-image:url("../assets/imagebox/1.jpeg");
+  position:absolute;
   background-size: cover;
+   width:100%; height:100%;
+}
+.erweima_box{ 
+  width: 650px;
+  height: 400px;
+  position: absolute;
+  left: 25%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+ .mid{
+   height: 200px;
+    width: 200px;
+    transform: translate(70%, 10%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+ }
+ .left{
+   height: 140px;
+    width: 140px;
+    transform: translate(-130%, 80%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+ }
+  .right{
+    height: 140px;
+    width: 140px;
+    transform: translate(-15%, 80%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+ }
 }
 .login_box {
   width: 450px;
   height: 430px;
-  background-color: #fff;
+  background-image:url("../assets/imagebox/1.jpeg");
   border-radius: 3px;
   position: absolute;
   left: 75%;
-  top: 50%;
+  top: 70%;
   transform: translate(-50%, -50%);
 
   .avatar_box {
