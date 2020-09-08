@@ -83,6 +83,7 @@ namespace SyaApi.Controllers
                     var waa = await TakesAccessor.GetSumOfWorkAndAbsent(u_id);
                     user_res.nof_absent = waa.sum_absent_num; //sum(takes.absent_num)
                     user_res.work_time = waa.sum_work_time; //sum(takes.work_time)
+                    user_res.absent_time = waa.sum_absent_time; //sume(takes.absent_time)
                 }
                 else
                 {
@@ -91,6 +92,7 @@ namespace SyaApi.Controllers
                     user_res.nof_absent = 0;
                     user_res.work_time = 0;
                     user_res.income = 0;
+                    user_res.absent_time = 0;
                 }
            
                 return Ok(user_res);
