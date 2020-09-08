@@ -245,9 +245,9 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
+        this.table =false;
+        this.getfavoritelist();
         this.$message.success("删除成功");
-        getfavoritelist();
-        showDrawer();
       }
       else{
         this.$message.error("发生了一些错误");
@@ -264,8 +264,8 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
+        this.getfavoritelist();
         this.$message.success("删除成功");
-        getfavoritelist();
       }
       else{
         this.$message.error("发生了一些错误");
@@ -285,14 +285,14 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
+        this.dialogCreateVisible =false;
+        this.getfavoritelist();
         this.$message.success("创建成功");
-        cancelForm();
-        getfavoritelist();
       }
       else{
         this.$message.error("发生了一些错误");
       }
-      this.$router.go(0)
+      
     },
     //更新收藏夹名字函数1
     //更新收藏夹名字
@@ -307,6 +307,8 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
+        this.dialogUpdateVisible=false;
+        this.getfavoritelist();
         this.$message.success("更新成功");
       }
       else{
