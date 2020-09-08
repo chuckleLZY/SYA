@@ -95,11 +95,11 @@ namespace SyaApi.Controllers
             var temp_resume = _mapper.Map<ResumeEntity>(request);
             //查找当前id是否存在resume
             var temp=await ResumeAccessor.Find(resume_stu_id);
-
+            temp_resume.student_id=resume_stu_id;
             if(temp!=null)
             {
-                var num=ResumeAccessor.Change(temp);
-                return Ok(_mapper.Map<ResumeResponse>(temp));
+                var num=ResumeAccessor.Change(temp_resume);
+                return Ok(_mapper.Map<ResumeResponse>(temp_resume));
             }
             return Ok(-1);
         }
