@@ -148,7 +148,7 @@
 
                     
                             <el-tooltip  effect="dark" content="添加收藏夹" placement="top-start" :enterable="false">
-                                <el-button type="success" icon="el-icon-star-on" size="mini" @click="addWorkFav(scope.row.favorite_id)" ></el-button>
+                                <el-button type="success" icon="el-icon-star-on" size="mini" @click="addWorkFav(scope.row.favorite_id,0)" ></el-button>
                             </el-tooltip>
                             <el-tooltip  effect="dark" content="查看收藏夹" placement="top-start" :enterable="false">
                               <el-button type="danger" icon="el-icon-star-off" size="mini" @click="showFavWork(scope.row.favorite_id)"></el-button>
@@ -203,7 +203,7 @@
                 </el-card>
                 <div class="demo-drawer__footer" style="margin-top:10px">
                          
-                        <el-button type="info" icon="el-icon-star-on" plain @click="addWorkFav(fav_id)" >加入收藏</el-button>
+                        <el-button type="info" icon="el-icon-star-on" plain @click="addWorkFav(fav_id,1)" >加入收藏</el-button>
                 </div>
 
             </el-drawer>
@@ -402,8 +402,8 @@ export default {
         this.loading = false;
       //  this.$message.success('申请此工作成功');
     },
-    async addWorkFav(favoritee_id){
-     
+    async addWorkFav(favoritee_id,flag){
+      
         const res=await axios.post('http://localhost:5000/Favorite/AddFavoriteWork',
         {
         favorite_id:favoritee_id,
@@ -424,7 +424,8 @@ export default {
         else{
         this.$message.success('加入收藏夹成功');
         this.showFav();
-        this.showFavWork(favoritee_id);
+        if(flag===1){
+        this.showFavWork(favoritee_id);}
         }
         
          console.log(res);
