@@ -1,4 +1,4 @@
-
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SyaApi.Requests
@@ -26,8 +26,23 @@ namespace SyaApi.Requests
         [Required]
         public int salary{get; set;}
 
+        //[Required]
+        //public string work_time{get; set;}
+
         [Required]
-        public string work_time{get; set;}
+        public string start_day{get; set;}
+
+        [Required]
+        public string end_day{get; set;}
+
+        [Required]
+        public string start_time{get; set;}
+
+        [Required]
+        public string end_time{get; set;}
+
+        [Required]
+        public int week_day{get; set;}
     }
 
     public class ViewWorkRequest

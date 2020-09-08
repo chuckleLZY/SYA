@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Globalization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
@@ -180,12 +181,43 @@ namespace SyaApi.Controllers
         }
 
         ///<summery>
+        /// 计算总小时数
+        /// dumei 09.08
+        ///</summery>
+        static private double CalTotalTime(string start_day, string end_day, string start_time, string end_time, int week_day)
+        {
+            DateTimeFormatInfo dtFormat = new System.Globalization.DateTimeFormatInfo();
+            
+            dtFormat.ShortDatePattern = "HH:mm:ss";
+            DateTime stTime = Convert.ToDateTime(start_time, dtFormat);
+            DateTime edTime = Convert.ToDateTime(end_time, dtFormat);
+            double interval_time = edTime.Subtract(stTime).TotalHours;
+            
+            dtFormat.ShortDatePattern = "yyyy-MM-dd";
+            DateTime stDay = Convert.ToDateTime(start_day, dtFormat);
+            DateTime edDay = Convert.ToDateTime(end_day, dtFormat);
+            int interval_day = (edDay.Subtract(stDay).Days + 1)/7; //end_day也算1天
+
+            int stWeek = Convert.ToInt32(stDay.DayOfWeek);
+            int edWeek = Convert.ToInt32(edDay.DayOfWeek);
+            if (stWeek <= week_day && week_day <= edWeek) interval_day += 1;
+            else if (edWeek < stWeek-1 && week_day <= edWeek) interval_day += 1;
+
+            return interval_day * interval_time;
+        }
+
+        ///<summery>
         /// (非学生用户)创建工作
         /// 检查user.role
         /// dumei 08.23
         ///</summery>
+        ///<summery>
+        /// 增添start_day,end_day,start_time,end_time
+        /// 删除work_time
+        /// 计算总小时数total_time
+        /// dumei 09.08
+        ///</summery>
         [HttpPost("CreateWork")]
-        //[Authorize(Roles = "Provider")]
         public async Task<ActionResult<WorkResponse>> CreateWork([FromBody] ProvideWorkRequest request)
         {
             //判断request里是否满足前置条件
@@ -198,10 +230,23 @@ namespace SyaApi.Controllers
             {
                 return BadRequest(new { message = "Student cannot create work"});
             }
+            if (request.week_day<1 || request.week_day>7)
+            {
+                return BadRequest(new { message = "week day must between 1 to 7."});
+            }
             var work = _mapper.Map<WorkEntity>(request);
             work.teacher_id = provider_id;
-            await WorkAccessor.Create(work); //return work_id
+            work.work_time = "none"; //tobe delete
 
+            // 计算工作总小时数total_time
+            work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
+
+            int work_id = await WorkAccessor.Create(work);
+            if (work_id == 0)
+            {
+                return BadRequest(new { message = "Fail to create work"});
+            }
+            work.work_id = work_id;
             return Ok(_mapper.Map<WorkResponse>(work));
         }
 
