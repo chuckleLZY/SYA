@@ -305,6 +305,7 @@ namespace SyaApi.Controllers
             var work = _mapper.Map<WorkEntity>(request);
             work.teacher_id = provider_id;
             work.work_id=request.work_id;
+            work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
             await WorkAccessor.Update(work); //return work_id
 
             return Ok(_mapper.Map<WorkResponse>(work));
