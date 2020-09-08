@@ -47,6 +47,9 @@
                     </el-card>
                     
                 </el-col>
+
+            
+                
                 </div>
             </el-row>
 
@@ -55,7 +58,7 @@
             <el-drawer
                 title="工作详情"
                 :visible.sync="drawer"
-                
+                :direction="direction"
                 :before-close="handleClose">
                 
                 <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
@@ -83,6 +86,7 @@
                     <el-input v-model="workInfo.work_description" disabled></el-input>
                 </el-form-item>
                 
+                
                 </el-form>
                 </div>
                  
@@ -94,10 +98,18 @@
 
                 <div class="demo-drawer__footer">
                         
-                        <el-button type="info"  @click="appWork()" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
-                        
+                        <el-button type="warning"  @click="appWork()" icon="el-icon-user-solid" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>提交简历</el-button>
+                        <el-button type="primary"  @click="showFav()" icon="el-icon-star-on" style="margin-top: 16px;" v-if="this.$store.state.role==1" plain>加入收藏</el-button>
                 </div>
+
+                
+
+
             </el-drawer>
+
+
+            
+
 
 
             <!--  分页区域  -->
@@ -111,7 +123,92 @@
                 :total="total">
             </el-pagination>
         </el-card>
+
+        <!--查看所有收藏夹-->
+        <el-dialog title="详情" :visible.sync="checkDialogVisible" width="50%">
+                  
+             <el-table :data="favItem" v-loading="loading" class="addfav" >
+                <el-table-column label="#" type="index"></el-table-column>
+                <el-table-column label="收藏夹名称" prop="favorite_name">
+
+                </el-table-column>
+
+                
+                <el-table-column label="收藏夹工作数量" prop="work_num">
+
+                </el-table-column>
+
+                <el-table-column label="收藏夹ID" prop="favorite_id">
+
+                </el-table-column>
+
+                <el-table-column label="操作">
+                    <template v-slot:default="scope">
+                       
+
+                    
+                            <el-tooltip  effect="dark" content="添加收藏夹" placement="top-start" :enterable="false">
+                                <el-button type="success" icon="el-icon-star-on" size="mini" @click="addWorkFav(scope.row.favorite_id)" ></el-button>
+                            </el-tooltip>
+                            <el-tooltip  effect="dark" content="查看收藏夹" placement="top-start" :enterable="false">
+                              <el-button type="danger" icon="el-icon-star-off" size="mini" @click="showFavWork(scope.row.favorite_id)"></el-button>
+                            </el-tooltip>
+                    </template>
+
+                            
+                </el-table-column> 
+
+                
+
+            </el-table>
+            <!--分页区域-->
+                  <el-pagination
+                      @size-change="handleSizeChange2"
+                      @current-change="handleCurrentChange2"
+                      :current-page="queryInfo2.pagenum"
+                      :page-sizes="[3, 6, 9]"
+                      :page-size="3"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="total2">
+                  </el-pagination>
+          </el-dialog>
+
+
+          <!--左侧弹窗-->
+          <el-drawer
+                title="收藏详情"
+                :visible.sync="drawer2"
+                :direction="direction2"
+                :before-close="handleClose2">
+                
+                <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
+                 <el-table :data="favWorkList" v-loading="loading" class="addfav" >
+                <el-table-column label="#" type="index"></el-table-column>
+                <el-table-column label="工作名称" prop="work_name">
+
+                </el-table-column>
+
+                
+                <el-table-column label="工作描述" prop="work_description">
+
+                </el-table-column>
+
+                <el-table-column label="工作ID" prop="work_id">
+
+                </el-table-column>
+
+  
+
+            </el-table>
+                </el-card>
+                <div class="demo-drawer__footer" style="margin-top:10px">
+                         
+                        <el-button type="info" icon="el-icon-star-on" plain @click="addWorkFav(fav_id)" >加入收藏</el-button>
+                </div>
+
+            </el-drawer>
     </div>
+
 </template>
 
 
@@ -125,6 +222,9 @@ export default {
       input3: '',
       select: '',
       loading: true,
+      direction: 'rtl',
+      direction2: 'ltr',
+      checkDialogVisible: false,
     //获取工作列表的参数对象
       queryInfo:{
           
@@ -132,10 +232,23 @@ export default {
           pagesize: 3,
           query: ''
       },
+      queryInfo2:{
+          
+          pagenum: 1,
+          pagesize: 3,
+          query: ''
+      },
       workList:[],
+      favItem:[],
       total:0,
+      total2:0,
       drawer: false,
-      workInfo:{}
+      drawer2: false,
+      workInfo:{},
+      favInfo:{},
+      fav_id:-1,
+      favWorkList:[]
+
     }
   },
   created(){
@@ -161,6 +274,23 @@ export default {
         this.getWorkList();
         this.loading = false;
       },
+
+      handleSizeChange2(newSize){
+        this.loading = true;
+        console.log(newSize)
+        this.queryInfo2.pagesize=newSize
+        this.showFav();
+        this.loading = false;
+      },
+      //监听页码改变的事件
+      handleCurrentChange2(newPage){
+        this.loading = true;
+        //console.log(newPage)
+        this.queryInfo2.pagenum=newPage
+        this.showFav();
+        this.loading = false;
+      },
+      
       
         handleClose(done) {
             this.$confirm('确认关闭？')
@@ -168,10 +298,22 @@ export default {
                 done();
             })
             .catch(_ => {})
+      
         },
+        handleClose2(done) {
+            this.$confirm('确认关闭？')
+            .then(_ => {
+                done();
+            })
+            .catch(_ => {})
+        
+            
+        },
+
      //展示右侧弹窗
     async showDrawer(workid){
-        //console.log(workid)
+      this.direction='rtl'
+        console.log(workid)
         const res = await axios.post(
         "http://localhost:5000/Work/ViewWorkInfo",
         {work_id:workid},
@@ -238,8 +380,78 @@ export default {
         }
         //console.log(res);
         this.$message.success('申请此工作成功');
-    }
+    },
+    async showFav(){
+      
+        const res=await axios.post('http://localhost:5000/Favorite/GetFavorite',
+        {pagenum: this.queryInfo2.pagenum,
+        pagesize: this.queryInfo2.pagesize,
+                    },{
+          withCredentials: true
+        });
+        this.checkDialogVisible = true;
+        if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        this.favItem=res.data.favoriteItem;
+        this.total2=res.data.totalpage;
+        this.queryInfo.pagesize=res.data.totalpage/res.data.pagenum;
+        this.queryInfo.pagenum=res.data.pagenum;
+        //console.log(res);
+        this.loading = false;
+      //  this.$message.success('申请此工作成功');
+    },
+    async addWorkFav(favoritee_id){
      
+        const res=await axios.post('http://localhost:5000/Favorite/AddFavoriteWork',
+        {
+        favorite_id:favoritee_id,
+        work_id:this.workInfo.work_id
+        },
+        {
+          withCredentials: true
+        });
+        if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        if(res.data!==0){
+          this.$message.error('该工作已在收藏夹内，无法添加');
+          
+
+        }
+        else{
+        this.$message.success('加入收藏夹成功');
+        this.showFav();
+        this.showFavWork(favoritee_id);
+        }
+        
+         console.log(res);
+        
+    },
+//展示左侧弹窗
+    async showFavWork(favoritee_id){
+      this.direction2='ltr'
+      console.log(this.workInfo.work_id);
+        const res=await axios.post('http://localhost:5000/Favorite/GetFavoriteInfo',
+        {
+        favorite_id:favoritee_id,
+        },
+        {
+          withCredentials: true
+        });
+        if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        this.favWorkList=res.data.worklist;
+        this.fav_id=favoritee_id;
+        this.loading = false;
+        //console.log(res);
+        this.drawer2=true
+    },
+    
 
     
      
@@ -263,6 +475,7 @@ export default {
   position: relative;
   left:10px;
   width:100% !important;
+  height: 90% !important;
 }
 
 .recruitment_card2{
@@ -332,4 +545,6 @@ export default {
 .demo-ruleFormItem{
   margin-left: -10px;
 }
+
+
 </style>
