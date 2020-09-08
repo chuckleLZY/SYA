@@ -1,14 +1,62 @@
 <template>
-  <div class="login_container" style="height:100%">
-    <el-carousel :height="bannerHeight" class="login_img">
-      <!-- 遍历图片地址,动态生成轮播图
-      <el-carousel-item v-for="item in imgList" :key="item">
-        <img :src="item" alt />
-      </el-carousel-item> -->
+  <div class="login_container">
+    <el-carousel :interval="4000" type="card" height="200px" width="300px">
+      <el-carousel-item v-for="item in imagebox" :key="item.id">
+        <img :src="item.idView" class="image" />
+      </el-carousel-item>
     </el-carousel>
+    <el-divider></el-divider>
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+    <br />
+    <el-divider direction="vertical"></el-divider>
+
+    <div class="verticalBar"></div>
+    <div class="erweima_box">
+      <b>满意的话，请给我们项目一点支持</b>
+      <br />
+      <img src="../assets/imagebox/login_mid.png" alt class="mid" />
+      <img src="../assets/imagebox/login_left.png" alt class="left" />
+      <img src="../assets/imagebox/login_right.png" alt class="right" />
+    </div>
     <div class="login_box">
       <div class="avatar_box">
-        <img src alt />
+        <img src="../assets/imagebox/1.jpeg" alt />
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -53,7 +101,14 @@ export default {
           { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
         ]
       },
-
+      imagebox: [
+        { id: 0, idView: require("../assets/imagebox/1.jpeg") },
+        { id: 1, idView: require("../assets/imagebox/2.jpeg") },
+        { id: 2, idView: require("../assets/imagebox/3.png") },
+        { id: 3, idView: require("../assets/imagebox/4.jpg") }
+        //imagebox是assets下一个放图片的文件夹
+      ],
+      screenWidth: 0,
       // 图片地址数组
       imgList: [
         {
@@ -67,9 +122,9 @@ export default {
         }
       ],
       //图片父容器高度
-      bannerHeight: "100%",
+      bannerHeight: 1000,
       //浏览器宽度
-      // screenWidth: 0
+      screenWidth: 0
     };
   },
   methods: {
@@ -84,8 +139,9 @@ export default {
         },
         { withCredentials: true }
       );
-      // console.log(result);
+      console.log(result);
       if (result.status == 200) {
+        //将登录信息保存到vuex
         this.$store.commit("logIn", result.data.role);
         //将vuex里的信息保存到sessionStorage里
         sessionStorage.setItem("store", JSON.stringify(this.$store.state));
@@ -101,20 +157,70 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.login_container.line {
+  float: left;
+  border-right: 1px solid #ddd;
+  height: 300px;
+  margin-top: 28px;
+}
+
 .login_container {
-  background-color: #0e758f;
-  height: 800px;
-  margin: 0px;
+  background-color: #fff;
+  //background-image:url("../assets/imagebox/1.jpeg");
+  position: absolute;
   background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+.erweima_box {
+  width: 650px;
+  height: 400px;
+  position: absolute;
+  left: 25%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  .mid {
+    height: 200px;
+    width: 200px;
+    transform: translate(70%, 10%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+  }
+  .left {
+    height: 140px;
+    width: 140px;
+    transform: translate(-130%, 80%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+  }
+  .right {
+    height: 140px;
+    width: 140px;
+    transform: translate(-15%, 80%);
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+  }
 }
 .login_box {
   width: 450px;
   height: 300px;
-  background-color: #fff;
+  background-image: url("../assets/imagebox/1.jpeg");
   border-radius: 3px;
   position: absolute;
   left: 75%;
-  top: 40%;
+  top: 60%;
   transform: translate(-50%, -50%);
 
   .avatar_box {
@@ -148,6 +254,14 @@ export default {
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+  }
+  .line {
+    display: inline-block;
+    width: 1px;
+    height: 55em;
+    margin: 0 8px;
+    vertical-align: middle;
+    position: relative;
   }
 }
 </style>
