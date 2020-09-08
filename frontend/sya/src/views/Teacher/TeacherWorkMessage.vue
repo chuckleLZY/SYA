@@ -54,7 +54,7 @@
                 <el-table-column label="状态" prop="status">
                   <template slot-scope="scope">
                     <el-tag type="success" v-if="scope.row.status==1">已处理</el-tag>
-                    <el-tag type="success" v-if="scope.row.status==2">已拒绝</el-tag>
+                    <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>
                     <el-tag type="info" v-if="scope.row.status==0">未处理</el-tag>
                   </template>
                 </el-table-column>
@@ -63,8 +63,8 @@
                        
 
                     
-                            <el-tooltip  effect="dark" content="查看详情" placement="top-start" :enterable="false">
-                                <el-button type="success" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" ></el-button>
+                            <el-tooltip  effect="dark" content="进行处理" placement="top-start" :enterable="false">
+                                <el-button type="primary" icon="el-icon-edit" size="mini" @click="viewMesInfo(scope.row)" ></el-button>
                             </el-tooltip>
                             
                     </template>
@@ -216,7 +216,7 @@ export default {
         //console.log(confirmResulte);
         
         const res = await axios.post(
-        "http://localhost:5000/Apply/ProManageLeave",
+        "http://localhost:5000/Leave/ProManageLeave",
         {
           leave_id: this.messageData.leave_id,
           status:1
@@ -231,6 +231,8 @@ export default {
         return;
         }
       this.$message.info("已同意");
+      this.checkDialogVisible = false;
+      await this.getWorkMessageList();
      // console.log(res);
 
       },
@@ -239,7 +241,7 @@ export default {
         //console.log(confirmResulte);
         
         const res = await axios.post(
-        "http://localhost:5000/Apply/ProManageLeave",
+        "http://localhost:5000/Leave/ProManageLeave",
         {
           leave_id: this.messageData.leave_id,
           status:2
@@ -254,6 +256,8 @@ export default {
         return;
         }
       this.$message.info("已拒绝");
+      this.checkDialogVisible = false;
+      await this.getWorkMessageList();
      // console.log(res);
 
       },
