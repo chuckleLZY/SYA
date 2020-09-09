@@ -46,14 +46,14 @@ export default {
 
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
+  background-color: #00008B;
   color: #333;
   text-align: center;
   /* line-height: 60px; */
 }
 
 .el-aside {
-  background-color: #d3dce6;
+  background-color: #00008B;
   color: #333;
   text-align: center;
   /* line-height: 200px; */

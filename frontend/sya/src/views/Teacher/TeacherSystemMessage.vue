@@ -120,6 +120,7 @@ export default {
       },
       sysMessageList:[],
       total:0,
+      
 
      /* workList: [{
             date: '2016-05-02',
