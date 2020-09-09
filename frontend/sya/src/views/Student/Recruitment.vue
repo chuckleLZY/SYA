@@ -29,7 +29,7 @@
                     <el-card :body-style="{ padding: '0px'}" class="recruitment_card2" >
                     <img :src= work.cover class="image">
                     <div style="padding: 14px;" > 
-                        <p ><el-tag >工作名称</el-tag> : {{work.work_name}}</p>
+                        <p ><el-tag type="danger">工作名称</el-tag> : {{work.work_name}}</p>
                         <p><el-tag type="success">点赞</el-tag> : {{work.likes_num}}</p>
                         <p><el-tag type="warning">收藏</el-tag> : {{work.collect_num}}</p>
                         
@@ -37,8 +37,8 @@
                         <div class="bottom clearfix">
                          
                         
-                        <el-button type="info" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
-                        <el-button type="info" class="button"  plain>点赞</el-button>
+                        <el-button type="primary" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
+                        <el-button type="info" class="button"  @click="GetLike(work.work_id)" plain>点赞</el-button>
                         
                         </div> 
 
@@ -79,12 +79,21 @@
                 <el-form-item label="薪资:" prop="salary" class="demo-ruleFormItem">
                     <el-input v-model="workInfo.salary" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="工作时间:" prop="work_time" class="demo-ruleFormItem">
-                    <el-input v-model="workInfo.work_time" disabled></el-input>
+                <el-form-item label="工作日期:" prop="start_day" class="demo-ruleFormItem">
+                    <el-input v-model="workInfo.start_day" disabled></el-input>
+                    <p>至</p>
+                    <el-input v-model="workInfo.end_day" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="工作时间:" prop="start_time" class="demo-ruleFormItem">
+                    <el-input v-model="workInfo.start_time" disabled></el-input>
+                    <p>至</p>
+                    <el-input v-model="workInfo.end_time" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作描述:" prop="work_description" class="demo-ruleFormItem">
                     <el-input v-model="workInfo.work_description" disabled></el-input>
                 </el-form-item>
+                
+                
                 
                 
                 </el-form>
@@ -201,7 +210,7 @@
 
             </el-table>
                 </el-card>
-                <div class="demo-drawer__footer" style="margin-top:10px">
+                <div class="demo-drawer__footer" style="margin-top:15px">
                          
                         <el-button type="info" icon="el-icon-star-on" plain @click="addWorkFav(fav_id,1)" >加入收藏</el-button>
                 </div>
@@ -261,7 +270,7 @@ export default {
       //监听每页条数选项改变的事件
       handleSizeChange(newSize){
         this.loading = true;
-        console.log(newSize)
+        //console.log(newSize)
         this.queryInfo.pagesize=newSize
         this.getWorkList();
         this.loading = false;
@@ -277,7 +286,7 @@ export default {
 
       handleSizeChange2(newSize){
         this.loading = true;
-        console.log(newSize)
+        //console.log(newSize)
         this.queryInfo2.pagesize=newSize
         this.showFav();
         this.loading = false;
@@ -313,7 +322,7 @@ export default {
      //展示右侧弹窗
     async showDrawer(workid){
       this.direction='rtl'
-        console.log(workid)
+        //console.log(workid)
         const res = await axios.post(
         "http://localhost:5000/Work/ViewWorkInfo",
         {work_id:workid},
@@ -368,10 +377,23 @@ export default {
         }
         this.workList=res.data.worklist;
         this.total=res.data.totalpage;
-        console.log(res);
+       // console.log(res);
+    },
+
+    async GetLike(workid){
+      const res=await axios.post('http://localhost:5000/Work/GetLike',{
+                work_id:workid
+            },{withCredentials: true});
+          if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        //console.log('su!');
+        this.$message.success('感谢您的点赞');
+        this.getWorkList();
     },
     async appWork(){
-        const res=await axios.post('http://localhost:5000/Apply/CreateApply',{work_id:this.workInfo.work_id},{
+        const res=await axios.post('http://localhost:5000/Work/GetLike',{work_id:this.workInfo.work_id},{
           withCredentials: true
         });
         if (res.status !== 200) {
@@ -396,8 +418,8 @@ export default {
         }
         this.favItem=res.data.favoriteItem;
         this.total2=res.data.totalpage;
-        this.queryInfo.pagesize=res.data.totalpage/res.data.pagenum;
-        this.queryInfo.pagenum=res.data.pagenum;
+        this.pagesize=res.data.totalpage/res.data.pagenum;
+        this.pagenum=res.data.pagenum;
         //console.log(res);
         this.loading = false;
       //  this.$message.success('申请此工作成功');
@@ -423,18 +445,21 @@ export default {
         }
         else{
         this.$message.success('加入收藏夹成功');
+        
         this.showFav();
+        this.getWorkList();
+        //console.log(this.pagesize);
         if(flag===1){
         this.showFavWork(favoritee_id);}
         }
         
-         console.log(res);
+         //console.log(res);
         
     },
 //展示左侧弹窗
     async showFavWork(favoritee_id){
       this.direction2='ltr'
-      console.log(this.workInfo.work_id);
+      //console.log(this.workInfo.work_id);
         const res=await axios.post('http://localhost:5000/Favorite/GetFavoriteInfo',
         {
         favorite_id:favoritee_id,
@@ -468,15 +493,16 @@ export default {
   left:20px;
   margin-bottom: 15px;
   margin-top: 20px;
-  width:100% !important;
+  width:90% !important;
 }
 
 .recruitment_card{
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15) !important;
   position: relative;
-  left:10px;
-  width:100% !important;
+  left:6px;
+  width:99% !important;
   height: 90% !important;
+  
 }
 
 .recruitment_card2{
@@ -486,6 +512,7 @@ export default {
   width:400px !important;
   margin: auto;
   margin-top:30px;
+  background-color: #d3dce6;
 
   
 }
@@ -494,8 +521,9 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width:390px !important;
-  height:600px !important;
+  height:590px !important;
   overflow: auto;
+  background-color: #a7b1bb;
 }
 
 
@@ -545,6 +573,7 @@ export default {
 
 .demo-ruleFormItem{
   margin-left: -10px;
+  
 }
 
 
