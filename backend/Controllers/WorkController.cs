@@ -266,7 +266,7 @@ namespace SyaApi.Controllers
 
             WorkItemResponse workItem = new WorkItemResponse();
             var start=(request.pagenum-1)*request.pagesize;
-            var end=request.pagenum*request.pagesize-1;
+            var end=request.pagenum*request.pagesize;
             workItem.totalpage=start;
             workItem.pagenum=request.pagenum;
             workItem.worklist = new List<WorkResponse>();
@@ -274,12 +274,12 @@ namespace SyaApi.Controllers
 
             if(provide_list != null)
             {
-                for (int i=start; i<=end && i<provide_list.total; ++i)
+                for (int i=start; i<end && i<provide_list.total; ++i)
                 {
                     WorkResponse wr = _mapper.Map<WorkResponse>(provide_list.workItem[i]);           
                     workItem.worklist.Add(wr);
-                    workItem.totalpage++;
                 }
+                workItem.totalpage = provide_list.total;
                 return Ok(workItem);
             }
             return Ok(-1); // Never arrive there
@@ -311,6 +311,45 @@ namespace SyaApi.Controllers
             await WorkAccessor.Update(work); //return work_id
 
             return Ok(_mapper.Map<WorkResponse>(work));
+        }
+
+
+        ///<summery>
+        /// 用户点赞
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("GetLike")]
+        [AllowAnonymous]
+        public async Task<int> GetLike([FromBody] FindworkRequest request)
+        {
+            await WorkAccessor.getlike(request.work_id);
+            return 1;
+        }
+
+
+        ///<summery>
+        /// 学生辞职
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("Getresign")]
+        [AllowAnonymous]
+        public async Task<int> Getresign([FromBody] FindworkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return -1;
+            }
+            var user_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(user_id) != Role.Student)
+            {
+                return -2;
+            }
+            TakesEntity entity =new TakesEntity();
+            entity.work_id=request.work_id;
+            entity.student_id=user_id;
+            var num=await TakesAccessor.Delete(entity);
+            return num;
         }
 
 

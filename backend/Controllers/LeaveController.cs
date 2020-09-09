@@ -65,7 +65,7 @@ namespace SyaApi.Controllers
         /// dumei 08.24
         [HttpPost("ProViewLeaves")]
         //[AllowAnonymous]
-        public async Task<ActionResult<LeaveItemResponse>> ProViewLeaves()
+        public async Task<ActionResult<LeaveItemResponse>> ProViewLeaves([FromBody] ViewLeavesRequest request)
         {
             var pro_id = Int32.Parse(User.Identity.Name);
             if (await UserAccessor.CheckRole(pro_id) == Constants.Role.Student)
@@ -73,22 +73,24 @@ namespace SyaApi.Controllers
                 return BadRequest(new { message = "ProViewLeaves is not for students."});
             }
 
+            var start = (request.pagenum-1) * request.pagesize;
+            var end = request.pagenum * request.pagesize;
             LeaveItemResponse leaves = new LeaveItemResponse();
-            leaves.total = 0;
+            leaves.pagenum = request.pagenum;
             leaves.leavelist = new System.Collections.Generic.List<LeaveResponse>();
 
             var leave_list = await LeaveAccessor.ProViewLeaves(pro_id);
 
             if(leave_list != null)
             {
-                for(int i=0; i<leave_list.total; i++)
+                for(int i=start; i < end && i<leave_list.total; i++)
                 {
                     LeaveResponse lr = _mapper.Map<LeaveResponse>(leave_list.leaveItem[i]);
                     lr.student_name = await UserAccessor.GetUserName(lr.student_id);
                     lr.work_name = await WorkAccessor.GetWorkName(lr.work_id);        
                     leaves.leavelist.Add(lr);
-                    leaves.total++;
                 }
+                leaves.total = leave_list.total;
                 return Ok(leaves);
             }
             return Ok(-1); // Never arrive there
