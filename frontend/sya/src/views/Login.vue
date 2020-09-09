@@ -1,11 +1,13 @@
 <template>
   <div class="login_container">
-    <el-carousel :interval="4000" type="card" height="200px" width="300px">
+<el-carousel :interval="4000" type="card" height="200px">
       <el-carousel-item v-for="item in imagebox" :key="item.id">
         <img :src="item.idView" class="image" />
       </el-carousel-item>
     </el-carousel>
-    <el-divider></el-divider>
+  <el-divider><tr style="font-size : 30px;">
+    <td class="color-dark-light">登录</td>
+    </tr></el-divider>
     <el-divider direction="vertical"></el-divider>
     <br />
     <el-divider direction="vertical"></el-divider>
@@ -45,18 +47,25 @@
     <el-divider direction="vertical"></el-divider>
     <br />
     <el-divider direction="vertical"></el-divider>
-
+    <br>
+    <el-divider direction="vertical"></el-divider>
+    <br>
+    <el-divider direction="vertical"></el-divider>
+    <br>
+    <el-divider direction="vertical"></el-divider>
+    <br>
+    <span style="font-size: 12px">登录代表您同意我们的</span><el-link style="font-size:12px" type="primary">隐私政策</el-link><span style="font-size: 12px">和</span><el-link style="font-size:12px" type="primary">用户协议</el-link>
     <div class="verticalBar"></div>
     <div class="erweima_box">
       <b>满意的话，请给我们项目一点支持</b>
       <br />
-      <img src="../assets/imagebox/login_mid.png" alt class="mid" />
-      <img src="../assets/imagebox/login_left.png" alt class="left" />
-      <img src="../assets/imagebox/login_right.png" alt class="right" />
+      <img src="../assets/imagebox/login_mid2.png" alt class="mid" />
+      <img src="../assets/imagebox/login_left2.png" alt class="left" />
+      <img src="../assets/imagebox/login_right2.png" alt class="right" />
     </div>
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/imagebox/1.jpeg" alt />
+        <img src="../assets/imagebox/logosya.png" alt />
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -102,10 +111,10 @@ export default {
         ]
       },
       imagebox: [
-        { id: 0, idView: require("../assets/imagebox/1.jpeg") },
-        { id: 1, idView: require("../assets/imagebox/2.jpeg") },
-        { id: 2, idView: require("../assets/imagebox/3.png") },
-        { id: 3, idView: require("../assets/imagebox/4.jpg") }
+         { id: 0, idView: require("../assets/imagebox/login1.png") },
+        { id: 1, idView: require("../assets/imagebox/login2.png") },
+        { id: 2, idView: require("../assets/imagebox/login3.png") },
+        { id: 3, idView: require("../assets/imagebox/login4.png") },
         //imagebox是assets下一个放图片的文件夹
       ],
       screenWidth: 0,
@@ -193,7 +202,7 @@ export default {
   .left {
     height: 140px;
     width: 140px;
-    transform: translate(-130%, 80%);
+    transform: translate(-150%, 80%);
     img {
       width: 100%;
       height: 100%;
@@ -204,7 +213,7 @@ export default {
   .right {
     height: 140px;
     width: 140px;
-    transform: translate(-15%, 80%);
+    transform: translate(5%, 80%);
     img {
       width: 100%;
       height: 100%;
@@ -213,10 +222,30 @@ export default {
     }
   }
 }
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+img {
+  /*设置图片宽度和浏览器宽度一致*/
+  width: 100%;
+  height: inherit;
+}
 .login_box {
   width: 450px;
   height: 300px;
-  background-image: url("../assets/imagebox/1.jpeg");
+  background-image: url("../assets/imagebox/login5.png");
   border-radius: 3px;
   position: absolute;
   left: 75%;
