@@ -95,5 +95,30 @@ namespace SyaApi.DataAccessors
             else return 0;
         }
 
+
+        ///<summery>
+        /// 辞职删除takes
+        ///chuckle 9.9
+        public static async Task<int> Delete(TakesEntity takes)
+        {
+            var query = "DELETE FROM takes where student_id=@id AND work_id=@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@id", takes.student_id);
+            command.Parameters.AddWithValue("@work_id", takes.work_id);
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+
+
     }
 }

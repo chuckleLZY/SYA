@@ -24,4 +24,13 @@ namespace SyaApi.Requests
         [Required]
         public int status {get; set;} // Constants: ApplyStatus
     }
+
+    public class ViewLeavesRequest
+    {
+        [Required]
+        public int pagenum {get; set;}
+
+        [Required]
+        public int pagesize {get; set;}
+    }
 }
