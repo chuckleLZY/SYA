@@ -253,7 +253,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/LogIn') return next();
+    if (to.path === '/LogIn'|| to.path === '/Register') return next();
     const store = JSON.parse(sessionStorage.getItem("store"));
     if (!store) return next('/LogIn');
     else if (store.isLoggedIn == false) return next('/LogIn');
