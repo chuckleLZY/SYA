@@ -32,13 +32,13 @@
                         <p ><el-tag >工作名称</el-tag> : {{work.work_name}}</p>
                         <p><el-tag type="success">点赞</el-tag> : {{work.likes_num}}</p>
                         <p><el-tag type="warning">收藏</el-tag> : {{work.collect_num}}</p>
-                        <p><el-tag type="danger">分享</el-tag> : {{work.share_num}}</p>
+                        
                         
                         <div class="bottom clearfix">
                          
                         
                         <el-button type="info" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
-                        
+                        <el-button type="info" class="button"  plain>点赞</el-button>
                         
                         </div> 
 
