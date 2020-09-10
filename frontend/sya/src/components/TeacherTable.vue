@@ -3,7 +3,7 @@
     <el-aside width="200px">
       <el-menu
         class="el-menu-vertical-demo"
-        background-color="#545c64"
+        background-color="#00008B"
         text-color="#fff"
         active-text-color="#ffd04b"
         style="height: 100%"
