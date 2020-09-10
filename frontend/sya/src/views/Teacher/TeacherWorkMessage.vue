@@ -53,7 +53,7 @@
                 </el-table-column>
                 <el-table-column label="状态" prop="status">
                   <template slot-scope="scope">
-                    <el-tag type="success" v-if="scope.row.status==1">已处理</el-tag>
+                    <el-tag type="success" v-if="scope.row.status==1">已同意</el-tag>
                     <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>
                     <el-tag type="info" v-if="scope.row.status==0">未处理</el-tag>
                   </template>
@@ -106,7 +106,7 @@
           </el-form-item>
           
           <div class="demo-drawer__footer" style="margin-top:10px">
-                         <el-tag type="success" v-if="messageData.status==1">已接受</el-tag>
+                         <el-tag type="success" v-if="messageData.status==1">已同意</el-tag>
                          <el-tag type="danger" v-if="messageData.status==2">已拒绝</el-tag>
                         <el-button type="info" icon="el-icon-star-on" plain @click="AgreeLea()" v-if="!messageData.status">同意请假</el-button>
                         <el-button type="info" icon="el-icon-star-on" plain @click="RefuseLea()" v-if="!messageData.status" >拒绝请假</el-button>

@@ -358,8 +358,8 @@ export default {
         }
         this.workList=res.data.worklist;
         this.total=res.data.totalpage;
-        this.pagesize=res.data.totalpage/res.data.pagenum;
-        this.pagenum=res.data.pagenum;
+       // this.pagesize=res.data.totalpage/res.data.pagenum;
+       // this.pagenum=res.data.pagenum;
         this.loading = false;
        // console.log(this.pagesize);
       //  console.log(res);
@@ -418,8 +418,8 @@ export default {
         }
         this.favItem=res.data.favoriteItem;
         this.total2=res.data.totalpage;
-        this.pagesize=res.data.totalpage/res.data.pagenum;
-        this.pagenum=res.data.pagenum;
+        //this.pagesize=res.data.totalpage/res.data.pagenum;
+        //this.pagenum=res.data.pagenum;
         //console.log(res);
         this.loading = false;
       //  this.$message.success('申请此工作成功');
