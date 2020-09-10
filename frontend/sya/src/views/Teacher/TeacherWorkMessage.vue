@@ -175,7 +175,8 @@ export default {
          const res = await axios.post(
         "http://localhost:5000/Leave/ProViewLeaves",
         {
-         
+         pagenum: this.queryInfo.pagenum,
+          pagesize: this.queryInfo.pagesize
         },
         {
           withCredentials: true
@@ -186,9 +187,9 @@ export default {
         return;
         }
         this.workMessageList=res.data.leavelist;
-      //  this.total=res.data.totalpage;
-        //this.pagesize=res.data.totalpage/res.data.pagenum;
-       // this.pagenum=res.data.pagenum;
+        this.total=res.data.total;
+        this.pagesize=res.data.totalpage/res.data.pagenum;
+        this.pagenum=res.data.pagenum;
         this.loading = false;
       //  console.log(this.pagesize);
        // console.log(res);

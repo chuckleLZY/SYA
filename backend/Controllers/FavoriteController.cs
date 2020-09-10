@@ -183,6 +183,7 @@ namespace SyaApi.Controllers
             if(temp_s==1)return -1;
             var temp=await FavoriteAccessor.AddFavorWork(favorite);
             var ans=await FavoriteAccessor.ChangeNum(request.favorite_id);
+            await WorkAccessor.upfavnum(request.work_id);
             if(temp>0)
             {
                 return 1;
@@ -204,6 +205,7 @@ namespace SyaApi.Controllers
             var favorite = _mapper.Map<HasFavoriteEntity>(request);
             var temp=await FavoriteAccessor.DeleteFavorWork(favorite);
             var ans=await FavoriteAccessor.ChangeNum(request.favorite_id);
+            await WorkAccessor.downfavnum(request.work_id);
             if(temp>0)
             {
                 return 1;

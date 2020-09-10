@@ -314,5 +314,44 @@ namespace SyaApi.Controllers
         }
 
 
+        ///<summery>
+        /// 用户点赞
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("GetLike")]
+        [AllowAnonymous]
+        public async Task<int> GetLike([FromBody] FindworkRequest request)
+        {
+            await WorkAccessor.getlike(request.work_id);
+            return 1;
+        }
+
+
+        ///<summery>
+        /// 学生辞职
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("Getresign")]
+        [AllowAnonymous]
+        public async Task<int> Getresign([FromBody] FindworkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return -1;
+            }
+            var user_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(user_id) != Role.Student)
+            {
+                return -2;
+            }
+            TakesEntity entity =new TakesEntity();
+            entity.work_id=request.work_id;
+            entity.student_id=user_id;
+            var num=await TakesAccessor.Delete(entity);
+            return num;
+        }
+
+
     }
 }

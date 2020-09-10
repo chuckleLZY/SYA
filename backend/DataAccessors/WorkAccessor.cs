@@ -44,7 +44,7 @@ namespace SyaApi.DataAccessors
         public static async Task<WorkEntity> FindWorkInfo(int id)
         {
             WorkEntity temp=new WorkEntity();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num FROM work WHERE work_id=@id";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_id=@id";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -67,7 +67,13 @@ namespace SyaApi.DataAccessors
                     work_time=reader.GetString("work_time"),
                     likes_num=reader.GetInt32("likes_num"),
                     collect_num=reader.GetInt32("collect_num"),
-                    share_num=reader.GetInt32("share_num")
+                    
+                    start_day=reader.GetString("start_day"),
+                    end_day=reader.GetString("end_day"),
+                    start_time=reader.GetString("start_time"),
+                    end_time=reader.GetString("end_time"),
+                    total_time=reader.GetDouble("total_time"),
+                    week_day=reader.GetInt32("week_day")
                 };
             }
             return null;
@@ -228,7 +234,7 @@ namespace SyaApi.DataAccessors
             WorkItemEntity work=new WorkItemEntity();
             work.total=0;
             work.workItem=new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,work_time,salary,likes_num,collect_num,share_num FROM work";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -251,7 +257,13 @@ namespace SyaApi.DataAccessors
                 temp.salary=reader.GetInt32("salary");
                 temp.likes_num=reader.GetInt32("likes_num");
                 temp.collect_num=reader.GetInt32("collect_num");
-                temp.share_num=reader.GetInt32("share_num");
+
+                temp.start_day=reader.GetString("start_day");
+                temp.end_day=reader.GetString("end_day");
+                temp.start_time=reader.GetString("start_time");
+                temp.end_time=reader.GetString("end_time");
+                temp.total_time=reader.GetDouble("total_time");
+                temp.week_day=reader.GetInt32("week_day");
                 
                 work.total++;
                 work.workItem.Add(temp);
@@ -268,7 +280,7 @@ namespace SyaApi.DataAccessors
             WorkItemEntity work=new WorkItemEntity();
             work.total=0;
             work.workItem=new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,work_time,salary,likes_num,collect_num,share_num FROM work WHERE work_name LIKE @search OR work_description LIKE @search OR address LIKE @search ";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_name LIKE @search OR work_description LIKE @search OR address LIKE @search ";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -291,7 +303,13 @@ namespace SyaApi.DataAccessors
                 temp.salary=reader.GetInt32("salary");
                 temp.likes_num=reader.GetInt32("likes_num");
                 temp.collect_num=reader.GetInt32("collect_num");
-                temp.share_num=reader.GetInt32("share_num");
+                
+                temp.start_day=reader.GetString("start_day");
+                temp.end_day=reader.GetString("end_day");
+                temp.start_time=reader.GetString("start_time");
+                temp.end_time=reader.GetString("end_time");
+                temp.total_time=reader.GetDouble("total_time");
+                temp.week_day=reader.GetInt32("week_day");
                 
                 work.total++;
                 work.workItem.Add(temp);
@@ -356,5 +374,75 @@ namespace SyaApi.DataAccessors
             }
             return 0;
         }
+    
+        ///<summery>
+        /// 用户点赞
+        /// chuckle 9.9
+        ///</summery>
+        public static async Task<int> getlike(int work_id)
+        {
+            var query = "UPDATE work SET likes_num=likes_num+1 WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        
+        }
+    
+        ///<summery>
+        /// 收藏数增加
+        /// chuckle 9.9
+        ///</summery>
+        public static async Task<int> upfavnum(int work_id)
+        {
+            var query = "UPDATE work SET collect_num=collect_num+1 WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        
+        }
+    
+        ///<summery>
+        /// 收藏数减少
+        /// chuckle 9.9
+        ///</summery>
+        public static async Task<int> downfavnum(int work_id)
+        {
+            var query = "UPDATE work SET collect_num=collect_num-1 WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        
+        }
+    
     }
 }
