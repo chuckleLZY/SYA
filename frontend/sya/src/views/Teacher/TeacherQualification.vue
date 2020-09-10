@@ -110,23 +110,12 @@ export default {
 }
 </script>
 
-<style>
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-
-*{
-    font-family: "Montserrat",sans-serif,"微软雅黑";
-}
-
+<style scoped>
 .syaSup{
     font-size:20px;
     margin-top: 2cm;
 }
-
-</style>
-
-<style scoped>
-
 el-card{
     margin-top:1cm;
 }
