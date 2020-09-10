@@ -7,7 +7,7 @@
     </el-breadcrumb>
 
     <!--个人资料卡片-->
-    <el-card class="infoCard">
+    <el-card class="infoCard" >
       <el-row>
         <el-col :span="5">
           <p class="title">个人信息</p>
@@ -90,7 +90,7 @@
                 <i class="el-icon-bank-card"></i> 银行卡号 :
               </p>
             </div>
-            <el-input class="infoItem" :placeholder="UserInfo.bank" v-model="bank"></el-input>
+            <el-input class="infoItem"  v-model="bank"></el-input>
           </el-form-item>
         </el-form>
       </el-row>
@@ -152,14 +152,15 @@ export default {
   data() {
     return {
       UserInfo: [],
-      phone: 0,
-      bank: 0,
+      phone: "未设置",
+      bank: "未设置",
       radio: "",
       radio2:"",
       regender: true,
       userava: "",
       //newuserava: "",
       drawer: false,
+      loading:true,
       // userAva:{
       //   src:""
       //   }
@@ -183,10 +184,11 @@ export default {
         {},
         { withCredentials: true }
       );
-
+//       this.loading=ture;
+// this.loading=false;
       this.UserInfo = res;
       this.radio2=this.UserInfo.avatar;
-      console.log(this.radio2);
+      //console.log(this.radio2);
       if (this.UserInfo.gender == true) {
         this.radio = "0";
       } else if (this.UserInfo.gender == false) {
@@ -208,6 +210,7 @@ export default {
         this.userava =
           "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg";
       }
+      
 
       //console.log(this.newuserava);
     },
@@ -225,10 +228,10 @@ export default {
       this.UserInfo = ccc;
       //console.log(this.UserInfo);
       //console.log(this.phone);
-      if (this.phone == 0) {
+      if (this.phone == "未设置") {
         this.phone = this.UserInfo.tel;
       }
-      if (this.bank == 0) {
+      if (this.bank == "未设置") {
         this.bank = this.UserInfo.bank;
       }
       if (this.radio == "0") {
@@ -237,7 +240,12 @@ export default {
       if (this.radio == "1") {
         this.regender = false;
       }
-      
+      if(this.phone==""){
+        this.phone="未设置";
+      };
+      if(this.bank==""){
+        this.bank="未设置";
+      }
       const { data: res } = await axios.post(
         "http://localhost:5000/User/UpdateUser",
         {
