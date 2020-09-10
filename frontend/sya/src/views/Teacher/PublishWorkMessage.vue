@@ -36,7 +36,7 @@
       value-format="yyyy-MM-dd"
       style="width: 100%;">
     </el-date-picker>
-     <div class="demonstration">组件值：{{ form.start_day }}</div>
+    
     </el-col>
   </el-form-item>
   <el-form-item label="工作时间" prop="time">
@@ -62,7 +62,7 @@
     value-format="HH:mm:ss"
     style="width: 100%;">
   </el-time-picker>
-   <div class="demonstration">组件值：{{ form.start_time }}</div>
+   
     </el-col>
   </el-form-item>
   <el-form-item label="工作日" prop="week_day">
@@ -75,7 +75,7 @@
       <el-option label="星期六" value="6"></el-option>
       <el-option label="星期日" value="7"></el-option>
     </el-select>
-    <div class="demonstration">组件值：{{ form.week_day }}</div>
+   
   </el-form-item>
   <el-form-item label="工作薪资（元/天）" prop="salary">
     <el-input v-model="form.salary" ></el-input>
