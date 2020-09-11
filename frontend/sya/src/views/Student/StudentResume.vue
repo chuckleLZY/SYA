@@ -6,7 +6,7 @@
             <el-breadcrumb-item>在线简历</el-breadcrumb-item>
         </el-breadcrumb>
         <!--简历卡片-->
-        <el-card class="resumeCard" id="card1">
+        <el-card class="resumeCard" v-if="editResume==false && resumeExsit==true">
             <el-row class="header">
                  <el-col class="titlecol" :span="5">
                     <p class="title">个人简历预览</p>
@@ -18,9 +18,10 @@
             <el-row >
                  <el-col :span="24">
                     <p class="name"><i class="el-icon-user-solid"></i> {{Resume.student_name}} </p>
-                    <p style="font-size:30px"><i class="el-icon-male" style="color: blue" id="gender"></i>
-                    <p><span> {{Resume.age}} </span> 岁 </p>
-                    <p><span> {{Resume.city}} </span> </p>
+                    <p class="resumeInfo" v-if="UserInfo.gender==true">男</p>
+                    <p class="resumeInfo" v-if="UserInfo.gender==false">女</p>
+                    <p class="resumeInfo" ><span> {{Resume.age}} </span> 岁 </p>
+                    <p class="resumeInfo" ><span style="font-family:'楷体';"> {{Resume.city}} </span> </p>
                 </el-col>
             </el-row>
             <el-row class="section">
@@ -71,7 +72,7 @@
             <p class="syaSup">SYA——Show Your Ability</p>
         </el-card>
         <!--简历编辑卡片-->
-        <el-card class="editCard" id="card2">
+        <el-card class="editCard" v-if=" editResume==true && resumeExsit==true " >
             <el-row class="header">
                  <el-col class="titlecol" :span="5">
                     <p class="title">在线简历编辑</p>
@@ -84,27 +85,98 @@
                 </el-col>
             </el-row>
            <el-form class="editForm" :model="addResume" :rules="addResumeRules" label-width="120px" ref="editFormRef">
+                <el-form-item label="姓名:" style="width:40%" prop="student_name">
+                    <el-input placeholder="请输入姓名" v-model="addResume.student_name" maxlength="5" show-word-limit ></el-input>
+                </el-form-item >
+                 <el-form-item label="年龄:" style="width:40%" prop="age">
+                    <el-input-number v-model="addResume.age" :min="1" :max="100"></el-input-number>
+                </el-form-item>
+                <el-form-item label="所在城市:" prop="city">
+                     <el-input placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
+                     <el-cascader style="margin-left:2cm"
+                        size="large"
+                        :options="options"
+                        v-model="selectedOptions"
+                        @change="handleChange"
+                    >
+                    </el-cascader>
+                </el-form-item>
                 <el-form-item label="教育经历:" prop="education">
-                    <el-input v-model="addResume.education" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
+                    <el-input placeholder="请输入您的教育经历" v-model="addResume.education" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
                 </el-form-item>
                 <el-form-item label="主要技能:" prop="skill">
-                    <el-input v-model="addResume.skill" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
+                    <el-input placeholder="请输入您掌握的主要技能" v-model="addResume.skill" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
                 </el-form-item>
                 <el-form-item label="学术成就:" prop="academic">
-                    <el-input v-model="addResume.academic" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                    <el-input placeholder="请输入您取得的学术成就" v-model="addResume.academic" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
                 </el-form-item>
                  <el-form-item label="项目经历:" prop="project">
-                    <el-input v-model="addResume.project" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                    <el-input placeholder="请输入您参加的项目经历" v-model="addResume.project" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
                 </el-form-item>
                  <el-form-item label="社团/活动经历:" prop="project">
-                    <el-input v-model="addResume.community" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                    <el-input placeholder="请输入您的社团经历或者参与活动经历" v-model="addResume.community" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="个人简介:" prop="introduction">
-                    <el-input v-model="addResume.introduction" type="textarea" :rows="6" maxlength="400" show-word-limit></el-input>
+                    <el-input placeholder="在这里简单地介绍您自己" v-model="addResume.introduction" type="textarea" :rows="6" maxlength="400" show-word-limit></el-input>
                 </el-form-item>
            </el-form>
             <p class="syaSup">SYA——Show Your Ability</p>
         </el-card>
+
+        <!--简历创建卡片-->
+        <el-card class="editCard" v-if="resumeExsit==false" >
+            <el-row class="header">
+                 <el-col class="titlecol" :span="5">
+                    <p class="title">个人简历创建</p>
+                </el-col>
+                <el-col :span="2" :offset="14" >
+                    <el-button class="edit"  icon="el-icon-check" @click="createResume" type="success">创建在线简历</el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+                 <el-col :span="24" >
+                    <h3><i class="el-icon-s-release"></i> SYA检测到您还没有创建在线简历哦，马上创建一个吧！</h3>
+                </el-col>
+            </el-row>
+           <el-form class="editForm" :model="addResume" :rules="addResumeRules" label-width="120px" ref="createFormRef">
+                <el-form-item label="姓名:" style="width:40%" prop="student_name">
+                    <el-input placeholder="请输入姓名" v-model="addResume.student_name" maxlength="5" show-word-limit ></el-input>
+                </el-form-item >
+                <el-form-item label="年龄:" style="width:40%" prop="age">
+                    <el-input-number v-model="addResume.age" :min="1" :max="100"></el-input-number>
+                </el-form-item>
+                <el-form-item label="所在城市:" prop="city">
+                     <el-input placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
+                     <el-cascader style="margin-left:2cm"
+                        size="large"
+                        :options="options"
+                        v-model="selectedOptions"
+                        @change="handleChange"
+                    >
+                    </el-cascader>
+                </el-form-item>
+                <el-form-item label="教育经历:" prop="education">
+                    <el-input placeholder="请输入您的教育经历" v-model="addResume.education" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
+                </el-form-item>
+                <el-form-item  label="主要技能:" prop="skill">
+                    <el-input placeholder="请输入您掌握的主要技能" v-model="addResume.skill" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
+                </el-form-item>
+                <el-form-item  label="学术成就:" prop="academic">
+                    <el-input placeholder="请输入您取得的学术成就" v-model="addResume.academic" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                </el-form-item>
+                 <el-form-item label="项目经历:" prop="project">
+                    <el-input placeholder="请输入您参加的项目经历" v-model="addResume.project" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                </el-form-item>
+                 <el-form-item label="社团/活动经历:" prop="project">
+                    <el-input placeholder="请输入您的社团经历或者参与活动经历" v-model="addResume.community" type="textarea" :rows="5" maxlength="300" show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="个人简介:" prop="introduction">
+                    <el-input placeholder="在这里简单地介绍您自己" v-model="addResume.introduction" type="textarea" :rows="6" maxlength="400" show-word-limit></el-input>
+                </el-form-item>
+           </el-form>
+            <p class="syaSup">SYA——Show Your Ability</p>
+        </el-card>
+
         <!--关闭对话框-->
         <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
             <span>需要保存编辑吗？</span>
@@ -119,6 +191,7 @@
 
 
 <script>
+import { regionData, CodeToText } from "element-china-area-data";
 import axios from 'axios';
 export default {
     data(){
@@ -138,26 +211,39 @@ export default {
                 introduction:''
             },
             addResumeRules:{
+                student_name:[
+                    {required:true, message:"请输入您的姓名" }
+                ],
                 education:[
-                    {required: true, message:'请输入教育经历', trigger:'blur'}
+                    {required: true, message:'请输入教育经历'}
                 ],
                 skill:[
-                    {required: true, message:'请输入主要技能', trigger:'blur'}
+                    {required: true, message:'请输入主要技能'}
                 ],
                 academic:[
-                    {required: true, message:'请输入学术成就', trigger:'blur'}
+                    {required: true, message:'请输入学术成就'}
                 ],
                 project:[
-                    {required: true, message:'请输入项目经历', trigger:'blur'}
+                    {required: true, message:'请输入项目经历'}
                 ],
                 community:[
-                    {required: true, message:'请输入社团/活动经历', trigger:'blur'}
+                    {required: true, message:'请输入社团/活动经历'}
                 ],
                 introduction:[
-                    {required: true, message:'请输入个人简介', trigger:'blur'}
+                    {required: true, message:'请输入个人简介'}
                 ],
+                city:[
+                    {required: true, message:'请选择城市'}
+                ],
+                age:[
+                    {required: true, message:'请选择年龄'}
+                ]
                 
-            }
+            },
+            options: regionData,
+            selectedOptions:[],
+            editResume:false,
+            resumeExsit:true
         }
     },
      created(){
@@ -169,23 +255,18 @@ export default {
             const {data: res} = await axios.post('http://localhost:5000/User/GetUserInfo',{},{ withCredentials: true });
 
             this.UserInfo=res;
-            if(this.UserInfo.gender==false){//如果是女生更改简历显示
-                var genIcon=document.getElementById("gender");
-                genIcon.className="el-icon-female";
-                genIcon.style.color="pink";
-            }
             console.log(res);
         },
         async getResume(){
             const {data: res} = await axios.post('http://localhost:5000/Resume/GetResume',{},{ withCredentials: true });
 
             this.Resume=res;
-            console.log(11);
+            if(res==-1){
+                this.resumeExsit=false;
+            }
+            console.log(res);
         },
         save(){
-            this.addResume.age=this.Resume.age;
-            this.addResume.student_name=this.Resume.student_name;
-            this.addResume.city=this.Resume.city
              this.$refs.editFormRef.validate(async valid =>{   
                 if(!valid) {
                     this.$message.error("请按照验证提示正确填写在线简历后再进行保存");
@@ -198,18 +279,12 @@ export default {
                 }
                 this.$message.success("保存成功！");
                 this.getResume();//重新调取用户信息
-                var card=document.getElementById("card2");//隐藏编辑卡片
-                card.style.display="none";
-                var card=document.getElementById("card1");
-                card.style.display="block";
+                this.editResume=false;
             })
         },
         cancel(){
             this.dialogVisible=true;
-            var card=document.getElementById("card2");//隐藏编辑卡片
-            card.style.display="none";
-            var card=document.getElementById("card1");
-            card.style.display="block";
+            this.editResume=false;
             this.$message.warning("您所作的更改并未保存");
         },
         edit(){
@@ -219,11 +294,39 @@ export default {
             this.addResume.project=this.Resume.project;
             this.addResume.community=this.Resume.community;
             this.addResume.introduction=this.Resume.introduction;
-            var card=document.getElementById("card1");//隐藏编辑卡片
-            card.style.display="none";
-            var card=document.getElementById("card2");
+            this.addResume.student_name=this.Resume.student_name;
+            this.addResume.city=this.Resume.city;
+            this.addResume.age=this.Resume.age;
+            console.log(this.selectedOptions);
+            this.editResume=true;
             card.style.display="block";
-        }
+        },
+         handleChange() {
+            var loc = "";
+            for (let i = 0; i < this.selectedOptions.length; i++) {//没过一个区域码，就加一个标识符
+                if(i>0){
+                    loc+=" ";
+                }
+                loc += CodeToText[this.selectedOptions[i]];
+            }
+            this.addResume.city=loc;
+        },
+        createResume(){
+             this.$refs.createFormRef.validate(async valid =>{   
+                if(!valid) {
+                    this.$message.error("只有按照验证提示完成所有简历信息的正确填写后才能创建简历哦");
+                    return;
+                }
+                const {data: res} = await axios.post('http://localhost:5000/Resume/CreateResume',this.addResume,{ withCredentials: true });
+                if (res.status > 400) {
+                this.$message.error("创建简历失败，请稍后再试");
+                return;
+                }
+                this.$message.success("简历创建成功！");
+                this.getResume();//重新调取用户信息
+                this.resumeExsit=true;
+            })
+        },
      }
 }
 </script>
@@ -248,7 +351,7 @@ export default {
     margin-bottom:1cm;
 }
 .name{
-    font-family:"Montserrat",sans-serif,"楷体" ;
+    font-family:"楷体" ;
     font-weight:bold;
     font-size: 30px;
 }
@@ -290,11 +393,14 @@ export default {
 .editCard{
     padding:0;
     margin-top:1cm;
-    display:none;
 }
 .editForm{
     width:50%;
     margin-left:25%;
     margin-top:2cm;
+}
+.resumeInfo{
+    font-family: "楷体";
+    font-size:20px;
 }
 </style>
