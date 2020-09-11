@@ -462,6 +462,7 @@ export default {
       //console.log(this.workInfo.work_id);
         const res=await axios.post('http://localhost:5000/Favorite/GetFavoriteInfo',
         {
+
         favorite_id:favoritee_id,
         },
         {

@@ -184,11 +184,15 @@ namespace SyaApi.Controllers
         /// 计算总小时数
         /// dumei 09.08
         ///</summery>
+        ///<summery>
+        /// 更新：取消秒
+        /// dumei 09.11
+        ///</summery>
         static private double CalTotalTime(string start_day, string end_day, string start_time, string end_time, int week_day)
         {
             DateTimeFormatInfo dtFormat = new System.Globalization.DateTimeFormatInfo();
             
-            dtFormat.ShortDatePattern = "HH:mm:ss";
+            dtFormat.ShortDatePattern = "HH:mm";
             DateTime stTime = Convert.ToDateTime(start_time, dtFormat);
             DateTime edTime = Convert.ToDateTime(end_time, dtFormat);
             double interval_time = edTime.Subtract(stTime).TotalHours;

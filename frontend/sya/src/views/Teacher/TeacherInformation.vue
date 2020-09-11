@@ -7,7 +7,7 @@
     </el-breadcrumb>
 
     <!--个人资料卡片-->
-    <el-card class="infoCard" >
+    <el-card class="infoCard" v-loading="loading">
       <el-row>
         <el-col :span="5">
           <p class="title">个人信息</p>
@@ -160,23 +160,37 @@ export default {
       userava: "",
       //newuserava: "",
       drawer: false,
-      loading:true,
+      loading:false,
       // userAva:{
       //   src:""
       //   }
     };
   },
   created() {
-    this.getUserInfo();
-    this.UpdateUser();
+    
+    this.loading=true;
+    setTimeout(() => {
+        this.loading = false; this.getUserInfo();
+      }, 1000);
+     
+    //this.UpdateUser();
   },
   mounted() {
     //this.init();
-    this.getUserInfo();
+    this.loading=true;
+    setTimeout(() => {
+        this.loading = false; this.getUserInfo();
+      }, 1000);
+    
   },
   methods: {
     handleClose(done){
-    this.$router.go(0);
+      // if(this.radio2!=this.UserInfo.avatar){
+        
+      // }
+      //this.$router.go(0);
+      done();
+      
     },
     async getUserInfo() {
       const { data: res } = await axios.post(
@@ -194,6 +208,12 @@ export default {
       } else if (this.UserInfo.gender == false) {
         this.radio = "1";
       }
+      if(this.UserInfo.tel!=""){
+        this.phone=this.UserInfo.tel;
+      };
+      if(this.UserInfo.bank!=""){
+        this.bank=this.UserInfo.bank;
+      }
       if (this.UserInfo.avatar == "1") {
         this.userava =
           "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg";
@@ -210,7 +230,6 @@ export default {
         this.userava =
           "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg";
       }
-      
 
       //console.log(this.newuserava);
     },
@@ -256,12 +275,27 @@ export default {
         },
         { withCredentials: true }
       );
+      //if(this.radio2==this.UserInfo.avatar){
+         //this.loading=true;
+      
+          //this.loading = false; 
+           this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        setTimeout(() => {this.$router.go(0);
+        }, 1000);
+       
+     // }
+     
+      
       //console.log(a);
       //console.log(this.UserInfo2);
       //this.UserInfo=res;
       //console.log(res);
     },
     errorHandler() {
+        
       return true;
     },
   },
@@ -398,4 +432,7 @@ el-card {
   /* .syaSup2{
     margin-top: 20px;
   } */
+  #userAva{
+   cursor: pointer;
+  }
 </style>
