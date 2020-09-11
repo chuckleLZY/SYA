@@ -7,7 +7,7 @@
     </el-breadcrumb>
 
     <!--个人资料卡片-->
-    <el-card class="infoCard">
+    <el-card class="infoCard" v-loading="loading">
       <el-row>
         <el-col :span="5">
           <p class="title">个人信息</p>
@@ -90,7 +90,7 @@
                 <i class="el-icon-bank-card"></i> 银行卡号 :
               </p>
             </div>
-            <el-input class="infoItem" :placeholder="UserInfo.bank" v-model="bank"></el-input>
+            <el-input class="infoItem"  v-model="bank"></el-input>
           </el-form-item>
         </el-form>
       </el-row>
@@ -152,30 +152,45 @@ export default {
   data() {
     return {
       UserInfo: [],
-      phone: 0,
-      bank: 0,
+      phone: "未设置",
+      bank: "未设置",
       radio: "",
       radio2:"",
       regender: true,
       userava: "",
       //newuserava: "",
       drawer: false,
+      loading:false,
       // userAva:{
       //   src:""
       //   }
     };
   },
   created() {
-    this.getUserInfo();
-    this.UpdateUser();
+    
+    this.loading=true;
+    setTimeout(() => {
+        this.loading = false; this.getUserInfo();
+      }, 1000);
+     
+    //this.UpdateUser();
   },
   mounted() {
     //this.init();
-    this.getUserInfo();
+    this.loading=true;
+    setTimeout(() => {
+        this.loading = false; this.getUserInfo();
+      }, 1000);
+    
   },
   methods: {
     handleClose(done){
-    this.$router.go(0);
+      // if(this.radio2!=this.UserInfo.avatar){
+        
+      // }
+      //this.$router.go(0);
+      done();
+      
     },
     async getUserInfo() {
       const { data: res } = await axios.post(
@@ -183,14 +198,21 @@ export default {
         {},
         { withCredentials: true }
       );
-
+//       this.loading=ture;
+// this.loading=false;
       this.UserInfo = res;
       this.radio2=this.UserInfo.avatar;
-      console.log(this.radio2);
+      //console.log(this.radio2);
       if (this.UserInfo.gender == true) {
         this.radio = "0";
       } else if (this.UserInfo.gender == false) {
         this.radio = "1";
+      }
+      if(this.UserInfo.tel!=""){
+        this.phone=this.UserInfo.tel;
+      };
+      if(this.UserInfo.bank!=""){
+        this.bank=this.UserInfo.bank;
       }
       if (this.UserInfo.avatar == "1") {
         this.userava =
@@ -225,10 +247,10 @@ export default {
       this.UserInfo = ccc;
       //console.log(this.UserInfo);
       //console.log(this.phone);
-      if (this.phone == 0) {
+      if (this.phone == "未设置") {
         this.phone = this.UserInfo.tel;
       }
-      if (this.bank == 0) {
+      if (this.bank == "未设置") {
         this.bank = this.UserInfo.bank;
       }
       if (this.radio == "0") {
@@ -237,7 +259,12 @@ export default {
       if (this.radio == "1") {
         this.regender = false;
       }
-      
+      if(this.phone==""){
+        this.phone="未设置";
+      };
+      if(this.bank==""){
+        this.bank="未设置";
+      }
       const { data: res } = await axios.post(
         "http://localhost:5000/User/UpdateUser",
         {
@@ -248,36 +275,41 @@ export default {
         },
         { withCredentials: true }
       );
+      //if(this.radio2==this.UserInfo.avatar){
+         //this.loading=true;
+      
+          //this.loading = false; 
+           this.$message({
+          message: '修改成功',
+          type: 'success'
+        });
+        setTimeout(() => {this.$router.go(0);
+        }, 1000);
+       
+     // }
+     
+      
       //console.log(a);
       //console.log(this.UserInfo2);
       //this.UserInfo=res;
       //console.log(res);
     },
     errorHandler() {
+        
       return true;
     },
   },
 };
 </script>
 
-<style>
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-
-* {
-  font-family: "Montserrat", sans-serif, "微软雅黑";
-}
-
-.syaSup {
-  font-size: 20px;
-  margin-top: 2cm;
-}
-</style>
-
 <style scoped>
 el-card {
   margin-top: 1cm;
 }
-
+.syaSup {
+  font-size: 20px;
+  margin-top: 2cm;
+}
 .infoCard {
   margin-top: 1cm;
   height: 1500px;
@@ -400,4 +432,7 @@ el-card {
   /* .syaSup2{
     margin-top: 20px;
   } */
+  #userAva{
+   cursor: pointer;
+  }
 </style>

@@ -328,7 +328,7 @@ namespace SyaApi.Controllers
 
 
         ///<summery>
-        /// 学生辞职
+        /// 学生辞职，并向老师发出信息提示
         /// chuckle 9.9
         ///</summery>
         [HttpPost("Getresign")]
@@ -348,10 +348,43 @@ namespace SyaApi.Controllers
             TakesEntity entity =new TakesEntity();
             entity.work_id=request.work_id;
             entity.student_id=user_id;
-            var num=await TakesAccessor.Delete(entity);
+            MessageEntity temp_entity= new MessageEntity();
+            var work_name =await WorkAccessor.GetWorkName(request.work_id);
+            var student_name= await UserAccessor.GetUserName(user_id);
+            temp_entity.message_type=0;
+            temp_entity.content=student_name+"同学辞去"+work_name+"工作。";
+            temp_entity.sender_id=user_id;
+            temp_entity.receiver_id=await WorkAccessor.GetTeacher(request.work_id);
+
+            var num=await TakesAccessor.GetRegion(entity);
+            await MessageAccessor.Create(temp_entity,1);
             return num;
         }
 
+        ///<summery>
+        /// 学生删除已辞职工作
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("Deleteresign")]
+        [AllowAnonymous]
+        public async Task<int> Deleteresign([FromBody] FindworkRequest request)
+        {
+            //判断request里是否满足前置条件
+            if (!ModelState.IsValid)
+            {
+                return -1;
+            }
+            var user_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(user_id) != Role.Student)
+            {
+                return -2;
+            }
+            TakesEntity entity =new TakesEntity();
+            entity.work_id=request.work_id;
+            entity.student_id=user_id;
+            var num=await TakesAccessor.Delete(entity);
+            return num;
+        }
 
     }
 }

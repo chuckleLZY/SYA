@@ -97,7 +97,30 @@ namespace SyaApi.DataAccessors
 
 
         ///<summery>
-        /// 辞职删除takes
+        /// 辞职修改takes.status
+        ///chuckle 9.9
+        public static async Task<int> GetRegion(TakesEntity takes)
+        {
+            var query = "UPDATE takes SET status=@status WHERE student_id=@id AND work_id=@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@status", 1);//辞职状态
+            command.Parameters.AddWithValue("@id", takes.student_id);
+            command.Parameters.AddWithValue("@work_id", takes.work_id);
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        ///<summery>
+        /// 删除已辞职工作takes
         ///chuckle 9.9
         public static async Task<int> Delete(TakesEntity takes)
         {
@@ -117,8 +140,6 @@ namespace SyaApi.DataAccessors
             }
             return 0;
         }
-
-
 
     }
 }
