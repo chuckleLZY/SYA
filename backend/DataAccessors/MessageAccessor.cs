@@ -18,14 +18,15 @@ namespace SyaApi.DataAccessors
             message.total=0;
             message.messageItem=new List<MessageEntity>();
 
-            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE sender_id=@id AND status<>@status";
+            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE sender_id=@id AND m_type=@type";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = query;
             command.Parameters.AddWithValue("@id",id);
-            command.Parameters.AddWithValue("@status",2);
+            command.Parameters.AddWithValue("@type",0);
+            
 
             using var reader = await command.ExecuteReaderAsync();
             while (reader.Read())
@@ -49,13 +50,13 @@ namespace SyaApi.DataAccessors
         /// 查找用户接收的信息
         /// chuckle 8.28
         ///</summery>
-        public static async Task<MessageItemEntity> FindReceive(int id)
+        public static async Task<MessageItemEntity> FindReceive(int id,int type)
         {
             MessageItemEntity message=new MessageItemEntity();
             message.total=0;
             message.messageItem=new List<MessageEntity>();
 
-            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE receiver_id=@id AND status<>@status";
+            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE receiver_id=@id AND status<>@status AND m_type=@type";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -63,6 +64,7 @@ namespace SyaApi.DataAccessors
             command.CommandText = query;
             command.Parameters.AddWithValue("@id",id);
             command.Parameters.AddWithValue("@status",2);
+            command.Parameters.AddWithValue("@type",type);
 
             using var reader = await command.ExecuteReaderAsync();
             while (reader.Read())
@@ -83,7 +85,7 @@ namespace SyaApi.DataAccessors
         }
     
         ///<summery>
-        ///用户已查看消息，修改简历状态为1
+        ///用户已查看消息，修改状态为1
         /// chuckle 8.28
         ///</summery>
         public static async Task<int> Change(MessageEntity entity)
@@ -111,9 +113,9 @@ namespace SyaApi.DataAccessors
         /// 用户发送（新建）信息
         /// chuckle 8.28
         ///</summery>
-        public static async Task<int> Create(MessageEntity entity)
+        public static async Task<int> Create(MessageEntity entity,int type)
         {
-            var query = "INSERT INTO message_library(message_type,content,message_time,sender_id,receiver_id) VALUES(@message_type,@content,@message_time,@sender_id,@receiver_id)";
+            var query = "INSERT INTO message_library(message_type,content,message_time,sender_id,receiver_id,m_type) VALUES(@message_type,@content,@message_time,@sender_id,@receiver_id,@type)";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -125,6 +127,7 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@message_time", entity.message_time);
             command.Parameters.AddWithValue("@sender_id", entity.sender_id);
             command.Parameters.AddWithValue("@receiver_id", entity.receiver_id);
+            command.Parameters.AddWithValue("@type",type);
 
             await command.ExecuteNonQueryAsync();
             return (int)command.LastInsertedId;
@@ -154,5 +157,19 @@ namespace SyaApi.DataAccessors
             }
             return 0;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

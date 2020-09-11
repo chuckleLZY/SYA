@@ -41,7 +41,7 @@ namespace SyaApi.Controllers
         ///</summery>
         [HttpPost("RequestRest")]
         [AllowAnonymous]
-        public async Task<ActionResult<LeaveResponse>>RequestRest([FromBody] LeaveRequest request)
+        public async Task<ActionResult<LeaveResponse>> RequestRest([FromBody] LeaveRequest request)
         {
             var stu_id = Int32.Parse(User.Identity.Name);
 
