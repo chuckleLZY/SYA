@@ -112,7 +112,6 @@
             </el-col>
         </el-row>
         <el-form class="editForm" ref="editRef" :model="editForm" :rules="editFormRules" label-width="120px">
-            </el-form-item>
              <el-form-item style="width:50%" label="性别 : ">
                  <el-switch
                     style="display: block; margin-top:4%;"
