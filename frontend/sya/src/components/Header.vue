@@ -49,12 +49,21 @@
       <el-col :span="8">
         <div
           height="38"
-          style="padding-top:10px;float: right;padding-right:50px"
-          @click="toInfo()"
+          style="padding-top:10px;float: right;padding-right:30px"
           class="img"
           v-if="!this.$store.state.role==0"
         >
-          <el-avatar :src="imgSrc"></el-avatar>
+          <el-dropdown>
+            <el-avatar :src="imgSrc"></el-avatar>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <div @click="toInfo()">个人信息</div>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <div @click="logOut()">退出登录</div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-col>
     </el-row>
@@ -83,6 +92,22 @@ export default {
       } else {
         console.log("toInfo error");
       }
+    },
+    async logOut() {
+      const res = await axios.post(
+        "http://localhost:5000/Account/Logout",
+        {},
+        { withCredentials: true }
+      );
+      console.log(res);
+      if (res.status == 204) {
+        //将登录信息保存到vuex
+        this.$store.commit("logOut");
+        //将vuex里的信息保存到sessionStorage里
+        sessionStorage.setItem("store", {});
+        this.$message.success("退出成功");
+        this.$router.push("/LogIn");
+      }
     }
   },
   async created() {
@@ -91,7 +116,7 @@ export default {
       {},
       { withCredentials: true }
     );
-    console.log("header", res.avatar);
+    // console.log("header", res.avatar);
 
     if (res.avatar == "1") {
       this.imgSrc =
