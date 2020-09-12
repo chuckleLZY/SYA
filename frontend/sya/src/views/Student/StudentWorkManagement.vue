@@ -34,12 +34,19 @@
                     </el-table-column>
                     <el-table-column prop="salary" label="工作薪水">
                     </el-table-column>
-                    <el-table-column prop="work_time" label="工作时长">
+                    <el-table-column prop="total_time" label="工作时长">
                     </el-table-column>
-                    <el-table-column  label="操作" width="280">
+                    <el-table-column label="工作状态">
+                         <template slot-scope="scope">
+                             <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>
+                             <el-tag type="info" v-if="scope.row.status==0">未读</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column  label="操作" width="400">
                         <template slot-scope="scope">
-                            <el-button type="warning" size="medium" icon="el-icon-remove-outline" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;">申请请假</el-button>
-                            <el-button type="danger" size="medium" icon="el-icon-circle-close">我要辞职</el-button>
+                            <el-button type="primary" size="medium" icon="el-icon-document-remove" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;">申请请假</el-button>
+                            <el-button type="warning" size="medium" icon="el-icon-document-delete">申请辞职</el-button>
+                            <el-button type="danger" size="medium" icon="el-icon-circle-close">删除工作</el-button>
                         </template>
                     </el-table-column>
                     <el-table-column type="expand" label="详情" width="75" >
@@ -52,14 +59,24 @@
                                         </div>
                                     </el-image> 
                                 </el-col>
-                                <el-col :span="12" class="inlineCol">
+                                <el-col :span="8" class="inlineCol" style="text-align:left" :offset="2">
                                     <p class="inlineTitle">工作描述:</p>
-                                    <div class="description">
+                                    <div class="description" style="text-align:left;display: inline;">
                                          <p>{{scope.row.work_description}}</p>
                                     </div>
                                     <p class="inlineTitle"><i class="el-icon-thumb"></i> 点赞 ： <span class="inlineInfo"> {{scope.row.likes_num}} </span> </p>
                                     <p class="inlineTitle"><i class="el-icon-star-off"></i> 收藏 ： <span class="inlineInfo"> {{scope.row.collect_num}} </span> </p>
-                                    <p class="inlineTitle"><i class="el-icon-share"></i> 分享 ： <span class="inlineInfo"> {{scope.row.share_num}} </span> </p>
+                                    <p class="inlineTitle"><i class="el-icon-date"></i> 工作周期 ： <span class="inlineInfo"> {{scope.row.start_day}} </span> ~ <span class="inlineInfo"> {{scope.row.end_day}} </span> </p>
+                                     <p class="inlineTitle"><i class="el-icon-time"></i> 工作时间 ：
+                                        <span class="inlineInfo" v-if="scope.row.week_day==1"> 星期一 </span>  
+                                        <span class="inlineInfo" v-if="scope.row.week_day==2"> 星期二 </span> 
+                                        <span class="inlineInfo" v-if="scope.row.week_day==3"> 星期三 </span> 
+                                        <span class="inlineInfo" v-if="scope.row.week_day==4"> 星期四 </span> 
+                                        <span class="inlineInfo" v-if="scope.row.week_day==5"> 星期五 </span> 
+                                        <span class="inlineInfo" v-if="scope.row.week_day==6"> 星期六 </span> 
+                                        <span class="inlineInfo" v-if="scope.row.week_day==7"> 星期天 </span> 
+                                        <span class="inlineInfo"> {{scope.row.start_time}} </span> ~ <span class="inlineInfo"> {{scope.row.end_time}}  </span>
+                                    </p>
                                 </el-col>
                             </el-row>    
                         </template>
@@ -138,7 +155,7 @@ export default {
     },
     methods:{
          async getWorklist(){
-            const {data: res} = await axios.post('http://localhost:5000/Work/ViewOwnWork',{ pagenum:this.queryInfo.pagenum,pagesize:this.queryInfo.pagesize},{ withCredentials: true });
+            const {data: res} = await axios.post('http://localhost:5000/Work/FindOwnWork',this.queryInfo,{ withCredentials: true });
             this.Worklist=res.worklist;
             this.total=res.totalpage;
             console.log(this.Worklist);
@@ -201,10 +218,5 @@ export default {
 .inlineInfo{
     font-weight: normal;
     color: black;
-}
-.description{
-    text-align: center;
-    width: 60%;
-    margin-left: 20%;
 }
 </style>

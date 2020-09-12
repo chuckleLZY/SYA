@@ -31,7 +31,7 @@
             <p class="stuID">{{UserInfo.user_name}}</p>
         </el-row>
         <el-row>
-            <p v-if="UserInfo.user_role==1">学生</p>
+            <p v-if="UserInfo.user_role==1" style="font-weight:bold; font-size:20px;" ><i class="el-icon-s-custom"></i> 学生</p>
         </el-row>
         <el-tag type="primary" style="zoom:150%" effect="dark" v-if="UserInfo.gender==true"><i class="el-icon-male"></i></el-tag>
         <el-tag type="danger" style="zoom:150%" effect="dark" v-if="UserInfo.gender==false"><i class="el-icon-female"></i></el-tag>
