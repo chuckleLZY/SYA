@@ -81,6 +81,45 @@ namespace SyaApi.Controllers
         }
 
         ///<summery>
+        /// 学生搜索个人拥有工作
+        /// chuckle 8.25
+        ///</summery>
+        [HttpPost("FindOwnWork")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkItemResponse>> FindOwnWork([FromBody] ViewWorkRequest request)
+        {
+            WorkItemResponse workItem=new WorkItemResponse();
+            workItem.totalpage=0;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist=new List<WorkResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
+            //取得存在cookie的当前账户id
+            var stu_id = Int32.Parse(User.Identity.Name);
+            string search='%'+request.query+'%';
+            var temp=await WorkAccessor.FindOwnWork(search,stu_id);
+
+            if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                    workItem.totalpage++;
+                    if(i>=start&&i<=end)
+                    {
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);                       
+                        workItem.worklist.Add(a);
+                    }
+                    
+                }
+
+                return Ok(workItem);
+            }
+            return Ok(-1);
+        }
+
+        ///<summery>
         /// 用户查看工作详细信息
         /// chuckle 8.25
         ///</summery>
