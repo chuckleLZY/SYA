@@ -65,11 +65,12 @@ namespace SyaApi.Controllers
                 {
                     
                     var work_info=await WorkAccessor.FindWorkInfo(temp.TakesItem[i].work_id);
+                    var status = await TakesAccessor.FindInfo(stu_id,temp.TakesItem[i].work_id);
                     workItem.totalpage++;
                     if(i>=start&&i<=end&&work_info!=null)
                     {
                         WorkResponse a=_mapper.Map<WorkResponse>(work_info);
-                        
+                        a.status=status.status;
                         workItem.worklist.Add(a);
                         
                     }
@@ -108,7 +109,9 @@ namespace SyaApi.Controllers
                     workItem.totalpage++;
                     if(i>=start&&i<=end)
                     {
-                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);                       
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);  
+                        var s=await TakesAccessor.FindInfo(stu_id,a.work_id);         
+                        a.status=s.status;            
                         workItem.worklist.Add(a);
                     }
                     
