@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 using AutoMapper;
 using SyaApi.Plugins;
 using SyaApi.DataAccessors;
@@ -43,7 +44,7 @@ namespace SyaApi.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<LeaveResponse>> RequestRest([FromBody] LeaveRequest request)
         {
-            var stu_id = Int32.Parse(User.Identity.Name);
+            var stu_id = 3;//Int32.Parse(User.Identity.Name);
 
             var temp = _mapper.Map<LeaveEntity>(request);           
             temp.student_id=stu_id;
@@ -140,6 +141,44 @@ namespace SyaApi.Controllers
             }
 
             return BadRequest(new {message = "Update failed"});
+        }
+
+
+        [HttpPost("ViewLeave")]
+        [AllowAnonymous]
+        public async Task<ActionResult<LeaveResponse>> ViewLeave([FromBody] ViewLeavesRequest request)
+        {
+            ViewLeaveResponse LeaveItem=new ViewLeaveResponse();
+            LeaveItem.total=0;
+            LeaveItem.pagenum=request.pagenum;
+            LeaveItem.leavelist=new List<LeaveInfoResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
+            //取得存在cookie的当前账户id
+            var user_id =Int32.Parse(User.Identity.Name);
+
+            var temp=await LeaveAccessor.ViewLeave(user_id);
+
+             if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                    LeaveItem.total++;
+                    if(i>=start&&i<=end)
+                    {
+                        var list=await LeaveAccessor.Find(temp.leaveItem[i].leave_id);
+                   
+                        LeaveInfoResponse a=_mapper.Map<LeaveInfoResponse>(list);
+                        
+                        LeaveItem.leavelist.Add(a);
+                    }
+                }
+
+                return Ok(LeaveItem);
+            }
+            return Ok(-1);
         }
 
 

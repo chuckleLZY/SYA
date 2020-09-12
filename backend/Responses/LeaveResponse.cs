@@ -27,6 +27,27 @@ namespace SyaApi.Responses
         public System.DateTime request_time{get; set;}
     }
 
+    public class LeaveInfoResponse
+    {
+        public int leave_id{get; set;}
+
+        public int student_id{get; set;}
+
+        public int work_id{get; set;}
+        
+        public string content{get; set;}
+
+        public string leave_time{get; set;}
+
+        public string proof{get; set;}
+
+        public int status {get; set;}
+        
+        public decimal leave_duration{get; set;}
+
+        public System.DateTime request_time{get; set;}
+    }
+
     public class LeaveItemResponse
     {
         public int total{get; set;}
@@ -36,4 +57,16 @@ namespace SyaApi.Responses
         public List<LeaveResponse> leavelist{get;set;}
 
     }
+
+    public class ViewLeaveResponse
+    {
+        public int total{get; set;}
+
+        public int pagenum{get; set;}
+
+        public List<LeaveInfoResponse> leavelist{get;set;}
+
+    }
+
+
 }

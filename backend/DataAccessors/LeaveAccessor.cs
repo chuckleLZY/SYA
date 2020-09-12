@@ -165,6 +165,41 @@ namespace SyaApi.DataAccessors
             else return -1; // the leave information not exists
         }
 
+        //学生查看自己的请假信息
+         public static async Task<LeaveItemEntity> ViewLeave(int student_id)
+        {
+            LeaveItemEntity leave=new LeaveItemEntity();
+            leave.total=0;
+            leave.leaveItem=new List<LeaveEntity>();
+            var query = "SELECT leave_id,student_id,work_id,content,leave_time,proof,status,request_time,leave_duration FROM leave_information WHERE student_id=@student_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@student_id",student_id);
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (reader.Read())
+            {
+                LeaveEntity temp=new LeaveEntity();
+                
+                temp.leave_id=reader.GetInt32("leave_id");
+                temp.student_id=reader.GetInt32("student_id");
+                temp.work_id=reader.GetInt32("work_id");
+                temp.content=reader.GetString("content");
+                temp.leave_time=reader.GetString("leave_time");
+                temp.proof=reader.GetString("proof");
+                temp.status=reader.GetInt32("status");
+                temp.leave_duration=reader.GetDecimal("leave_duration");
+                temp.request_time=reader.GetDateTime("request_time");
+                
+                leave.total++;
+                leave.leaveItem.Add(temp);
+            }
+            return leave;
+        }
+
 
 
     }
