@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="8" style="padding-top:12px;padding-right:12px">
+      <el-col :span="4" style="padding-top:12px;padding-right:12px">
         <!-- <div> -->
         <!-- <el-container> -->
         <!-- <div class="logo"> -->
@@ -19,7 +19,7 @@
         <!-- </el-container> -->
         <!-- </div> -->
       </el-col>
-      <el-col :span="8">
+      <el-col :span="16">
         <div style="display: inline-block">
           <el-menu
             class="el-menu-demo"
@@ -46,7 +46,7 @@
           </el-menu>
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="4">
         <div
           height="38"
           style="padding-top:10px;float: right;padding-right:30px"
