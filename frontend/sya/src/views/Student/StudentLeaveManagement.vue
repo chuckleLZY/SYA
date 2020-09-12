@@ -10,31 +10,7 @@
 
 
         <el-card class="student_card" style="margin-top:20px;">
-            <!--
-            <el-row>
-                <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                        <el-select v-model="select" slot="prepend" placeholder="搜索类型">
-                        <el-option label="工作类型" value="1"></el-option>
-                        <el-option label="工作时间" value="2"></el-option>
-                        <el-option label="工作地点" value="3"></el-option>
-                        </el-select>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
-                    </el-input>
-                </el-col>
-                <el-col :span="4"></el-col>
-            </el-row>
-            -->
-
-                <!--  <el-row>
-                <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select" clearable @clear="getWorkMessageList">
-                        
-                        <el-button slot="append" icon="el-icon-search" @click="findWorkMes"></el-button>
-                    </el-input>
-                </el-col>
-                <el-col :span="4"></el-col>
-            </el-row>-->
+            
 
             <!-- 列表区域 -->
             <el-table :data="workMessageList" v-loading="loading">
