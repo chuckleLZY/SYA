@@ -226,20 +226,16 @@ export default {
 
 <style>
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
 
-*{
-    font-family: "Montserrat",sans-serif,"微软雅黑";
-}
 
-.syaSup{
-    font-size:20px;
-    margin-top: 2cm;
-}
 
 </style>
 
 <style scoped>
+.syaSup{
+    font-size:20px;
+    margin-top: 2cm;
+}
 
 .infoCard{
     margin-top:1cm;

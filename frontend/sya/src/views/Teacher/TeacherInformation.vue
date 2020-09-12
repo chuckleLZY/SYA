@@ -39,7 +39,7 @@
                 <i class="el-icon-key"></i> SYA-ID ：
               </p>
             </div>
-            <el-input class="infoItem" readonly="readonly"  v-model="UserInfo.user_id" disabled></el-input>
+            <el-input class="infoItem" readonly="readonly" v-model="UserInfo.user_id" disabled></el-input>
           </el-form-item>
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
@@ -90,45 +90,61 @@
                 <i class="el-icon-bank-card"></i> 银行卡号 :
               </p>
             </div>
-            <el-input class="infoItem"  v-model="bank"></el-input>
+            <el-input class="infoItem" v-model="bank"></el-input>
           </el-form-item>
         </el-form>
       </el-row>
       <!-- 右侧弹窗 -->
 
-      
-      <el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" :before-close="handleClose">
+      <el-drawer
+        title="我是标题"
+        :visible.sync="drawer"
+        :with-header="false"
+        :before-close="handleClose"
+      >
         <p>选择你的新头像</p>
         <el-card class="box-card">
           <div>
-            <img class="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg"/>
+            <img
+              class="image"
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg"
+            />
           </div>
           <el-radio class="radio" v-model="radio2" label="1">简约男生</el-radio>
-          </el-card>
-          <el-card class="box-card">
+        </el-card>
+        <el-card class="box-card">
           <div>
-            <img class="image" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3076245205,742402026&fm=26&gp=0.jpg"/>
+            <img
+              class="image"
+              src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3076245205,742402026&fm=26&gp=0.jpg"
+            />
           </div>
           <el-radio class="radio" v-model="radio2" label="2">简约女生</el-radio>
-          </el-card>
-          <el-card class="box-card">
+        </el-card>
+        <el-card class="box-card">
           <div>
-            <img class="image" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575929381&di=3bc01b19ce6059ac83dc1679c83c1829&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F05%2F20181105142239_uiyqs.jpg"/>
+            <img
+              class="image"
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575929381&di=3bc01b19ce6059ac83dc1679c83c1829&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F05%2F20181105142239_uiyqs.jpg"
+            />
           </div>
           <el-radio class="radio" v-model="radio2" label="3">文艺男生</el-radio>
-          </el-card>
-          
-          <el-card class="box-card">
+        </el-card>
+
+        <el-card class="box-card">
           <div>
-            <img class="image" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg"/>
+            <img
+              class="image"
+              src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg"
+            />
           </div>
           <el-radio class="radio" v-model="radio2" label="4">文艺女生</el-radio>
         </el-card>
-        
+
         <div style="margin-bottom: 20px">
-        <p>
-          <el-button type="primary" icon="el-icon-edit" @click="UpdateUser()">点击修改</el-button>
-        </p>
+          <p>
+            <el-button type="primary" icon="el-icon-edit" @click="UpdateUser()">点击修改</el-button>
+          </p>
         </div>
       </el-drawer>
 
@@ -155,42 +171,41 @@ export default {
       phone: "未设置",
       bank: "未设置",
       radio: "",
-      radio2:"",
+      radio2: "",
       regender: true,
       userava: "",
       //newuserava: "",
       drawer: false,
-      loading:false,
+      loading: false
       // userAva:{
       //   src:""
       //   }
     };
   },
   created() {
-    
-    this.loading=true;
+    this.loading = true;
     setTimeout(() => {
-        this.loading = false; this.getUserInfo();
-      }, 1000);
-     
+      this.loading = false;
+      this.getUserInfo();
+    }, 1000);
+
     //this.UpdateUser();
   },
   mounted() {
     //this.init();
-    this.loading=true;
+    this.loading = true;
     setTimeout(() => {
-        this.loading = false; this.getUserInfo();
-      }, 1000);
-    
+      this.loading = false;
+      this.getUserInfo();
+    }, 1000);
   },
   methods: {
-    handleClose(done){
+    handleClose(done) {
       // if(this.radio2!=this.UserInfo.avatar){
-        
+
       // }
       //this.$router.go(0);
       done();
-      
     },
     async getUserInfo() {
       const { data: res } = await axios.post(
@@ -198,21 +213,21 @@ export default {
         {},
         { withCredentials: true }
       );
-//       this.loading=ture;
-// this.loading=false;
+      //       this.loading=ture;
+      // this.loading=false;
       this.UserInfo = res;
-      this.radio2=this.UserInfo.avatar;
+      this.radio2 = this.UserInfo.avatar;
       //console.log(this.radio2);
       if (this.UserInfo.gender == true) {
         this.radio = "0";
       } else if (this.UserInfo.gender == false) {
         this.radio = "1";
       }
-      if(this.UserInfo.tel!=""){
-        this.phone=this.UserInfo.tel;
-      };
-      if(this.UserInfo.bank!=""){
-        this.bank=this.UserInfo.bank;
+      if (this.UserInfo.tel != "") {
+        this.phone = this.UserInfo.tel;
+      }
+      if (this.UserInfo.bank != "") {
+        this.bank = this.UserInfo.bank;
       }
       if (this.UserInfo.avatar == "1") {
         this.userava =
@@ -259,11 +274,11 @@ export default {
       if (this.radio == "1") {
         this.regender = false;
       }
-      if(this.phone==""){
-        this.phone="未设置";
-      };
-      if(this.bank==""){
-        this.bank="未设置";
+      if (this.phone == "") {
+        this.phone = "未设置";
+      }
+      if (this.bank == "") {
+        this.bank = "未设置";
       }
       const { data: res } = await axios.post(
         "http://localhost:5000/User/UpdateUser",
@@ -271,34 +286,32 @@ export default {
           gender: this.regender,
           avatar: this.radio2,
           tel: this.phone,
-          bank: this.bank,
+          bank: this.bank
         },
         { withCredentials: true }
       );
       //if(this.radio2==this.UserInfo.avatar){
-         //this.loading=true;
-      
-          //this.loading = false; 
-           this.$message({
-          message: '修改成功',
-          type: 'success'
-        });
-        setTimeout(() => {this.$router.go(0);
-        }, 1000);
-       
-     // }
-     
-      
+      //this.loading=true;
+
+      //this.loading = false;
+      this.$message({
+        message: "修改成功",
+        type: "success"
+      });
+      setTimeout(() => {
+        this.$router.go(0);
+      }, 1000);
+      this.$router.push('/TeacherInformation');
+      // }
       //console.log(a);
       //console.log(this.UserInfo2);
       //this.UserInfo=res;
       //console.log(res);
     },
     errorHandler() {
-        
       return true;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -409,30 +422,30 @@ el-card {
   left: 90%;
   background-color: rgb(255, 0, 208, 0.1);
 }
-  .text {
-    font-size: 14px;
-  }
+.text {
+  font-size: 14px;
+}
 
-  .item {
-    padding: 18px 0;
-  }
+.item {
+  padding: 18px 0;
+}
 
-  .box-card {
-    width: 50%;
-    float: left;
-    height: 40%;
-  }
-  .image {
-    width: 100%;
-    display: block;
-  }
-  .radio{
-    margin-top: 30px;
-  }
-  /* .syaSup2{
+.box-card {
+  width: 50%;
+  float: left;
+  height: 40%;
+}
+.image {
+  width: 100%;
+  display: block;
+}
+.radio {
+  margin-top: 30px;
+}
+/* .syaSup2{
     margin-top: 20px;
   } */
-  #userAva{
-   cursor: pointer;
-  }
+#userAva {
+  cursor: pointer;
+}
 </style>

@@ -3,9 +3,9 @@
     <el-aside width="200px">
       <el-menu
         class="el-menu-vertical-demo"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        background-color="#D3DCE6"
+        text-color="#333"
+        active-text-color="#0A5AA8"
         style="height: 100%"
         :default-active="$route.path"
         router
@@ -33,14 +33,15 @@
 <style scoped>
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
+  background-color: #cfdaeb;
   color: #333;
   text-align: center;
   /* line-height: 60px; */
 }
 
 .el-aside {
-  background-color: #d3dce6;
+  background-color: #fff;
+  
   color: #333;
   text-align: center;
   /* line-height: 200px; */
@@ -53,6 +54,9 @@
   /* line-height: 160px; */
 }
 
+.el-menu{
+  box-shadow: 10px 10px 5px #888888 !important
+}
 body > .el-container {
   margin-bottom: 40px;
 }

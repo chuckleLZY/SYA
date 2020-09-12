@@ -16,8 +16,20 @@
           <el-form-item label="工薪薪资">
             <span>{{ props.row.salary }}</span>
           </el-form-item>
-          <el-form-item label="工作时间">
-            <span>{{ props.row.work_time }}</span>
+          <el-form-item label="工作日">
+            <span>{{ props.row.week_day }}</span>
+          </el-form-item>
+          <el-form-item label="开始日期">
+            <span>{{ props.row.start_day }}</span>
+          </el-form-item>
+          <el-form-item label="结束日期">
+            <span>{{ props.row.end_day }}</span>
+          </el-form-item>
+          <el-form-item label="开始时间">
+            <span>{{ props.row.start_time }}</span>
+          </el-form-item>
+          <el-form-item label="结束时间">
+            <span>{{ props.row.end_time }}</span>
           </el-form-item>
           <el-form-item label="工作描述">
             <span>{{ props.row.work_description }}</span>
@@ -85,8 +97,70 @@
   <el-form-item label="工作地点" prop="new_address">
   <el-input v-model="editdata.new_address" ></el-input>
   </el-form-item>
+  <el-form-item label="工作日期" prop="new_date">
+   <el-col :span="11">
+      <el-date-picker
+      v-model="editdata.new_start_day"
+      type="date"
+      placeholder="开始日期"
+      format="yyyy-MM-dd"
+      value-format="yyyy-MM-dd"
+      style="width: 100%;"
+      :picker-options="pickerOptions2">
+    </el-date-picker>
+    </el-col>
+    <el-col class="line" :span="2">-</el-col>
+    <el-col :span="11">
+      <el-date-picker
+      v-model="editdata.new_end_day"
+      type="date"
+      placeholder="结束日期"
+      format="yyyy-MM-dd"
+      value-format="yyyy-MM-dd"
+      style="width: 100%;"
+      :picker-options="pickerOptions3">
+    </el-date-picker>
+    </el-col>
+    
+  </el-form-item>
   <el-form-item label="工作时间" prop="new_time">
-  <el-input v-model="editdata.new_time" ></el-input>
+  <el-col :span="11">
+    <el-time-select
+    placeholder="起始时间"
+    v-model="editdata.new_start_time"
+    :picker-options="{
+      start: '08:00',
+      step: '01:00',
+      end: '20:00'
+    }"
+      style="width: 100%;">
+  </el-time-select>
+    </el-col>
+    <el-col class="line" :span="2">-</el-col>
+    <el-col :span="11">
+    <el-time-select
+    placeholder="结束时间"
+    v-model="editdata.new_end_time"
+    :picker-options="{
+      start: '08:00',
+      step: '01:00',
+      end: '21:00',
+      minTime: editdata.new_start_time
+    }"
+      style="width: 100%;">
+  </el-time-select>
+   </el-col>
+  </el-form-item>
+  <el-form-item label="工作日" prop="new_week_day">
+    <el-select v-model="editdata.new_week_day" placeholder="请选择工作日">
+      <el-option label="星期一" value="1"></el-option>
+      <el-option label="星期二" value="2"></el-option>
+      <el-option label="星期三" value="3"></el-option>
+      <el-option label="星期四" value="4"></el-option>
+      <el-option label="星期五" value="5"></el-option>
+      <el-option label="星期六" value="6"></el-option>
+      <el-option label="星期日" value="7"></el-option>
+    </el-select>
   </el-form-item>
   <el-form-item label="工作薪资（元/天）" prop="new_salary">
     <el-input v-model="editdata.new_salary" ></el-input>
@@ -118,27 +192,41 @@ export default {
       total: 0,
      editdata:{},
         tableData: [
-          {
-            "work_id": 5,
-            "work_name": "run",
-            "cover": "http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg",
-            "work_description": "GOOD",
-            "address": "TJU",
-            "salary": 50,
-            "work_time": "MON",
-            "likes_num": 1,
-            "collect_num": 1,
-            "share_num": 1
-        },
+          
         ],
          form: {
-          name: '',
-          cover:'',
-          address:'',
-          time:'',
-          salary:'',
-          desc: ''
+          new_name: '',
+          new_cover:'',
+          new_address:'',
+          new_start_day:'',
+          new_end_day:'',
+          new_start_time:'',
+          new_end_time:'',
+          new_week_day:'',
+          new_time:'',
+          new_salary:'',
+          new_desc: ''
         },
+         //设置选择日期
+        pickerOptions2: { //结束时间不能大于开始时间
+      	disabledDate: (time) => {
+		    if (this.editdata.new_end_day) {
+		  	return time.getTime() > new Date(this.editdata.new_end_day).getTime();
+		    } else { //没有选择结束时间，只能选择今天之后的时间不包括今天
+		   	return time.getTime() < Date.now() 
+		}
+
+	}
+},
+        pickerOptions3: {//结束时间小于开始时间
+	      disabledDate: (time) => {
+		    if (this.editdata.new_start_day) {
+			  return time.getTime() < new Date(this.editdata.new_start_day).getTime();
+		    } else { //若未输入开始时间则默认为今天后时间不包括今天
+			  return time.getTime() < Date.now() 
+	    	}
+	}
+},
       }
     },
     methods:{
@@ -187,12 +275,16 @@ export default {
         "http://localhost:5000/Work/ChangeWorkInfo",
         {
           work_id:this.editdata.work_id,
-          work_name: this.editdata.work_name,
-          cover: this.editdata.new_cover,
-          work_description: this.editdata.new_desc,
-          address: this.editdata.new_address,
-          salary: parseInt(this.editdata.new_salary),
-          work_time: this.editdata.new_time,
+          work_name:this.editdata.work_name,
+          cover:this.editdata.new_cover,
+          work_description:this.editdata.new_desc,
+          address:this.editdata.new_address,
+          salary:parseInt(this.editdata.new_salary),
+          start_day: this.editdata.new_start_day,
+          end_day:this.editdata.new_end_day,
+          start_time:this.editdata.new_start_time,
+          end_time:this.editdata.new_end_time,
+          week_day:parseInt(this.editdata.new_week_day)
         },
         { withCredentials: true }
       );
@@ -200,6 +292,7 @@ export default {
       if (result.status == 200) {
         this.$message.success("修改成功");
         this.Dialogvisible = false
+         await this.getOnePageworklist();
       }
       else{
         this.$message.error("发生了一些错误");

@@ -32,7 +32,14 @@ export default {
 };
 </script>
 
+<style>
+@import "./assets/font/font.css";
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
 
+*{
+font-family: "Montserrat","jf-openhuninn-1.1"
+}
+</style>
 
 <style scoped>
 #app {

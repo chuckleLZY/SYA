@@ -3,9 +3,9 @@
     <el-aside width="200px">
       <el-menu
         class="el-menu-vertical-demo"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        background-color="#D3DCE6"
+        text-color="#333"
+        active-text-color="#0A5AA8"
         style="height: 100%"
         :default-active="$route.path"
         router
@@ -21,6 +21,10 @@
         <el-menu-item index="/StudentWorkManagement">
           <i class="el-icon-menu"></i>
           <span slot="title">学生工作管理</span>
+        </el-menu-item>
+        <el-menu-item index="/StudentLeaveManagement">
+          <i class="el-icon-menu"></i>
+          <span slot="title">学生请假管理</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
