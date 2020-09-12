@@ -12,17 +12,6 @@
                     <p class="title">请假管理</p>
                 </el-col>
             </el-row>
-            <!--搜索与添加-->
-            <el-row  :gutter="30">
-                <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" >
-                        <el-button slot="append" icon="el-icon-search" @click="getWorklist()"></el-button>
-                    </el-input>
-                </el-col>
-                <el-col :span="2">
-                    <el-button type="success" icon="el-icon-plus" @click="$router.push('/Recruitment');">我要申请</el-button>
-                </el-col>
-            </el-row>
             <!--表格区域-->
             <el-row style="margin-top:1cm">
                 <el-table :data="Worklist" border>
