@@ -44,7 +44,7 @@ namespace SyaApi.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<LeaveResponse>> RequestRest([FromBody] LeaveRequest request)
         {
-            var stu_id = 3;//Int32.Parse(User.Identity.Name);
+            var stu_id =Int32.Parse(User.Identity.Name);
 
             var temp = _mapper.Map<LeaveEntity>(request);           
             temp.student_id=stu_id;
