@@ -25,6 +25,7 @@ import StudentWorkMessage from '../views/Student/StudentWorkMessage.vue'
 import StudentInformation from '../views/Student/StudentInformation.vue'
 import StudentResume from '../views/Student/StudentResume.vue'
 import StudentWorkManagement from '../views/Student/StudentWorkManagement.vue'
+import StudentLeaveManagement from '../views/Student/StudentLeaveManagement.vue'
 
 import ReceivedResume from '../views/Teacher/ReceivedResume.vue'
 import PublishWorkMessage from '../views/Teacher/PublishWorkMessage.vue'
@@ -191,7 +192,12 @@ const routes = [
                 path: '/StudentWorkManagement',
                 name: 'StudentWorkManagement',
                 component: StudentWorkManagement,
-            }
+            },
+            {
+                path: '/StudentLeaveManagement',
+                name: 'StudentLeaveManagement',
+                component: StudentLeaveManagement,
+            },
             ]
         },
         {
@@ -253,7 +259,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.path === '/LogIn'|| to.path === '/Register') return next();
+    if (to.path === '/LogIn' || to.path === '/Register') return next();
     const store = JSON.parse(sessionStorage.getItem("store"));
     if (!store) return next('/LogIn');
     else if (store.isLoggedIn == false) return next('/LogIn');

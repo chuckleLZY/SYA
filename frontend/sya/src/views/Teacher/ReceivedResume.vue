@@ -116,6 +116,9 @@ export default {
       );
       // console.log(result);
       // console.log(this.reSumeData);
+
+      //发消息
+
       //刷新
       this.$message.success("接受成功");
       this.loading = true;
@@ -137,6 +140,9 @@ export default {
       );
       // console.log(result);
       // console.log(this.reSumeData);
+
+      //发消息
+
       //刷新
       this.$message.success("拒绝成功");
       this.loading = true;

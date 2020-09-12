@@ -22,6 +22,10 @@
           <i class="el-icon-menu"></i>
           <span slot="title">学生工作管理</span>
         </el-menu-item>
+        <el-menu-item index="/StudentLeaveManagement">
+          <i class="el-icon-menu"></i>
+          <span slot="title">学生请假管理</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
     <el-main>
