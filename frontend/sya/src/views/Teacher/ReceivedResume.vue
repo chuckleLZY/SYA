@@ -104,6 +104,7 @@ export default {
     //接收申请
     async accept() {
       this.checkDialogVisible = false;
+      console.log("resumeData",this.reSumeData)
       const result = await axios.post(
         "http://localhost:5000/Apply/ProManageApp",
         {
@@ -118,6 +119,18 @@ export default {
       // console.log(this.reSumeData);
 
       //发消息
+      const res = await axios.post(
+        "http://localhost:5000/Message/CreateMessage",
+        {
+          message_type: 0,
+          content: "Congratulations!"+this.reSumeData.teacher_name+" 接受了 "+this.reSumeData.work_name+" 的工作申请",
+          receiver_id: this.reSumeData.student_id
+        },
+        {
+          withCredentials: true
+        }
+      );
+      console.log(result);
 
       //刷新
       this.$message.success("接受成功");
@@ -142,7 +155,18 @@ export default {
       // console.log(this.reSumeData);
 
       //发消息
-
+      const res = await axios.post(
+        "http://localhost:5000/Message/CreateMessage",
+        {
+          message_type: 0,
+          content: this.reSumeData.teacher_name+" 拒绝了 "+this.reSumeData.work_name+" 的工作申请",
+          receiver_id: this.reSumeData.student_id
+        },
+        {
+          withCredentials: true
+        }
+      );
+      // console.log(result);
       //刷新
       this.$message.success("拒绝成功");
       this.loading = true;
@@ -150,7 +174,7 @@ export default {
     },
     //查看简历详情
     getMoreInfo(row) {
-      // console.log(row);
+      // console.log("row",row);
       this.reSumeData = row;
       this.checkDialogVisible = true;
     },
@@ -177,7 +201,7 @@ export default {
         }
       );
       this.total = result.data.totalpage;
-      console.log(result);
+      // console.log(result);
       this.tableData = result.data.applist;
       for (var i = 0; i < this.tableData.length; i++) {
         // console.log(this.tableData[i].resume_id);
@@ -191,8 +215,11 @@ export default {
         this.tableData[i]["academic"] = resume.data.academic;
         this.tableData[i]["skill"] = resume.data.skill;
         this.tableData[i]["introduction"] = resume.data.introduction;
+        this.tableData[i]["student_id"]=resume.data.student_id;
         // console.log(this.tableData[i]);
       }
+      // console.log("table",this.tableData);
+
       //取消加载的转圈圈
       this.loading = false;
     },
