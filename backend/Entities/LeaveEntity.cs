@@ -24,7 +24,13 @@ namespace SyaApi.Entities
 
         public System.DateTime request_time{get; set;} //申请时间
 
-        public decimal leave_duration{get; set;} //请假的持续时长
+        public double leave_duration{get; set;} //请假的持续时长
+
+        public string leave_day{get; set;}
+
+        public string leave_start{get; set;}
+
+        public string leave_end{get; set;}
     }
     
     public class LeaveItemEntity

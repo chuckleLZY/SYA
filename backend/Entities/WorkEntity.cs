@@ -31,4 +31,13 @@ namespace SyaApi.Entities
         public List<WorkEntity> workItem{get;set;}
 
     }
+
+    public class WorkTimeEntity
+    {
+        public string start_day{get; set;}
+        public string end_day{get; set;}
+        public string start_time{get; set;}
+        public string end_time{get; set;}
+        public int week_day{get; set;}
+    }
 }

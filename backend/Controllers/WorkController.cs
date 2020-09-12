@@ -283,11 +283,14 @@ namespace SyaApi.Controllers
 
             // 计算工作总小时数total_time
             work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
-
+            if (work.total_time == 0)
+            {
+                return Ok("Duration time is 0.");
+            }
             int work_id = await WorkAccessor.Create(work);
             if (work_id == 0)
             {
-                return BadRequest(new { message = "Fail to create work"});
+                return Ok("Fail to create work.");
             }
             work.work_id = work_id;
             return Ok(_mapper.Map<WorkResponse>(work));
@@ -351,6 +354,10 @@ namespace SyaApi.Controllers
             work.teacher_id = provider_id;
             work.work_id=request.work_id;
             work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
+            if (work.total_time == 0)
+            {
+                return Ok("Duration time is 0.");
+            }
             await WorkAccessor.Update(work); //return work_id
 
             return Ok(_mapper.Map<WorkResponse>(work));

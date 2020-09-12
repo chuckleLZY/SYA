@@ -22,9 +22,15 @@ namespace SyaApi.Responses
 
         public int status {get; set;}
         
-        public decimal leave_duration{get; set;}
+        public double leave_duration{get; set;}
 
         public System.DateTime request_time{get; set;}
+
+        public string leave_day{get; set;}
+
+        public string leave_start{get; set;}
+
+        public string leave_end{get; set;}
     }
 
     public class LeaveInfoResponse

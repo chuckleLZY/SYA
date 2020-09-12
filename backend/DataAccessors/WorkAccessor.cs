@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
@@ -340,6 +341,38 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
+        /// 获得工作时间信息
+        /// 用于判断请假是否在工作时间内,用于leaveController.CheckRestTime()
+        /// dumei 09.12
+        ///</summery>
+        public static async Task<WorkTimeEntity> GetWorkTime(int work_id)
+        {
+            var query = @"SELECT start_day,end_day,start_time,end_time,week_day
+             FROM work WHERE work_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",work_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new WorkTimeEntity {
+                    start_day=reader.GetString("start_day"),
+                    end_day=reader.GetString("end_day"),
+                    start_time=reader.GetString("start_time"),
+                    end_time=reader.GetString("end_time"),
+                    week_day=reader.GetInt32("week_day")
+                };
+            }
+            return new WorkTimeEntity {
+                start_day="not found"
+            }; // work not exists
+        }
+
+        ///<summery>
         /// (非学生用户)修改工作信息
         /// 设置 likes_num, collect_num, share_num 为 0
         /// chuckle 8.28
@@ -444,7 +477,6 @@ namespace SyaApi.DataAccessors
         
         }
 
-
         ///<summery>
         /// 学生搜索个人拥有工作
         /// chuckle 8.25
@@ -492,8 +524,7 @@ namespace SyaApi.DataAccessors
             return work;
         }
 
-
-
+        
 
     }
 }

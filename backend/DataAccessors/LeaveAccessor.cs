@@ -17,7 +17,8 @@ namespace SyaApi.DataAccessors
         public static async Task<LeaveEntity> Read(int leave_id)
         {
             var query = @"SELECT leave_id,student_id,work_id,
-            content,leave_time,proof,status,leave_duration,request_time
+            content,leave_time,proof,status,leave_duration,
+            request_time,leave_day,leave_start,leave_end
             FROM leave_information
             WHERE leave_id=@id";
 
@@ -39,17 +40,22 @@ namespace SyaApi.DataAccessors
                     leave_time=reader.GetString("leave_time"),
                     proof=reader.GetString("proof"),
                     status=reader.GetInt32("status"),
-                    leave_duration=reader.GetDecimal("leave_duration"),
-                    request_time=reader.GetDateTime("request_time")
+                    leave_duration=reader.GetDouble("leave_duration"),
+                    request_time=reader.GetDateTime("request_time"),
+                    leave_day=reader.GetString("leave_day"),
+                    leave_start=reader.GetString("leave_start"),
+                    leave_end=reader.GetString("leave_end")  
                 };
             }
             return null;
         }
+
+
         public static async Task<LeaveEntity> Find(int id)
         {
             var query = @"SELECT leave_id,leave_information.student_id,
             leave_information.work_id,content,leave_time,proof,
-            user_name,work_name,status,leave_duration,request_time
+            user_name,work_name,status,leave_duration,request_time,leave_day,leave_start,leave_end
             FROM (leave_information natural join user) join work using (work_id) 
             WHERE leave_id=@id and leave_information.student_id=user.user_id;";
 
@@ -73,8 +79,11 @@ namespace SyaApi.DataAccessors
                     student_name=reader.GetString("user_name"),
                     work_name=reader.GetString("work_name"),
                     status=reader.GetInt32("status"),
-                    leave_duration=reader.GetDecimal("leave_duration"),
-                    request_time=reader.GetDateTime("request_time")       
+                    leave_duration=reader.GetDouble("leave_duration"),
+                    request_time=reader.GetDateTime("request_time"),
+                    leave_day=reader.GetString("leave_day"),
+                    leave_start=reader.GetString("leave_start"),
+                    leave_end=reader.GetString("leave_end")       
                 };
             }
             return null;
@@ -82,8 +91,10 @@ namespace SyaApi.DataAccessors
 
         public static async Task<int> Create(LeaveEntity leave)
         {
-            var query = @"INSERT INTO leave_information(student_id,work_id,content,leave_time,proof,status,leave_duration)
-             VALUES(@student_id,@work_id,@content,@leave_time,@proof,@status,@duration)";
+            var query = @"INSERT INTO leave_information(student_id,work_id,content,leave_time,
+            proof,status,leave_duration,leave_day,leave_start,leave_end)
+             VALUES(@student_id,@work_id,@content,@leave_time,
+             @proof,@status,@duration,@day,@start,@end)";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -93,10 +104,13 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@student_id",leave.student_id);
             command.Parameters.AddWithValue("@work_id",leave.work_id);
             command.Parameters.AddWithValue("@content",leave.content);
-            command.Parameters.AddWithValue("@leave_time",leave.leave_time);
+            command.Parameters.AddWithValue("@leave_time",""); //to be delete
             command.Parameters.AddWithValue("@proof",leave.proof);
             command.Parameters.AddWithValue("@status",0);
-            command.Parameters.AddWithValue("@duration",0);
+            command.Parameters.AddWithValue("@duration",leave.leave_duration);
+            command.Parameters.AddWithValue("@day",leave.leave_day);
+            command.Parameters.AddWithValue("@start",leave.leave_start);
+            command.Parameters.AddWithValue("@end",leave.leave_end);
 
             await command.ExecuteNonQueryAsync();
             return (int)command.LastInsertedId;
@@ -114,7 +128,8 @@ namespace SyaApi.DataAccessors
             leave_apps.total = 0;
             leave_apps.leaveItem = new List<LeaveEntity>();
             var query = @"SELECT leave_id,student_id,work_id,
-            content,leave_time,proof,status,leave_duration,request_time
+            content,leave_time,proof,status,leave_duration,
+            request_time,leave_day,leave_start,leave_end
             FROM leave_information NATURAL JOIN work
             WHERE teacher_id=@id";
 
@@ -137,8 +152,11 @@ namespace SyaApi.DataAccessors
                     leave_time=reader.GetString("leave_time"),
                     proof=reader.GetString("proof"),
                     status=reader.GetInt32("status"),
-                    leave_duration=reader.GetDecimal("leave_duration"),
-                    request_time=reader.GetDateTime("request_time")  
+                    leave_duration=reader.GetDouble("leave_duration"),
+                    request_time=reader.GetDateTime("request_time"),
+                    leave_day=reader.GetString("leave_day"),
+                    leave_start=reader.GetString("leave_start"),
+                    leave_end=reader.GetString("leave_end")  
                 };
                 leave_apps.total++;
                 leave_apps.leaveItem.Add(temp);
@@ -191,7 +209,7 @@ namespace SyaApi.DataAccessors
                 temp.leave_time=reader.GetString("leave_time");
                 temp.proof=reader.GetString("proof");
                 temp.status=reader.GetInt32("status");
-                temp.leave_duration=reader.GetDecimal("leave_duration");
+                temp.leave_duration=reader.GetDouble("leave_duration");
                 temp.request_time=reader.GetDateTime("request_time");
                 
                 leave.total++;
