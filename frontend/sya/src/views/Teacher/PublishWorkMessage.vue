@@ -143,6 +143,7 @@ export default {
        onSubmit() {
         console.log('submit!');
       },
+    //创建工作
     async Creatework() {
         console.log(this.form);
       const result = await axios.post(

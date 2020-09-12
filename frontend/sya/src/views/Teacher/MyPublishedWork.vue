@@ -100,7 +100,7 @@
   <el-form-item label="工作日期" prop="new_date">
    <el-col :span="11">
       <el-date-picker
-      v-model="form.new_start_day"
+      v-model="editdata.new_start_day"
       type="date"
       placeholder="开始日期"
       format="yyyy-MM-dd"
@@ -112,7 +112,7 @@
     <el-col class="line" :span="2">-</el-col>
     <el-col :span="11">
       <el-date-picker
-      v-model="form.new_end_day"
+      v-model="editdata.new_end_day"
       type="date"
       placeholder="结束日期"
       format="yyyy-MM-dd"
@@ -121,36 +121,38 @@
       :picker-options="pickerOptions3">
     </el-date-picker>
     </el-col>
-    <div class="demonstration">组件值：{{ form.new_start_day }}</div>
+    
   </el-form-item>
   <el-form-item label="工作时间" prop="new_time">
   <el-col :span="11">
-      <el-time-picker
-    v-model="form.new_start_time"
+    <el-time-select
+    placeholder="起始时间"
+    v-model="editdata.new_start_time"
     :picker-options="{
-      selectableRange: '08:30:00 - 19:30:00'
+      start: '08:00',
+      step: '01:00',
+      end: '20:00'
     }"
-    placeholder="开始时间"
-    value-format="HH:mm:ss"
-    style="width: 100%;">
-  </el-time-picker>
+      style="width: 100%;">
+  </el-time-select>
     </el-col>
     <el-col class="line" :span="2">-</el-col>
     <el-col :span="11">
-      <el-time-picker
-    v-model="form.new_end_time"
-    :picker-options="{
-      selectableRange: '09:30:00 - 20:30:00'
-    }"
+    <el-time-select
     placeholder="结束时间"
-    value-format="HH:mm:ss"
-    style="width: 100%;">
-  </el-time-picker>
-    </el-col>
-    <div class="demonstration">组件值：{{ form.new_start_time }}</div>
+    v-model="editdata.new_end_time"
+    :picker-options="{
+      start: '08:00',
+      step: '01:00',
+      end: '21:00',
+      minTime: editdata.new_start_time
+    }"
+      style="width: 100%;">
+  </el-time-select>
+   </el-col>
   </el-form-item>
   <el-form-item label="工作日" prop="new_week_day">
-    <el-select v-model="form.new_week_day" placeholder="请选择工作日">
+    <el-select v-model="editdata.new_week_day" placeholder="请选择工作日">
       <el-option label="星期一" value="1"></el-option>
       <el-option label="星期二" value="2"></el-option>
       <el-option label="星期三" value="3"></el-option>
@@ -192,7 +194,7 @@ export default {
         tableData: [
           
         ],
-         editdata: {
+         form: {
           new_name: '',
           new_cover:'',
           new_address:'',
