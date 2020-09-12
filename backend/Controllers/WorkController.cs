@@ -365,13 +365,40 @@ namespace SyaApi.Controllers
 
 
         ///<summery>
-        /// 用户点赞
+        /// 用户点赞 0是取消点赞，1是已点赞
         /// chuckle 9.9
         ///</summery>
         [HttpPost("GetLike")]
         [AllowAnonymous]
         public async Task<int> GetLike([FromBody] FindworkRequest request)
         {
+            var provider_id = Int32.Parse(User.Identity.Name);
+            //status
+            var temp = await LikeAccessor.Find(provider_id,request.work_id);
+
+            //-1是首次点赞
+            if(temp==-1)
+            {
+                var temp_a=await LikeAccessor.Create(provider_id,request.work_id);
+                if(temp_a<0)//点赞失败
+                {
+                    return -1;
+                }
+                
+            }
+            else
+            {
+                var temp_b= await LikeAccessor.Change(provider_id,request.work_id,temp);
+                if(temp_b==-1)
+                {
+                    return -1;
+                }
+                else if(temp_b==0)
+                {
+                    await WorkAccessor.getnolike(request.work_id);
+                    return 0;
+                }
+            }
             await WorkAccessor.getlike(request.work_id);
             return 1;
         }

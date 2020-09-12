@@ -432,6 +432,30 @@ namespace SyaApi.DataAccessors
         }
     
         ///<summery>
+        /// 用户点赞
+        /// chuckle 9.9
+        ///</summery>
+        public static async Task<int> getnolike(int work_id)
+        {
+            var query = "UPDATE work SET likes_num=likes_num-1 WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        
+        }
+
+
+        ///<summery>
         /// 收藏数增加
         /// chuckle 9.9
         ///</summery>
