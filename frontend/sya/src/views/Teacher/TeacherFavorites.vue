@@ -6,13 +6,6 @@
       <!-- <el-button type="text" @click="Create()">新建收藏夹</el-button> -->
       <!-- <el-button type="text" @click="dialog = true">新建收藏夹</el-button> -->
       <br><br>
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getGoodsList">
-            <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
-          </el-input>
-        </el-col>
-      </el-row>
       <!-- 表格数据 -->
       <el-table :data="FavoriteList" border stripe>
         <el-table-column type="index"></el-table-column>
@@ -21,7 +14,7 @@
         <el-table-column label="操作" width="435px">
           <template slot-scope="scope_favorite">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="showDrawer(scope_favorite.row.favorite_id)">查看收藏夹具体工作</el-button>
-            <el-button type="success" icon="el-icon-edit" size="mini" @click="showUpdateDialog(scope_favorite.row.favorite_id)">编辑</el-button>
+            <el-button type="success" icon="el-icon-edit" size="mini" @click="showUpdateDialog(scope_favorite.row.favorite_id,scope_favorite.row.favorite_name)">编辑</el-button>
             <el-button type="danger" icon="el-icon-edit" size="mini" @click="Delete(scope_favorite.row.favorite_id)">删除</el-button>
           </template>
         </el-table-column>
@@ -79,12 +72,10 @@
     </el-form-item> -->
     <!-- 收藏夹名字 -->
     <el-form-item label="名字" :label-width="formLabelWidth" prop="favname">
-        <el-input v-model="form.favname" autocomplete="off" placeholder="请输入收藏夹名字，长度为3-10字符"></el-input>
+        <el-input v-model="form.favname" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
       </el-form-item>
       <!-- 工作数量 -->
-      <!-- <el-form-item label="工作数量" :label-width="formLabelWidth" prop="favworknum">
-        <el-input v-model="form.favworknum" autocomplete="off" placeholder="请输入工作数量，为一个数字"></el-input>
-      </el-form-item> -->
+
     </el-form>
     <div class="demo-drawer__footer">
       <el-button @click="dialogCreateVisible = false">取消</el-button>
@@ -104,8 +95,11 @@
   <div class="demo-drawer__content" size=40%>
     <el-form :model="formUpdate"  >
     <!-- 收藏夹名字 -->
-    <el-form-item label="名字" :label-width="formLabelWidth" prop="favname">
-        <el-input v-model="formUpdate.favname" autocomplete="off" placeholder="请输入收藏夹名字，长度为3-10字符"></el-input>
+    <el-form-item label="旧的名字" :label-width="formLabelWidth" prop="favname">
+        <el-input v-model="formUpdate.favname" autocomplete="off" :disabled="true" placeholder="请输入收藏夹名字"></el-input>
+      </el-form-item>
+     <el-form-item label="新的名字" :label-width="formLabelWidth" prop="favnamenew">
+        <el-input v-model="formUpdate.favnamenew" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
       </el-form-item>
     </el-form>
     <div class="demo-drawer__footer">
@@ -153,11 +147,10 @@ export default {
       dialog: false,
       loading: false,
       form: {
-            favname:"pp"
+            favname:""
       },
       formUpdate:{
-        id:Number,
-        favname:"ppc"
+        id:Number
       },
       formLabelWidth: '80px',
       timer: null,
@@ -187,9 +180,10 @@ export default {
       //   //console.log(newPage)
       //   this.queryInfo.pagenum1=newPage
       // },
-    async showUpdateDialog(id){
+    async showUpdateDialog(id,name){
       this.dialogUpdateVisible=true;
       this.formUpdate.id = id;
+      this.formUpdate.favname =name;
     },
     async showDrawer(favoriteid)
     {
@@ -301,13 +295,14 @@ export default {
         "http://localhost:5000/Favorite/UpdateFavorite",
         {
           favorite_id: this.formUpdate.id,
-          favorite_name: this.formUpdate.favname
+          favorite_name: this.formUpdate.favnamenew
         },
         { withCredentials: true }
       );
       console.log(result);
       if (result.status == 200) {
         this.dialogUpdateVisible=false;
+        this.formUpdate.favnamenew = "";
         this.getfavoritelist();
         this.$message.success("更新成功");
       }

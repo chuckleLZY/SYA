@@ -12,11 +12,16 @@
       >
         <el-menu-item index="/TeacherSystemMessage">
           <i class="el-icon-menu"></i>
-          <span slot="title">老师系统通知</span>
+          <span slot="title">系统通知</span>
         </el-menu-item>
         <el-menu-item index="/TeacherWorkMessage">
           <i class="el-icon-menu"></i>
-          <span slot="title">老师工作通知</span>
+          <span slot="title">请假消息</span>
+        </el-menu-item>
+        
+        <el-menu-item index="/TeacherResignMessage">
+          <i class="el-icon-menu"></i>
+          <span slot="title">辞职消息</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

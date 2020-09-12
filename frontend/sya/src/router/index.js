@@ -33,6 +33,8 @@ import MyPublishedWork from '../views/Teacher/MyPublishedWork.vue'
 
 import TeacherSystemMessage from '../views/Teacher/TeacherSystemMessage.vue'
 import TeacherWorkMessage from '../views/Teacher/TeacherWorkMessage.vue'
+import TeacherResignMessage from '../views/Teacher/TeacherResignMessage.vue'
+
 
 import TeacherInformation from '../views/Teacher/TeacherInformation.vue'
 import TeacherQualification from '../views/Teacher/TeacherQualification.vue'
@@ -161,6 +163,11 @@ const routes = [
                 path: '/TeacherWorkMessage',
                 name: 'TeacherWorkMessage',
                 component: TeacherWorkMessage,
+            },
+            {
+                path:'/TeacherResignMessage',
+                name:'TeacherResignMessage',
+                component:TeacherResignMessage,
             }
             ]
         },
