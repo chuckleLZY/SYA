@@ -96,7 +96,7 @@
     <el-form :model="formUpdate"  >
     <!-- 收藏夹名字 -->
     <el-form-item label="旧的名字" :label-width="formLabelWidth" prop="favname">
-        <el-input v-model="formUpdate.favname" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
+        <el-input v-model="formUpdate.favname" autocomplete="off" :disabled="true" ></el-input>
       </el-form-item>
      <el-form-item label="新的名字" :label-width="formLabelWidth" prop="favnamenew">
         <el-input v-model="formUpdate.favnamenew" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
