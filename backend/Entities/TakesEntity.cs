@@ -10,6 +10,8 @@ namespace SyaApi.Entities
         public double work_time{get; set;}
         public int absent_num{get; set;}
         public double absent_time{get; set;}
+
+        public int status {get; set;}
     }
     public class TakesItemEntity
     {

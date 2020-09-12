@@ -20,6 +20,7 @@ namespace SyaApi.Responses
         public string end_time{get; set;}
         public double total_time{get; set;}
         public int week_day{get; set;}
+        public int status {get; set;}
     }
     
     public class WorkItemResponse

@@ -144,5 +144,30 @@ namespace SyaApi.DataAccessors
             return 0;
         }
 
+        public static async Task<TakesEntity> FindInfo(int id,int work_id)
+        {
+            var query = "SELECT status FROM takes WHERE student_id=@id AND work_id=@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@id", id);
+            command.Parameters.AddWithValue("@work_id", work_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new TakesEntity
+                {
+                    status=reader.GetInt32("status")          
+                };
+            }
+            return null;
+        }
+
+
+
     }
 }
