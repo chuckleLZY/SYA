@@ -3,9 +3,9 @@
     <el-aside width="200px">
       <el-menu
         class="el-menu-vertical-demo"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        background-color="#D3DCE6"
+        text-color="#333"
+        active-text-color="#0A5AA8"
         style="height: 100%"
         :default-active="$route.path"
         router

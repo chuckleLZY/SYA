@@ -23,7 +23,8 @@
       placeholder="开始日期"
       format="yyyy-MM-dd"
       value-format="yyyy-MM-dd"
-      style="width: 100%;">
+      style="width: 100%;"
+      :picker-options="pickerOptions0">
     </el-date-picker>
     </el-col>
     <el-col class="line" :span="2">-</el-col>
@@ -34,36 +35,38 @@
       placeholder="结束日期"
       format="yyyy-MM-dd"
       value-format="yyyy-MM-dd"
-      style="width: 100%;">
+      style="width: 100%;"
+      :picker-options="pickerOptions1">
     </el-date-picker>
-    
     </el-col>
   </el-form-item>
   <el-form-item label="工作时间" prop="time">
   <el-col :span="11">
-      <el-time-picker
+    <el-time-select
+    placeholder="起始时间"
     v-model="form.start_time"
     :picker-options="{
-      selectableRange: '08:30:00 - 19:30:00'
+      start: '08:00',
+      step: '01:00',
+      end: '20:00'
     }"
-    placeholder="开始时间"
-    value-format="HH:mm:ss"
-    style="width: 100%;">
-  </el-time-picker>
+      style="width: 100%;">
+  </el-time-select>
     </el-col>
     <el-col class="line" :span="2">-</el-col>
     <el-col :span="11">
-      <el-time-picker
+    <el-time-select
+    placeholder="结束时间"
     v-model="form.end_time"
     :picker-options="{
-      selectableRange: '09:30:00 - 20:30:00'
+      start: '08:00',
+      step: '01:00',
+      end: '21:00',
+      minTime: form.start_time
     }"
-    placeholder="结束时间"
-    value-format="HH:mm:ss"
-    style="width: 100%;">
-  </el-time-picker>
-   
-    </el-col>
+      style="width: 100%;">
+  </el-time-select>
+   </el-col>
   </el-form-item>
   <el-form-item label="工作日" prop="week_day">
     <el-select v-model="form.week_day" placeholder="请选择工作日">
@@ -75,7 +78,6 @@
       <el-option label="星期六" value="6"></el-option>
       <el-option label="星期日" value="7"></el-option>
     </el-select>
-   
   </el-form-item>
   <el-form-item label="工作薪资（元/天）" prop="salary">
     <el-input v-model="form.salary" ></el-input>
@@ -114,28 +116,49 @@ export default {
           time:'',
           salary:'',
           desc: ''
-        }
+        },
+        //设置选择日期
+        pickerOptions0: { //结束时间不能大于开始时间
+      	disabledDate: (time) => {
+		    if (this.form.end_day) {
+		  	return Date.now() > time.getTime() > new Date(this.form.end_day).getTime();
+		    } else { //没有选择结束时间，只能选择今天之后的时间不包括今天
+		   	return time.getTime() < Date.now() 
+		}
+
+	}
+},
+        pickerOptions1: {//结束时间小于开始时间
+	      disabledDate: (time) => {
+		    if (this.form.start_day) {
+			  return time.getTime() < new Date(this.form.start_day).getTime();
+		    } else { //若未输入开始时间则默认为今天后时间不包括今天
+			  return time.getTime() < Date.now() 
+	    	}
+	}
+},
       }
     },
    methods:{
        onSubmit() {
         console.log('submit!');
       },
+    //创建工作
     async Creatework() {
         console.log(this.form);
       const result = await axios.post(
         "http://localhost:5000/Work/CreateWork",
         {
-    work_name: this.form.name,
-    cover: this.form.cover,
-    work_description: this.form.desc,
-    address: this.form.address,
-    salary: parseInt(this.form.salary),
-    start_day: this.form.start_day,
-    end_day: this.form.end_day,
-    start_time: this.form.start_time,
-    end_time: this.form.end_time,
-    week_day: parseInt(this.form.week_day)
+          work_name: this.form.name,
+          cover: this.form.cover,
+          work_description: this.form.desc,
+          address: this.form.address,
+          salary: parseInt(this.form.salary),
+          start_day: this.form.start_day,
+          end_day: this.form.end_day,
+          start_time: this.form.start_time,
+          end_time: this.form.end_time,
+          week_day: parseInt(this.form.week_day)
         },
         {
           withCredentials: true
@@ -143,6 +166,7 @@ export default {
       );
      if (result.status == 200) {
         this.$message.success("创建成功");
+        this.$router.push("/MyPublishedWork");
       }
       else{
         this.$message.error("发生了一些错误");

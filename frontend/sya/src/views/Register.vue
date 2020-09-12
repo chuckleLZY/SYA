@@ -1,4 +1,4 @@
-
+、
 <template>
   <div class="login_container">
 <el-carousel :interval="4000" type="card" height="200px">
@@ -32,7 +32,7 @@
     </div>
      <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/imagebox/logosya.png" alt="">
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg" alt="">
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -49,7 +49,7 @@
         </el-form-item>
         <!-- 权限选择 -->
         <el-form-item prop="role">
-        <el-select v-model="logInForm.role" placeholder="请选择" style="width:100%" >
+        <el-select v-model="logInForm.role" placeholder="请选择你的注册身份" style="width:100%" >
              <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -88,16 +88,16 @@ export default {
         value: '',
       //登录表单
       logInForm: {
-        username: "hzh",
-        Password: "123456",
-        email: "hzh@qq.com",
+        username: "",
+        Password: "",
+        email: "",
       },
       loginFormRules:{
         username:[ { required: true, message: '请输入用户名', trigger: 'blur' },
          { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
         Password:[{ required: true, message: '请输入密码', trigger: 'blur' }
         ,{ min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }],
-        email:[ { required: true, message: '请输入用户名', trigger: 'blur' },
+        email:[ { required: true, message: '请输入邮箱', trigger: 'blur' },
          { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur' }],
          role:[ { required: true, message: '请输入权限等级', trigger: 'blur' },
          { message: '为1或0', trigger: 'blur' }]

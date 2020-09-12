@@ -65,9 +65,11 @@ namespace SyaApi.DataAccessors
             {
                 SumWorkAndAbsent temp = new SumWorkAndAbsent()
                 {
-                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_work_time"),
+                    //sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_work_time"),
+                    sum_work_time = reader["sum_work_time"] is System.DBNull ? 0 : reader.GetDouble("sum_work_time"),
                     sum_absent_num = reader["sum_absent_num"] is System.DBNull ? 0 : Convert.ToInt32(reader.GetInt64("sum_absent_num")),
-                    sum_absent_time = reader["sum_absent_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_absent_time")
+                    //sum_absent_time = reader["sum_absent_time"] is System.DBNull ? 0 : reader.GetDecimal("sum_absent_time")
+                    sum_absent_time = reader["sum_absent_time"] is System.DBNull ? 0 : reader.GetDouble("sum_absent_time")
                 };
                 return temp;
             }
@@ -78,7 +80,8 @@ namespace SyaApi.DataAccessors
         /// 增加请假次数和请假时间
         /// 由LeaveController.ProManageLeave调用
         /// dumei 08.24
-        public static async Task<int> UpdateAbsent(int stu_id, int work_id, decimal ab_time)
+        ///</summery>
+        public static async Task<int> UpdateAbsent(int stu_id, int work_id, double ab_time)
         {
             var query = @"UPDATE takes SET absent_num=absent_num+1, absent_time=absent_time+@ab_time
             WHERE student_id=@stu_id AND work_id=@work_id";

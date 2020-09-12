@@ -81,6 +81,45 @@ namespace SyaApi.Controllers
         }
 
         ///<summery>
+        /// 学生搜索个人拥有工作
+        /// chuckle 8.25
+        ///</summery>
+        [HttpPost("FindOwnWork")]
+        [AllowAnonymous]
+        public async Task<ActionResult<WorkItemResponse>> FindOwnWork([FromBody] ViewWorkRequest request)
+        {
+            WorkItemResponse workItem=new WorkItemResponse();
+            workItem.totalpage=0;
+            workItem.pagenum=request.pagenum;
+            workItem.worklist=new List<WorkResponse>();
+
+            var start=(request.pagenum-1)*request.pagesize;
+            var end=request.pagenum*request.pagesize-1;
+
+            //取得存在cookie的当前账户id
+            var stu_id = Int32.Parse(User.Identity.Name);
+            string search='%'+request.query+'%';
+            var temp=await WorkAccessor.FindOwnWork(search,stu_id);
+
+            if(temp!=null)
+            {
+                for(int i=0;i<temp.total;i++)
+                {
+                    workItem.totalpage++;
+                    if(i>=start&&i<=end)
+                    {
+                        WorkResponse a=_mapper.Map<WorkResponse>(temp.workItem[i]);                       
+                        workItem.worklist.Add(a);
+                    }
+                    
+                }
+
+                return Ok(workItem);
+            }
+            return Ok(-1);
+        }
+
+        ///<summery>
         /// 用户查看工作详细信息
         /// chuckle 8.25
         ///</summery>
@@ -184,11 +223,15 @@ namespace SyaApi.Controllers
         /// 计算总小时数
         /// dumei 09.08
         ///</summery>
+        ///<summery>
+        /// 更新：取消秒
+        /// dumei 09.11
+        ///</summery>
         static private double CalTotalTime(string start_day, string end_day, string start_time, string end_time, int week_day)
         {
             DateTimeFormatInfo dtFormat = new System.Globalization.DateTimeFormatInfo();
             
-            dtFormat.ShortDatePattern = "HH:mm:ss";
+            dtFormat.ShortDatePattern = "HH:mm";
             DateTime stTime = Convert.ToDateTime(start_time, dtFormat);
             DateTime edTime = Convert.ToDateTime(end_time, dtFormat);
             double interval_time = edTime.Subtract(stTime).TotalHours;
@@ -240,11 +283,14 @@ namespace SyaApi.Controllers
 
             // 计算工作总小时数total_time
             work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
-
+            if (work.total_time == 0)
+            {
+                return Ok("Duration time is 0.");
+            }
             int work_id = await WorkAccessor.Create(work);
             if (work_id == 0)
             {
-                return BadRequest(new { message = "Fail to create work"});
+                return Ok("Fail to create work.");
             }
             work.work_id = work_id;
             return Ok(_mapper.Map<WorkResponse>(work));
@@ -308,6 +354,10 @@ namespace SyaApi.Controllers
             work.teacher_id = provider_id;
             work.work_id=request.work_id;
             work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);
+            if (work.total_time == 0)
+            {
+                return Ok("Duration time is 0.");
+            }
             await WorkAccessor.Update(work); //return work_id
 
             return Ok(_mapper.Map<WorkResponse>(work));
@@ -315,13 +365,40 @@ namespace SyaApi.Controllers
 
 
         ///<summery>
-        /// 用户点赞
+        /// 用户点赞 0是取消点赞，1是已点赞
         /// chuckle 9.9
         ///</summery>
         [HttpPost("GetLike")]
         [AllowAnonymous]
         public async Task<int> GetLike([FromBody] FindworkRequest request)
         {
+            var provider_id = Int32.Parse(User.Identity.Name);
+            //status
+            var temp = await LikeAccessor.Find(provider_id,request.work_id);
+
+            //-1是首次点赞
+            if(temp==-1)
+            {
+                var temp_a=await LikeAccessor.Create(provider_id,request.work_id);
+                if(temp_a<0)//点赞失败
+                {
+                    return -1;
+                }
+                
+            }
+            else
+            {
+                var temp_b= await LikeAccessor.Change(provider_id,request.work_id,temp);
+                if(temp_b==-1)
+                {
+                    return -1;
+                }
+                else if(temp_b==0)
+                {
+                    await WorkAccessor.getnolike(request.work_id);
+                    return 0;
+                }
+            }
             await WorkAccessor.getlike(request.work_id);
             return 1;
         }

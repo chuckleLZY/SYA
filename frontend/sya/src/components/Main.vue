@@ -4,20 +4,22 @@
       <!-- 导航栏 -->
       <Header></Header>
     </el-header>
-    <el-main style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px">
+    <el-main style="padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;">
       <!-- 路由跳转 -->
       <router-view></router-view>
+      <Footer></Footer>
     </el-main>
-    <el-footer style="padding-left: 0px;padding-right: 0px;">Footer</el-footer>
   </el-container>
 </template>
 
 <script>
 import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue"
 export default {
   name: "Main",
   components: {
-    Header
+    Header,
+    Footer,
   }
 };
 </script>
@@ -32,10 +34,16 @@ export default {
   height: 100%;
 }
 
-.el-header,
+.el-header{
+  /* background-color: #0A5AA8; */
+  background-image: linear-gradient(to bottom right, #0866d1, #828fc7);
+    color: #333;
+  text-align: center;
+  /* line-height: 60px; */
+}
 .el-footer {
-  background-color: #b3c0d1;
-  color: #333;
+  background-color: #B3C0D1;
+    color: #333;
   text-align: center;
   /* line-height: 60px; */
 }

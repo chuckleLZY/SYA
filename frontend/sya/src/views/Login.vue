@@ -65,7 +65,7 @@
     </div>
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/imagebox/logosya.png" alt />
+        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg" alt />
       </div>
       <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
@@ -158,7 +158,7 @@ export default {
         this.$router.push("/Main");
       }
     },
-    register() {
+    async register() {
       this.$router.push("/Register");
     }
   }

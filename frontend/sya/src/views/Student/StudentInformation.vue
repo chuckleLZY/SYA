@@ -112,7 +112,6 @@
             </el-col>
         </el-row>
         <el-form class="editForm" ref="editRef" :model="editForm" :rules="editFormRules" label-width="120px">
-            </el-form-item>
              <el-form-item style="width:50%" label="性别 : ">
                  <el-switch
                     style="display: block; margin-top:4%;"
@@ -227,20 +226,16 @@ export default {
 
 <style>
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
 
-*{
-    font-family: "Montserrat",sans-serif,"微软雅黑";
-}
 
-.syaSup{
-    font-size:20px;
-    margin-top: 2cm;
-}
 
 </style>
 
 <style scoped>
+.syaSup{
+    font-size:20px;
+    margin-top: 2cm;
+}
 
 .infoCard{
     margin-top:1cm;

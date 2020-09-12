@@ -19,8 +19,8 @@ namespace SyaApi.Entities
 
     public class SumWorkAndAbsent
     {
-        public decimal sum_work_time {get; set;}
+        public double sum_work_time {get; set;}
         public int sum_absent_num {get; set;}
-        public decimal sum_absent_time {get; set;}
+        public double sum_absent_time {get; set;}
     }
 }

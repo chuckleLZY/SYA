@@ -6,14 +6,27 @@ namespace SyaApi.Requests
     {
         [Required]
         public int work_id{get; set;}
+
         [Required]
         public string content{get; set;}
-        [Required]
+
+        //[Required]
         public string leave_time{get; set;}
+
         [Required]
         public string proof{get; set;}
-        [Required]
+
+        //[Required]
         public int status{get; set;}
+
+        [Required]
+        public string leave_day{get; set;}
+
+        [Required]
+        public string leave_start{get; set;}
+
+        [Required]
+        public string leave_end{get; set;}
     }
 
     public class ManageLeaveRequest

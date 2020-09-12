@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
@@ -340,6 +341,38 @@ namespace SyaApi.DataAccessors
         }
 
         ///<summery>
+        /// 获得工作时间信息
+        /// 用于判断请假是否在工作时间内,用于leaveController.CheckRestTime()
+        /// dumei 09.12
+        ///</summery>
+        public static async Task<WorkTimeEntity> GetWorkTime(int work_id)
+        {
+            var query = @"SELECT start_day,end_day,start_time,end_time,week_day
+             FROM work WHERE work_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@id",work_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                return new WorkTimeEntity {
+                    start_day=reader.GetString("start_day"),
+                    end_day=reader.GetString("end_day"),
+                    start_time=reader.GetString("start_time"),
+                    end_time=reader.GetString("end_time"),
+                    week_day=reader.GetInt32("week_day")
+                };
+            }
+            return new WorkTimeEntity {
+                start_day="not found"
+            }; // work not exists
+        }
+
+        ///<summery>
         /// (非学生用户)修改工作信息
         /// 设置 likes_num, collect_num, share_num 为 0
         /// chuckle 8.28
@@ -399,6 +432,30 @@ namespace SyaApi.DataAccessors
         }
     
         ///<summery>
+        /// 用户点赞
+        /// chuckle 9.9
+        ///</summery>
+        public static async Task<int> getnolike(int work_id)
+        {
+            var query = "UPDATE work SET likes_num=likes_num-1 WHERE work_id =@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+
+            if(row>0)
+            {
+                return 1;
+            }
+            return 0;
+        
+        }
+
+
+        ///<summery>
         /// 收藏数增加
         /// chuckle 9.9
         ///</summery>
@@ -443,6 +500,55 @@ namespace SyaApi.DataAccessors
             return 0;
         
         }
-    
+
+        ///<summery>
+        /// 学生搜索个人拥有工作
+        /// chuckle 8.25
+        ///</summery>
+        public static async Task<WorkItemEntity> FindOwnWork(string search,int id)
+        {
+            WorkItemEntity work=new WorkItemEntity();
+            work.total=0;
+            work.workItem=new List<WorkEntity>();
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work JOIN takes USING (work_id) WHERE student_id=@id AND( work_name LIKE @search OR work_description LIKE @search OR address LIKE @search) ";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@search",search);
+            command.Parameters.AddWithValue("@id",id);
+            using var reader = await command.ExecuteReaderAsync();
+
+            while ( reader.Read())
+            {
+                WorkEntity temp=new WorkEntity();
+                
+                temp.teacher_id=reader.GetInt32("teacher_id");
+                temp.work_id=reader.GetInt32("work_id");
+                temp.work_name=reader.GetString("work_name");
+                temp.cover=reader.GetString("cover");
+                temp.work_description=reader.GetString("work_description");
+                temp.address=reader.GetString("address");
+                
+                temp.salary=reader.GetInt32("salary");
+                temp.likes_num=reader.GetInt32("likes_num");
+                temp.collect_num=reader.GetInt32("collect_num");
+                
+                temp.start_day=reader.GetString("start_day");
+                temp.end_day=reader.GetString("end_day");
+                temp.start_time=reader.GetString("start_time");
+                temp.end_time=reader.GetString("end_time");
+                temp.total_time=reader.GetDouble("total_time");
+                temp.week_day=reader.GetInt32("week_day");
+                
+                work.total++;
+                work.workItem.Add(temp);
+            }
+            return work;
+        }
+
+        
+
     }
 }
