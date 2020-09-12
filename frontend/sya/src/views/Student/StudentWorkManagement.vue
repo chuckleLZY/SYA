@@ -20,7 +20,7 @@
                     </el-input>
                 </el-col>
                 <el-col :span="2">
-                    <el-button type="success" icon="el-icon-plus">我要申请</el-button>
+                    <el-button type="success" icon="el-icon-plus" @click="$router.push('/Recruitment');">我要申请</el-button>
                 </el-col>
             </el-row>
             <!--表格区域-->
