@@ -93,7 +93,7 @@
                 </el-form-item>
                 <el-form-item label="所在城市:" prop="city">
                      <el-input placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
-                     <el-cascader style="margin-left:2cm"
+                     <el-cascader style="margin-left:15%;"
                         size="large"
                         :options="options"
                         v-model="selectedOptions"
@@ -146,8 +146,8 @@
                     <el-input-number v-model="addResume.age" :min="1" :max="100"></el-input-number>
                 </el-form-item>
                 <el-form-item label="所在城市:" prop="city">
-                     <el-input placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
-                     <el-cascader style="margin-left:2cm"
+                     <el-input aria-placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
+                     <el-cascader style="margin-left:15%;"
                         size="large"
                         :options="options"
                         v-model="selectedOptions"

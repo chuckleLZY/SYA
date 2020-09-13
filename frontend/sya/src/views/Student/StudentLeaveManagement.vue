@@ -1,268 +1,198 @@
 <template>
-  <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
-      <el-breadcrumb-item>我的</el-breadcrumb-item>
-      <el-breadcrumb-item>请假管理</el-breadcrumb-item>
-    </el-breadcrumb>
-
-
-
-
-        <el-card class="teacher_card" style="margin-top:20px;">
-            <!--
-            <el-row>
-                <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-                        <el-select v-model="select" slot="prepend" placeholder="搜索类型">
-                        <el-option label="工作类型" value="1"></el-option>
-                        <el-option label="工作时间" value="2"></el-option>
-                        <el-option label="工作地点" value="3"></el-option>
-                        </el-select>
-                        <el-button slot="append" icon="el-icon-search"></el-button>
-                    </el-input>
+    <div>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>学生我的</el-breadcrumb-item>
+            <el-breadcrumb-item>请假管理</el-breadcrumb-item>
+        </el-breadcrumb>
+        
+         <el-card class="workCard" >
+            <el-row class="header">
+                 <el-col class="titlecol" :span="5">
+                    <p class="title">请假管理</p>
                 </el-col>
-                <el-col :span="4"></el-col>
             </el-row>
-      -->
+            <!--表格区域-->
+            <el-row style="margin-top:1cm">
+                <el-table :data="Worklist" border>
+                    <el-table-column type="index" label="#" >
+                    </el-table-column>
+                    <el-table-column prop="work_name" label="工作名称" >
+                    </el-table-column>
+                    <el-table-column prop="address" label="工作地址" >
+                    </el-table-column>
+                    <el-table-column prop="salary" label="工作薪水">
+                    </el-table-column>
+                    <el-table-column prop="work_time" label="工作时长">
+                    </el-table-column>
+                    <el-table-column  label="操作" width="280">
+                        <template slot-scope="scope">
+                            <el-button type="warning" size="medium" icon="el-icon-remove-outline" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;">申请请假</el-button>
+                            <el-button type="danger" size="medium" icon="el-icon-circle-close">我要辞职</el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column type="expand" label="详情" width="75" >
+                        <template slot-scope="scope">
+                            <el-row>
+                                <el-col :span="12">
+                                    <el-image :src="scope.row.cover" :fit="fit">
+                                        <div slot="error" class="image-slot">
+                                           <i class="el-icon-picture-outline" style="font-size: 100px"></i>
+                                        </div>
+                                    </el-image> 
+                                </el-col>
+                                <el-col :span="12" class="inlineCol">
+                                    <p class="inlineTitle">工作描述:</p>
+                                    <div class="description">
+                                         <p>{{scope.row.work_description}}</p>
+                                    </div>
+                                    <p class="inlineTitle"><i class="el-icon-thumb"></i> 点赞 ： <span class="inlineInfo"> {{scope.row.likes_num}} </span> </p>
+                                    <p class="inlineTitle"><i class="el-icon-star-off"></i> 收藏 ： <span class="inlineInfo"> {{scope.row.collect_num}} </span> </p>
+                                </el-col>
+                            </el-row>    
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+            <!--分页区域-->
+             <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="queryInfo.pagenum"
+            :page-sizes="[5, 10, 15]"
+            :page-size="queryInfo.pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total" style="margin-top:2cm">
+            </el-pagination>
+         </el-card>
 
-      <!--    <el-row>
-                <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" class="input-with-select">
-                        
-                        <el-button slot="append" icon="el-icon-search" @click="getWorkList"></el-button>
-                    </el-input>
-                </el-col>
-                <el-col :span="4"></el-col>
-      </el-row>-->
-
-      <!-- 列表区域 -->
-      <el-table :data="workMessageList" v-loading="loading">
-        <el-table-column label="#" type="index"></el-table-column>
-        <el-table-column label="请假时间" prop="leave_time"></el-table-column>
-        <el-table-column label="状态" prop="status">
-          <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.status==1">已同意</el-tag>
-            <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>
-            <el-tag type="info" v-if="scope.row.status==0">未处理</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template v-slot:default="scope">
-            <el-tooltip effect="dark" content="查看详情" placement="top-start" :enterable="false">
-              <el-button
-                type="primary"
-                icon="el-icon-edit"
-                size="mini"
-                @click="viewMesInfo(scope.row)"
-              ></el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!--  分页区域  -->
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pagenum"
-        :page-sizes="[1, 2, 5, 10]"
-        :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        style="margin-top:10px"
-      ></el-pagination>
-    </el-card>
-
-    <el-dialog title="详情" :visible.sync="checkDialogVisible" width="35%">
-      <div style="width:400px;margin:auto;">
-        <el-form status-icon label-width="auto" :model="messageData">
-          <el-form-item label="请假原因">
-            <el-input disabled v-model="messageData.content"></el-input>
-          </el-form-item>
-
-          
-          <el-form-item label="申请时间">
-            <el-input disabled v-model="messageData.request_time"></el-input>
-          </el-form-item>
-          <el-form-item label="证明">
-            <el-input disabled v-model="messageData.proof"></el-input>
-          </el-form-item>
-
-          <div class="demo-drawer__footer" style="margin-top:10px">
-            <el-tag type="success" v-if="messageData.status==1">已同意</el-tag>
-            <el-tag type="danger" v-if="messageData.status==2">已拒绝</el-tag>
-           
-          </div>
-        </el-form>
-      </div>
-    </el-dialog>
-  </div>
+         <!--请假的信息-->
+         <el-dialog title="请假申请" :visible.sync="AbsentVisible" @close="AbFormClose()" width="50%" center >
+            <el-form :model="AbForm" :rules="AbFormRules" label-width="100px" ref="AbFormRef" >
+                 <el-form-item label="请假时间">
+                      <el-date-picker type="date" placeholder="选择日期" style="width: 40%;"></el-date-picker>
+                 </el-form-item>
+                <el-form-item  label="请假时长 ：" prop="leave_time">
+                    <el-input v-model="AbForm.leave_time" placeholder="请输入请假时长" style="width:40%" ></el-input>
+                </el-form-item>
+                <el-form-item label="请假理由 ：" prop="content">
+                    <el-input v-model="AbForm.content" placeholder="请输入请假理由" type="textarea" :rows="3" maxlength="300" show-word-limit style="width:80%"></el-input>
+                </el-form-item>
+                <el-form-item label="备注 ：" prop="proof">
+                    <el-input v-model="AbForm.proof" placeholder="此项选填" type="textarea" :rows="3" maxlength="300" show-word-limit style="width:80%"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer" >
+                <el-button @click="AbsentVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addAbsentPre();">提 交</el-button>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 export default {
-  data() {
-    return {
-      input1: "",
-      input2: "",
-      input3: "",
-      select: "",
-      checkDialogVisible: false,
-      messageData: {},
-      loading: true,
-      //获取工作列表的参数对象
-      queryInfo: {
-        pagenum: 1,
-        pagesize: 10,
-        query: ""
-      },
-      workMessageList: [],
-      total: 0
-    };
-  },
-  created() {
-   
-    this.getWorkMessageList();
-  },
-  methods: {
-    //监听每页条数选项改变的事件
-    handleSizeChange(newSize) {
-      //console.log(newSize)
-      this.loading = true;
-      this.queryInfo.pagesize = newSize;
-      this.getWorkMessageList();
-      // this.loading = false;
-    },
-    //监听页码改变的事件
-    handleCurrentChange(newPage) {
-      // console.log(newPage)
-      this.loading = true;
-      this.queryInfo.pagenum = newPage;
-      this.getWorkMessageList();
-      // this.loading = false;
-    },
-    //获取工作列表的函数
-    //   async getWorkList(){
-    //      const {data:res}= await this.$http.get('URL',{params:this.queryInfo})
-    //   }
-    async getWorkMessageList() {
-      // this.loading=true;
-      const res = await axios.post(
-        "http://localhost:5000/Leave/ViewLeave",
-        {
-          pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
-        },
-        {
-          withCredentials: true
-        }
-      );
-      if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-      }
-      this.workMessageList = res.data.leavelist;
-      this.total = res.data.total;
-      this.pagesize = res.data.totalpage / res.data.pagenum;
-      this.pagenum = res.data.pagenum;
-      this.loading = false;
-      //  console.log(this.pagesize);
-      // console.log(res);
-      // this.loading=false;
-    },
-    async viewMesInfo(row) {
-      this.messageData = row;
-      console.log(this.messageData);
-      this.checkDialogVisible = true;
-      const res = await axios.post(
-        "http://localhost:5000/Leave/ProViewLeaves",
-        {},
-        {
-          withCredentials: true
-        }
-      );
-      this.getWorkMessageList();
-      // console.log(res);
-    },
+    data(){
+        return{
+            Worklist:[],
+            queryInfo:{
+                pagenum:1,
+                pagesize:5,
+                query:''
+            },
+            total:20,
+            AbsentVisible:false,
+            AbForm:{
+                work_id:'',
+                content:'',
+                proof:''
 
-    async AgreeLea() {
-      //console.log(confirmResulte);
-
-      const res = await axios.post(
-        "http://localhost:5000/Leave/ProManageLeave",
-        {
-          leave_id: this.messageData.leave_id,
-          status: 1
-        },
-        {
-          withCredentials: true
+            },
+            AbFormRules:{
+                leave_time:[
+                    { required:true, message:'请输入请假时长', trigger:'blur'}
+                    
+                ],
+                 content:[
+                    { required:true, message:'请输入请假理由', trigger:'blur'}
+                ]
+            }
         }
-      );
-      // console.log("aggr", this.messageData);
-      if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-      }
-     /* const result = await axios.post(
-        "http://localhost:5000/Message/CreateMessage",
-        {
-          message_type: 0,
-          content: this.messageData.work_name + "的请假已被接受",
-          receiver_id: this.messageData.student_id
-        },
-        {
-          withCredentials: true
-        }
-      );*/
-      this.loading=true;
-      this.$message.info("已同意");
-      this.checkDialogVisible = false;
-      await this.getWorkMessageList();
-      // console.log(res);
     },
-    async RefuseLea() {
-      //console.log(confirmResulte);
-
-      const res = await axios.post(
-        "http://localhost:5000/Leave/ManageLeave",
-        {
-          leave_id: this.messageData.leave_id,
-          status: 2
+    created(){
+        this.getWorklist()
+    },
+    methods:{
+         async getWorklist(){
+            const {data: res} = await axios.post('http://localhost:5000/Work/FindOwnWork',this.queryInfo,{ withCredentials: true });
+            this.Worklist=res.worklist;
+            this.total=res.totalpage;
+            console.log(this.Worklist);
         },
-        {
-          withCredentials: true
-        }
-      );
-      // console.log("refuse", this.messageData);
-      if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-      }
-      /*const result = await axios.post(
-        "http://localhost:5000/Message/CreateMessage",
-        {
-          message_type: 0,
-          content: this.messageData.work_name + "的请假已被拒绝",
-          receiver_id: this.messageData.student_id
+        handleSizeChange(newSize){
+            this.queryInfo.pagesize=newSize;
+            this.getWorklist();
         },
-        {
-          withCredentials: true
-        }
-      );*/
-      this.loading=true;
-      this.$message.info("已拒绝");
-      this.checkDialogVisible = false;
-      await this.getWorkMessageList();
-      // console.log(res);
+        handleCurrentChange(newPage){
+            this.queryInfo.pagenum=newPage;
+            this.getWorklist();
+        },
+        AbFormClose(){
+            this.$refs.AbFormRef.resetFields();
+        },
+        addAbsentPre(){
+            this.$refs.AbFormRef.validate(async valid =>{
+                if(!valid) {
+                    this.$message.error("请按照验证提示正确填写请假申请后再进行提交");
+                    return;
+                }
+                if(this.AbForm.proof==''){
+                this.AbForm.proof='无备注';
+                }
+                const {data: res} = await axios.post('http://localhost:5000/Leave/RequestRest',this.AbForm,{ withCredentials: true });
+                if (res.error_code == -1) {
+                    this.$message.error("请假申请提交失败，请稍后重试");
+                    return;
+                }
+                this.$message.success('请假申请提交成功！');
+                this.AbsentVisible=false;
+            })
+        },
     }
-  }
-};
+    
+}
 </script>
 
 
 <style scoped>
+.workCard{
+    margin-top:1cm;
+    padding:0;
+}
+.title{
+    font-size: 25px;
+    font-weight: bold;
+}
+.titlecol{
+    margin-bottom:1cm;
+}
+.inlineCol{
+    text-align: center;
+}
+.inlineTitle{
+    font-weight:bold;
+    color: grey;
+    margin-top:1cm;
+}
+.inlineInfo{
+    font-weight: normal;
+    color: black;
+}
+.description{
+    text-align: center;
+    width: 60%;
+    margin-left: 20%;
+}
 </style>
-
