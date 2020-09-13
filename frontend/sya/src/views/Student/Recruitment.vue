@@ -263,7 +263,7 @@ export default {
   created(){
       //调用获取发布的工作的API函数
     //  this.getWorkInfo()
-      this.getWorkList()
+      this.getWorkList();
       
   },
   methods:{
@@ -319,6 +319,23 @@ export default {
             
         },
 
+        async showLike(workid){
+         const res=await axios.post('http://localhost:5000/Work/ShowLike',{
+                work_id:workid
+            },{withCredentials: true});
+          if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+        }
+        if(res.data==0){
+        //console.log('su!');
+        this.$message.success('感谢您的点赞');
+        this.getWorkList();}
+        else if(res.data==1){
+
+        }
+        },
+        
      //展示右侧弹窗
     async showDrawer(workid){
       this.direction='rtl'
