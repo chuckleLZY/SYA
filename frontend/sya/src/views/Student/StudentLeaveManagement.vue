@@ -69,9 +69,6 @@
          <!--请假的信息-->
          <el-dialog title="请假申请" :visible.sync="AbsentVisible" @close="AbFormClose()" width="50%" center >
             <el-form :model="AbForm" :rules="AbFormRules" label-width="100px" ref="AbFormRef" >
-                 <el-form-item label="请假时间">
-                      <el-date-picker type="date" placeholder="选择日期" style="width: 40%;"></el-date-picker>
-                 </el-form-item>
                 <el-form-item  label="请假时长 ：" prop="leave_time">
                     <el-input v-model="AbForm.leave_time" placeholder="请输入请假时长" style="width:40%" ></el-input>
                 </el-form-item>
@@ -107,8 +104,10 @@ export default {
             AbForm:{
                 work_id:'',
                 content:'',
-                proof:''
-
+                proof:'',
+                leave_day:'',
+                leave_start:'',
+                leave_end:''
             },
             AbFormRules:{
                 leave_time:[
