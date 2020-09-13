@@ -26,18 +26,18 @@
                 <el-table-column
                     prop="title"
                     label="公告标题"
-                    width="320">
+                    width="280">
                 </el-table-column>
                 <el-table-column
                     prop="send_time"
                     label="发送时间"
-                    width="320">
+                    width="280">
                 </el-table-column>
                 
                 <el-table-column
                     prop="status"
                     label="状态"
-                    width="320">
+                    width="280">
 
                     <template slot-scope="scope">
                     <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>

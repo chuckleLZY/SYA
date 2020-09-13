@@ -28,17 +28,17 @@
                         
                     <el-card :body-style="{ padding: '0px'}" class="recruitment_card2" >
                     <img :src= work.cover class="image">
-                    <div style="padding: 14px;" > 
-                        <p ><el-tag type="danger">工作名称</el-tag> : {{work.work_name}}</p>
-                        <p><el-tag type="success">点赞</el-tag> : {{work.likes_num}}</p>
-                        <p><el-tag type="warning">收藏</el-tag> : {{work.collect_num}}</p>
+                    <div style="padding: 14px;border: 2px solid black;" > 
+                        <p style="margin-left:10px;"><el-tag style="float:left;" type="danger">工作名称</el-tag> <div style="position:relative; left:0px;"> : {{work.work_name}}</div></p>
+                        <p style="padding-left:0px;"><el-tag style="margin-left:0px;" type="success">点赞</el-tag> : {{work.likes_num}}</p>
+                        <p style="padding-left:0px;"><el-tag style="margin-left:0px;" type="warning">收藏</el-tag> : {{work.collect_num}}</p>
                         
                         
                         <div class="bottom clearfix">
                          
                         
                         <el-button type="primary" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
-                        <el-button type="info" class="button"  @click="GetLike(work.work_id)" plain>点赞</el-button>
+                        <el-button type="info" class="button"  @click="GetLike(work.work_id)" plain></el-button>
                         
                         </div> 
 
@@ -80,9 +80,9 @@
                     <el-input v-model="workInfo.salary" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作日期:" prop="start_day" class="demo-ruleFormItem">
-                    <el-input v-model="workInfo.start_day" disabled></el-input>
-                    <p>至</p>
-                    <el-input v-model="workInfo.end_day" disabled></el-input>
+                    <el-input class="work_day" v-model="workInfo.start_day" disabled></el-input>
+                    <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">  至  </p>
+                    <el-input class="work_day" v-model="workInfo.end_day" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作时间:" prop="start_time" class="demo-ruleFormItem">
                     <el-input v-model="workInfo.start_time" disabled></el-input>
@@ -388,12 +388,16 @@ export default {
         this.$message.error("Unexpected response");
         return;
         }
+        if(res.data==0){
         //console.log('su!');
         this.$message.success('感谢您的点赞');
-        this.getWorkList();
+        this.getWorkList();}
+        else if(res.data==1){
+
+        }
     },
     async appWork(){
-        const res=await axios.post('http://localhost:5000/Work/GetLike',{work_id:this.workInfo.work_id},{
+        const res=await axios.post('http://localhost:5000/Apply/CreateApply',{work_id:this.workInfo.work_id},{
           withCredentials: true
         });
         if (res.status !== 200) {
@@ -575,6 +579,14 @@ export default {
 .demo-ruleFormItem{
   margin-left: -10px;
   
+}
+
+.work_day{
+
+border:2px solid black;
+border-radius: 10px;
+background: white;
+width:114px;
 }
 
 
