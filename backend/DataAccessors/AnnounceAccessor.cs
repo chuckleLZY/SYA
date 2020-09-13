@@ -232,6 +232,34 @@ namespace SyaApi.DataAccessors
             return userItem;
         }
        
+        ///<summery>
+        /// 查找所有announce_id
+        /// chuckle 8.28
+        ///</summery>
+        public static async Task<List<int>> FindAll()
+        {
+            List<int> announce=new List<int>();
+  
+
+            var query = "SELECT announcement_id FROM announcement";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (reader.Read())
+            {
+                announce.Add(reader.GetInt32("announcement_id"));
+            }
+            return announce;
+        }
+
+
+
+
        public static async Task<int> Createrecord(string query)
        {
             // query = "INSERT INTO announce_send(announcement_id,receive_id) values(@ann_id,@receive_id);";
@@ -249,6 +277,36 @@ namespace SyaApi.DataAccessors
             return (int)command.LastInsertedId;
            
        }
+
+    public static async Task<int> SetNewSend(int id)
+    {
+        var query ="";
+        var temp= await FindAll(); 
+
+        for(int i=0;i<temp.Count;i++)
+        {
+            query += "INSERT INTO announce_send(announcement_id,receive_id,status) VALUES("+temp[i]+",@id,@status);";
+        }
+        
+        using var connection = DatabaseConnector.Connect();
+        await connection.OpenAsync();
+        using var command = connection.CreateCommand();
+        command.CommandText = query;
+
+        command.Parameters.AddWithValue("@id", id);
+        command.Parameters.AddWithValue("@status", 0);
+            
+
+        await command.ExecuteNonQueryAsync();
+        return (int)command.LastInsertedId;
+    }
+
+
+
+
+
+
+
     }
 
 }
