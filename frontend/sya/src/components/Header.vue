@@ -48,13 +48,15 @@
       </el-col>
       <el-col :span="4">
         <div
-          height="38"
+          height="38px"
           style="padding-top:10px;float: right;padding-right:30px"
           class="img"
           v-if="!this.$store.state.role==0"
         >
           <el-dropdown>
-            <el-avatar :src="imgSrc"></el-avatar>
+            <el-avatar shape="square">
+              <el-image :src="imgSrc" fit="fill" style="height:40px;width:40px"></el-image>
+            </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <div @click="toInfo()">个人信息</div>
@@ -117,7 +119,14 @@ export default {
       { withCredentials: true }
     );
     // console.log("header", res.avatar);
-    this.imgSrc=res.avatar; 
+    // console.log(res);
+    if (!res.avatar) {
+      this.imgSrc =
+        "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+    } else {
+      this.imgSrc = res.avatar;
+      // console.log("img", typeof res.avatar, res.avatar);
+    }
   }
 };
 </script>

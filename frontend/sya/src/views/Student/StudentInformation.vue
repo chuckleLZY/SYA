@@ -20,9 +20,12 @@
       <div class="box" id="box1"></div>
       <div class="box" id="box2"></div>
       <el-row class="avaRow">
-        <el-avatar shape="circle" :size="100" :src="UserInfo.avatar">
-          <img id="userAva" />
-        </el-avatar>
+        <div class="block">
+          <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
+          <!-- <img id="userAva" /> -->
+          <!-- </el-avatar> -->
+          <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image>
+        </div>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>
       </el-row>
@@ -227,8 +230,14 @@ export default {
         {},
         { withCredentials: true }
       );
-
       this.UserInfo = res;
+      if (!res.avatar) {
+        this.UserInfo.avatar =
+          "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+      } else {
+        this.UserInfo.avatar = res.avatar;
+        // console.log("img", typeof res.avatar, res.avatar);
+      }
       console.log(res);
       this.loading = false;
     },
@@ -256,7 +265,7 @@ export default {
           this.editForm.bank == this.UserInfo.bank &&
           this.editForm.avatar == this.UserInfo.avatar
         ) {
-          this.$message.success("个人信息未作修改");
+          this.$message.info("个人信息未作修改");
           this.getUserInfo(); //重新调取用户信息
           this.cardVisible = true;
           return;
