@@ -1,19 +1,40 @@
 <template>
     <div >
-<div class="outside">
- <el-form ref="form" :model="form" label-width="150px">
+      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>老师我的</el-breadcrumb-item>
+      <el-breadcrumb-item>个人信息</el-breadcrumb-item>
+    </el-breadcrumb>
+
+<el-card style="margin-top:20px;width: 100%">
+<el-row class="section">
+        <p class="subTitle">创建工作</p>
+        <hr class="sectionHr" align="center" />
+ <el-form ref="form" :model="form" label-width="150px" style="width: 550px;margin-left:280px;margin-top:40px">
   <el-form-item label="工作名称" prop="name">
     <el-input v-model="form.name" maxlength="20" show-word-limit ></el-input>
   </el-form-item>
   <el-form-item label="工作图像" prop="cover">
-    <el-select v-model="form.cover" placeholder="请选择工作封面">
-      <el-option label="封面一" value="http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg"></el-option>
-      <el-option label="封面二" value="http://photo.tongji.edu.cn/__local/4/34/82/827E6293ACF9838C9C6F4D455B6_C35BBE06_74B1C.jpg"></el-option>
-      <el-option label="封面三" value="http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg"></el-option>
-    </el-select>
+    <el-row>
+          <el-col :span="24">
+            <el-image :src="form.cover" :fit="fit">
+              <div slot="error" class="image-slot">
+                   <i class="el-icon-picture-outline" style="font-size: 100px"></i>
+                </div>
+              </el-image> 
+            </el-col>
+    </el-row>
+    <el-radio-group v-model="form.cover">
+      <el-radio border label="http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg" >封面一</el-radio>
+      <el-radio border label="http://photo.tongji.edu.cn/__local/4/34/82/827E6293ACF9838C9C6F4D455B6_C35BBE06_74B1C.jpg" >封面二</el-radio>
+      <el-radio border label="http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg" >封面三</el-radio>
+    </el-radio-group>
   </el-form-item>
   <el-form-item label="工作地点" prop="address">
   <el-input v-model="form.address" ></el-input>
+  </el-form-item>
+  <el-form-item label="工作薪资" prop="salary">
+    <el-input v-model="form.salary" ></el-input>
   </el-form-item>
   <el-form-item label="工作日期" prop="date">
    <el-col :span="11">
@@ -79,19 +100,19 @@
       <el-option label="星期日" value="7"></el-option>
     </el-select>
   </el-form-item>
-  <el-form-item label="工作薪资（元/天）" prop="salary">
-    <el-input v-model="form.salary" ></el-input>
-  </el-form-item>
+  
   <el-form-item label="工作描述" prop="desc">
     <el-input type="textarea" v-model="form.desc" maxlength="100" show-word-limit :autosize="{ minRows: 3, maxRows: 6}"></el-input>
   </el-form-item>
 </el-form>
-    </div>
+</el-row>
+
     
     <div class="choose_btm">
         <el-button type="success" @click="Creatework()">新建</el-button>
     <el-button @click="cancelForm()">取 消</el-button>
 </div>
+</el-card>
     </div>
     
 </template>
@@ -106,7 +127,7 @@ export default {
       return {
         form: {
           name: '',
-          cover:'',
+          cover:'http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg',
           address:'',
           start_day:'',
           end_day:'',
@@ -121,7 +142,7 @@ export default {
         pickerOptions0: { //结束时间不能大于开始时间
       	disabledDate: (time) => {
 		    if (this.form.end_day) {
-		  	return Date.now() > time.getTime() > new Date(this.form.end_day).getTime();
+		  	return time.getTime() > new Date(this.form.end_day).getTime() || time.getTime() < Date.now() ;
 		    } else { //没有选择结束时间，只能选择今天之后的时间不包括今天
 		   	return time.getTime() < Date.now() 
 		}
@@ -184,6 +205,20 @@ export default {
 
 
 <style scoped>
+.subTitle {
+   margin-top:40px;
+  font-size: 22px;
+}
+.sectionHr {
+  margin-top: 0.8cm;
+  margin-left: auto;
+  margin-right: auto;
+  width: 65%;
+  height: 4px;
+  background-color: gainsboro;
+  border: none;
+  border-radius: 2px;
+}
 .outside {
   margin-left: 150px;
   margin-right: 600px;

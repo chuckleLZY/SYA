@@ -1,22 +1,29 @@
 <template>
 <div>
-  <el-card>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>老师我的</el-breadcrumb-item>
+      <el-breadcrumb-item>查看已发布工作</el-breadcrumb-item>
+    </el-breadcrumb>
+  <el-card style="margin-top:20px;width: 98%">
   <el-table
     :data="tableData"
-    style="width: 100%">
+    style="width: 100%"
+    stripe
+    >
     <el-table-column type="expand">
       <template slot-scope="props">
-        <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="工作名称">
+        <el-form label-position="left" inline class="demo-table-expand" style="margin-left:240px;">
+          <el-form-item label="工作名称" >
             <span>{{ props.row.work_name }}</span>
           </el-form-item>
-          <el-form-item label="工作地点">
+          <el-form-item label="工作地点" >
             <span>{{ props.row.address }}</span>
           </el-form-item>
-          <el-form-item label="工薪薪资">
+          <el-form-item label="工薪薪资" >
             <span>{{ props.row.salary }}</span>
           </el-form-item>
-          <el-form-item label="工作日">
+          <el-form-item label="工作日" >
             <span>{{ props.row.week_day }}</span>
           </el-form-item>
           <el-form-item label="开始日期">
@@ -36,32 +43,37 @@
           </el-form-item>
         </el-form>
       </template>
+
     </el-table-column>
-    <el-table-column label="" type="index">
+    <el-table-column label="#" type="index" width="130" >
     </el-table-column>
     
     <el-table-column
       label="工作名称"
-      prop="work_name">
+      prop="work_name"
+      width="430">
     </el-table-column>
     <el-table-column
       prop="likes_num"
-      label="点赞">
+      label="点赞"
+       width="120">
     </el-table-column>
     <el-table-column
       prop="collect_num"
-      label="收藏">
+      label="收藏"
+      width="120">
     </el-table-column>
     <el-table-column
       prop="share_num"
-      label="分享">
+      label="分享"
+      width="160">
     </el-table-column>
     <el-table-column
       fixed="right"
       label="操作">
      
       <template slot-scope="scope">
-        <el-button @click="editInfo(scope.row)" type="danger" size="small">编 辑</el-button>
+        <el-button @click="editInfo(scope.row)" type="danger" icon="el-icon-edit" size="medium">编辑</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -79,8 +91,8 @@
       </div>
    </el-card>
   
-<el-dialog title="修改" :visible.sync="DialogVisible">
-  <el-form :model="editdata">
+<el-dialog title="修改" :visible.sync="DialogVisible" width="50%">
+  <el-form :model="editdata" style="width:500px;margin:auto;" :label-position="left">
     <el-form-item label="工作ID" prop="work_id">
     <el-input type="textarea" disabled v-model="editdata.work_id" ></el-input>
   </el-form-item>
@@ -88,17 +100,30 @@
     <el-input type="textarea" disabled v-model="editdata.work_name" maxlength="15" show-word-limit ></el-input>
   </el-form-item>
   <el-form-item label="工作图像" prop="new_cover">
-     <el-select v-model="editdata.new_cover" placeholder="请选择工作封面">
-      <el-option label="封面一" value="http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg"></el-option>
-      <el-option label="封面二" value="http://photo.tongji.edu.cn/__local/4/34/82/827E6293ACF9838C9C6F4D455B6_C35BBE06_74B1C.jpg"></el-option>
-      <el-option label="封面三" value="http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg"></el-option>
-    </el-select>
+     
+    <el-row>
+          <el-col :span="24">
+            <el-image :src="editdata.new_cover" :fit="fit">
+              <div slot="error" class="image-slot">
+                   <i class="el-icon-picture-outline" style="font-size: 100px"></i>
+                </div>
+              </el-image> 
+            </el-col>
+    </el-row>
+    <el-radio-group v-model="editdata.new_cover">
+      <el-radio border label="http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg" >封面一</el-radio>
+      <el-radio border label="http://photo.tongji.edu.cn/__local/4/34/82/827E6293ACF9838C9C6F4D455B6_C35BBE06_74B1C.jpg" >封面二</el-radio>
+      <el-radio border label="http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg" >封面三</el-radio>
+    </el-radio-group>
   </el-form-item>
   <el-form-item label="工作地点" prop="new_address">
-  <el-input v-model="editdata.new_address" ></el-input>
+  <el-input width="300px" v-model="editdata.new_address" ></el-input>
+  </el-form-item>
+  <el-form-item label="工作薪资" prop="new_salary">
+    <el-input v-model="editdata.new_salary" ></el-input>
   </el-form-item>
   <el-form-item label="工作日期" prop="new_date">
-   <el-col :span="11">
+   <el-col :span="9">
       <el-date-picker
       v-model="editdata.new_start_day"
       type="date"
@@ -110,7 +135,7 @@
     </el-date-picker>
     </el-col>
     <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
+    <el-col :span="9">
       <el-date-picker
       v-model="editdata.new_end_day"
       type="date"
@@ -124,7 +149,7 @@
     
   </el-form-item>
   <el-form-item label="工作时间" prop="new_time">
-  <el-col :span="11">
+  <el-col :span="9">
     <el-time-select
     placeholder="起始时间"
     v-model="editdata.new_start_time"
@@ -137,7 +162,7 @@
   </el-time-select>
     </el-col>
     <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
+    <el-col :span="9">
     <el-time-select
     placeholder="结束时间"
     v-model="editdata.new_end_time"
@@ -196,7 +221,7 @@ export default {
         ],
          form: {
           new_name: '',
-          new_cover:'',
+          new_cover:'http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg',
           new_address:'',
           new_start_day:'',
           new_end_day:'',
@@ -211,7 +236,7 @@ export default {
         pickerOptions2: { //结束时间不能大于开始时间
       	disabledDate: (time) => {
 		    if (this.editdata.new_end_day) {
-		  	return time.getTime() > new Date(this.editdata.new_end_day).getTime();
+		  	return time.getTime() > new Date(this.editdata.new_end_day).getTime() || time.getTime() < Date.now();
 		    } else { //没有选择结束时间，只能选择今天之后的时间不包括今天
 		   	return time.getTime() < Date.now() 
 		}
