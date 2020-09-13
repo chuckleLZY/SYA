@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "ali-oss": "^6.10.0",
     "axios": "^0.19.2",
     "cnpm": "^6.1.1",
     "core-js": "^3.6.5",
@@ -30,5 +31,5 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]  
+  ]
 }
