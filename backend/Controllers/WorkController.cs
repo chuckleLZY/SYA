@@ -407,6 +407,37 @@ namespace SyaApi.Controllers
         }
 
 
+
+        ///<summery>
+        /// 用户点赞 0是取消点赞，1是已点赞
+        /// chuckle 9.9
+        ///</summery>
+        [HttpPost("ShowLike")]
+        [AllowAnonymous]
+        public async Task<int> ShowLike([FromBody] FindworkRequest request)
+        {
+            var provider_id = Int32.Parse(User.Identity.Name);
+            //status
+            var temp = await LikeAccessor.Find(provider_id,request.work_id);
+
+            //-1是首次点赞
+            if(temp==-1)
+            {
+                return 0;
+                
+            }
+            else
+            {
+                return temp;
+            }
+
+        }
+
+
+
+
+
+
         ///<summery>
         /// 学生辞职，并向老师发出信息提示
         /// chuckle 9.9
