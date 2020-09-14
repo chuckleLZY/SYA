@@ -89,6 +89,7 @@ namespace SyaApi.DataAccessors
             return null;
         }
 
+
         public static async Task<int> Create(LeaveEntity leave)
         {
             var query = @"INSERT INTO leave_information(student_id,work_id,content,leave_time,
@@ -218,6 +219,52 @@ namespace SyaApi.DataAccessors
             return leave;
         }
 
+        //update请假
+        public static async Task<int> Update(LeaveEntity entity)
+        {
+            var query = "UPDATE leave_information SET content=@content,proof=@proof,leave_duration=@duration,leave_day=@day,leave_start=@start,leave_end=@end WHERE leave_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@id", entity.leave_id);
+            command.Parameters.AddWithValue("@content",entity.content);
+            
+            command.Parameters.AddWithValue("@proof",entity.proof);
+            
+            command.Parameters.AddWithValue("@duration",entity.leave_duration);
+            command.Parameters.AddWithValue("@day",entity.leave_day);
+            command.Parameters.AddWithValue("@start",entity.leave_start);
+            command.Parameters.AddWithValue("@end",entity.leave_end);
+
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return entity.leave_id;
+            }
+            return 0;
+        }
+
+        //delete/recall
+        public static async Task<int> Delete(int leave_id)
+        {
+            var query = "DELETE FROM leave_information where leave_id=@id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@id", leave_id);
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return leave_id;
+            }
+            return 0;
+        }
 
 
     }

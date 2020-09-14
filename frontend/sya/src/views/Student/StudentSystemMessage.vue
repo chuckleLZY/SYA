@@ -26,18 +26,18 @@
                 <el-table-column
                     prop="title"
                     label="公告标题"
-                    width="320">
+                    width="280">
                 </el-table-column>
                 <el-table-column
                     prop="send_time"
                     label="发送时间"
-                    width="320">
+                    width="280">
                 </el-table-column>
                 
                 <el-table-column
                     prop="status"
                     label="状态"
-                    width="320">
+                    width="280">
 
                     <template slot-scope="scope">
                     <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>
@@ -83,11 +83,11 @@
       <div style="width:400px;margin:auto;">
         <el-form status-icon label-width="auto" :model="messageData">
           
-          <el-form-item label="内容">
-            <el-input disabled v-model="messageData.content"></el-input>
+          <el-form-item label="内容" >
+            <el-input type="textarea" disabled v-model="messageData.content"></el-input>
           </el-form-item>
           <el-form-item label="发送时间">
-            <el-input disabled v-model="messageData.send_time"></el-input>
+            <el-input type="textarea" disabled v-model="messageData.send_time"></el-input>
           </el-form-item>
           
           
@@ -217,7 +217,7 @@ export default {
       },
 
       async viewMesInfo(row){
-        this.messageData = row;
+      //  this.messageData = row;
         this.checkDialogVisible = true;
         const res = await axios.post(
         "http://localhost:5000/Announce/GetAnnounceContent",
@@ -228,7 +228,7 @@ export default {
           withCredentials: true
         }
       );
-      
+      this.messageData=res.data;
       this.getSysMessageList();
       
       }

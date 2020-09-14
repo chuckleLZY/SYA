@@ -21,25 +21,29 @@
 
 
             <!-- 工作卡片-->
-            <el-row v-loading="loading">
+            <el-row>
                 
                     <div v-for="work in workList" :key="work.work_id" >
                     <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
                         
                     <el-card :body-style="{ padding: '0px'}" class="recruitment_card2" >
-                    <img :src= work.cover class="image">
+                    <div style="height:239px;width:400px">
+              <img :src="work.cover" class="image" style="height:100%;width:100%"/>
+              </div>
                     <div style="padding: 14px;" > 
-                        <p ><el-tag type="danger">工作名称</el-tag> : {{work.work_name}}</p>
-                        <p><el-tag type="success">点赞</el-tag> : {{work.likes_num}}</p>
-                        <p><el-tag type="warning">收藏</el-tag> : {{work.collect_num}}</p>
+                        <p ><el-tag type="danger">工作名称</el-tag>  : {{work.work_name}}</p>
+                        <p ><el-tag  type="success">点赞</el-tag> : {{work.likes_num}}</p>
+                        <p ><el-tag  type="warning">收藏</el-tag> : {{work.collect_num}}</p>
                         
                         
                         <div class="bottom clearfix">
-                         
+                        
                         
                         <el-button type="primary" class="button" @click="showDrawer(work.work_id)" plain>查看详情</el-button>
-                        <el-button type="info" class="button"  @click="GetLike(work.work_id)" plain>点赞</el-button>
                         
+                        <el-button type="info" v-if="likestatus[work.work_id]==1" class="button" @click="GetLike(work.work_id)" plain>已点赞</el-button>
+                        <el-button type="info" v-if="likestatus[work.work_id]==0" class="button" @click="GetLike(work.work_id)" plain>未点赞</el-button>
+
                         </div> 
 
                        
@@ -80,14 +84,14 @@
                     <el-input v-model="workInfo.salary" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作日期:" prop="start_day" class="demo-ruleFormItem">
-                    <el-input v-model="workInfo.start_day" disabled></el-input>
-                    <p>至</p>
-                    <el-input v-model="workInfo.end_day" disabled></el-input>
+                    <el-input class="work_day" v-model="workInfo.start_day" disabled></el-input>
+                    <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">  至  </p>
+                    <el-input class="work_day" v-model="workInfo.end_day" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作时间:" prop="start_time" class="demo-ruleFormItem">
-                    <el-input v-model="workInfo.start_time" disabled></el-input>
-                    <p>至</p>
-                    <el-input v-model="workInfo.end_time" disabled></el-input>
+                    <el-input class="work_day" v-model="workInfo.start_time" disabled></el-input>
+                    <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">  至  </p>
+                    <el-input class="work_day" v-model="workInfo.end_time" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="工作描述:" prop="work_description" class="demo-ruleFormItem">
                     <el-input v-model="workInfo.work_description" disabled></el-input>
@@ -123,8 +127,8 @@
 
             <!--  分页区域  -->
             <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange3"
+                @current-change="handleCurrentChange3"
                 :current-page="queryInfo.pagenum"
                 :page-sizes="[3, 6, 9]"
                 :page-size="3"
@@ -190,7 +194,7 @@
                 :direction="direction2"
                 :before-close="handleClose2">
                 
-                <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
+                <el-card :body-style="{ padding: '10px'}" class="recruitment_card4">
                  <el-table :data="favWorkList" v-loading="loading" class="addfav" >
                 <el-table-column label="#" type="index"></el-table-column>
                 <el-table-column label="工作名称" prop="work_name">
@@ -222,32 +226,31 @@
 
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   data() {
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      select: '',
+      input1: "",
+      input2: "",
+      input3: "",
+      select: "",
       loading: true,
-      direction: 'rtl',
-      direction2: 'ltr',
+      direction: "rtl",
+      direction2: "ltr",
       checkDialogVisible: false,
-    //获取工作列表的参数对象
-      queryInfo:{
-          
-          pagenum: 1,
-          pagesize: 3,
-          query: ''
+      //获取工作列表的参数对象
+      queryInfo: {
+        pagenum: 1,
+        pagesize: 3,
+        query: ""
       },
-      queryInfo2:{
-          
-          pagenum: 1,
-          pagesize: 3,
-          query: ''
+      queryInfo2: {
+        pagenum: 1,
+        pagesize: 3,
+        query: ""
       },
       workList:[],
+     
       favItem:[],
       total:0,
       total2:0,
@@ -256,33 +259,34 @@ export default {
       workInfo:{},
       favInfo:{},
       fav_id:-1,
-      favWorkList:[]
+      favWorkList:[],
+      likestatus: [],
 
     }
   },
-  created(){
+  async created(){
       //调用获取发布的工作的API函数
     //  this.getWorkInfo()
-      this.getWorkList()
+    await this.getWorkList()
       
   },
-  methods:{
-      //监听每页条数选项改变的事件
-      handleSizeChange(newSize){
-        this.loading = true;
-        //console.log(newSize)
-        this.queryInfo.pagesize=newSize
-        this.getWorkList();
-        this.loading = false;
-      },
-      //监听页码改变的事件
-      handleCurrentChange(newPage){
-        this.loading = true;
-        //console.log(newPage)
-        this.queryInfo.pagenum=newPage
-        this.getWorkList();
-        this.loading = false;
-      },
+  methods: {
+    //监听每页条数选项改变的事件
+    handleSizeChange(newSize) {
+      this.loading = true;
+      //console.log(newSize)
+      this.queryInfo.pagesize = newSize;
+      this.getWorkList();
+      this.loading = false;
+    },
+    //监听页码改变的事件
+    handleCurrentChange(newPage) {
+      this.loading = true;
+      //console.log(newPage)
+      this.queryInfo.pagenum = newPage;
+      this.getWorkList();
+      this.loading = false;
+    },
 
       handleSizeChange2(newSize){
         this.loading = true;
@@ -297,6 +301,21 @@ export default {
         //console.log(newPage)
         this.queryInfo2.pagenum=newPage
         this.showFav();
+        this.loading = false;
+      },
+      async handleSizeChange3(newSize){
+        this.loading = true;
+        //console.log(newSize)
+        this.queryInfo.pagesize=newSize
+        await this.findWork();
+        this.loading = false;
+      },
+      //监听页码改变的事件
+      async handleCurrentChange3(newPage){
+        this.loading = true;
+        //console.log(newPage)
+        this.queryInfo.pagenum=newPage
+        await this.findWork();
         this.loading = false;
       },
       
@@ -319,30 +338,40 @@ export default {
             
         },
 
+        async showLike(workid){
+         const res=await axios.post('http://localhost:5000/Work/ShowLike',{
+                work_id:workid
+            },{withCredentials: true});
+          if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return 0;
+        }
+        return res.data;
+
+        },
+        
      //展示右侧弹窗
     async showDrawer(workid){
       this.direction='rtl'
         //console.log(workid)
         const res = await axios.post(
         "http://localhost:5000/Work/ViewWorkInfo",
-        {work_id:workid},
-        {withCredentials: true}
-        );
-        if (res.status !== 200) {
+        { work_id: workid },
+        { withCredentials: true }
+      );
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
-        }
+      }
 
-        this.workInfo=res.data
+      this.workInfo = res.data;
 
       //console.log(res);
-     this.drawer=true
+      this.drawer = true;
     },
-  //获取工作列表的函数
-    async getWorkList(){
-
-
-        const res = await axios.post(
+    //获取工作列表的函数
+    async getWorkList() {
+      const res = await axios.post(
         "http://localhost:5000/Work/ViewAllWork",
         {
           pagenum: this.queryInfo.pagenum,
@@ -357,118 +386,159 @@ export default {
         return;
         }
         this.workList=res.data.worklist;
+        for(var i = 0; i < this.workList.length; i++){
+          
+          let a = await this.showLike(this.workList[i].work_id)
+          console.log("???", i, a)
+
+          this.likestatus[this.workList[i].work_id] = a
+
+        }
         this.total=res.data.totalpage;
-       // this.pagesize=res.data.totalpage/res.data.pagenum;
-       // this.pagenum=res.data.pagenum;
+        this.pagesize=res.data.totalpage/res.data.pagenum;
+       this.pagenum=res.data.pagenum;
         this.loading = false;
        // console.log(this.pagesize);
       //  console.log(res);
+      console.log(this.workList)
+
+        console.log("yes")
+        console.log(this.likestatus);
+
       },
 
-    async findWork(){
-        const res=await axios.post('http://localhost:5000/Work/FindWork',{
-                    pagenum: this.queryInfo.pagenum,
-                     pagesize: this.queryInfo.pagesize,
-                    query: this.queryInfo.query
-            },{withCredentials: true});
-        if (res.status !== 200) {
+    async findWork() {
+      const res = await axios.post(
+        "http://localhost:5000/Work/FindWork",
+        {
+          pagenum: this.queryInfo.pagenum,
+          pagesize: this.queryInfo.pagesize,
+          query: this.queryInfo.query
+        },
+        { withCredentials: true }
+      );
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
         }
         this.workList=res.data.worklist;
+        for(var i = 0; i < this.workList.length; i++){
+          
+          let a = await this.showLike(this.workList[i].work_id)
+          console.log("???", i, a)
+
+          this.likestatus[this.workList[i].work_id] = a
+
+        }
         this.total=res.data.totalpage;
-       // console.log(res);
+        
+        this.pagenum=res.data.pagenum;
+        console.log(res);
     },
 
-    async GetLike(workid){
-      const res=await axios.post('http://localhost:5000/Work/GetLike',{
-                work_id:workid
-            },{withCredentials: true});
-          if (res.status !== 200) {
+    async GetLike(workid) {
+      const res = await axios.post(
+        "http://localhost:5000/Work/GetLike",
+        {
+          work_id: workid
+        },
+        { withCredentials: true }
+      );
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
         }
+        if(res.data==0){
         //console.log('su!');
-        this.$message.success('感谢您的点赞');
-        this.getWorkList();
+        this.$message.success('您已经取消点赞');
+        this.likestatus[workid] = 0;
+        this.findWork();}
+        else if(res.data==1){
+          this.$message.success('感谢您的点赞');
+          this.likestatus[workid] = 1;
+        this.findWork();
+        }
     },
     async appWork(){
-        const res=await axios.post('http://localhost:5000/Work/GetLike',{work_id:this.workInfo.work_id},{
+        const res=await axios.post('http://localhost:5000/Apply/CreateApply',{work_id:this.workInfo.work_id},{
           withCredentials: true
-        });
-        if (res.status !== 200) {
+        }
+      );
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
-        }
-        //console.log(res);
-        this.$message.success('申请此工作成功');
+      }
+      //console.log(res);
+      this.$message.success("申请此工作成功");
     },
-    async showFav(){
-      
-        const res=await axios.post('http://localhost:5000/Favorite/GetFavorite',
-        {pagenum: this.queryInfo2.pagenum,
-        pagesize: this.queryInfo2.pagesize,
-                    },{
-          withCredentials: true
-        });
-        this.checkDialogVisible = true;
-        if (res.status !== 200) {
-        this.$message.error("Unexpected response");
-        return;
-        }
-        this.favItem=res.data.favoriteItem;
-        this.total2=res.data.totalpage;
-        //this.pagesize=res.data.totalpage/res.data.pagenum;
-        //this.pagenum=res.data.pagenum;
-        //console.log(res);
-        this.loading = false;
-      //  this.$message.success('申请此工作成功');
-    },
-    async addWorkFav(favoritee_id,flag){
-      
-        const res=await axios.post('http://localhost:5000/Favorite/AddFavoriteWork',
+    async showFav() {
+      const res = await axios.post(
+        "http://localhost:5000/Favorite/GetFavorite",
         {
-        favorite_id:favoritee_id,
-        work_id:this.workInfo.work_id
+          pagenum: this.queryInfo2.pagenum,
+          pagesize: this.queryInfo2.pagesize
         },
         {
           withCredentials: true
-        });
-        if (res.status !== 200) {
+        }
+      );
+      this.checkDialogVisible = true;
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
+      }
+      this.favItem = res.data.favoriteItem;
+      this.total2 = res.data.totalpage;
+      //this.pagesize=res.data.totalpage/res.data.pagenum;
+      //this.pagenum=res.data.pagenum;
+      //console.log(res);
+      this.loading = false;
+      //  this.$message.success('申请此工作成功');
+    },
+    async addWorkFav(favoritee_id, flag) {
+      const res = await axios.post(
+        "http://localhost:5000/Favorite/AddFavoriteWork",
+        {
+          favorite_id: favoritee_id,
+          work_id: this.workInfo.work_id
+        },
+        {
+          withCredentials: true
         }
-        if(res.data!==0){
-          this.$message.error('该工作已在收藏夹内，无法添加');
-          
+      );
+      if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return;
+      }
+      if (res.data !== 0) {
+        this.$message.error("该工作已在收藏夹内，无法添加");
+      } else {
+        this.$message.success("加入收藏夹成功");
 
-        }
-        else{
-        this.$message.success('加入收藏夹成功');
-        
         this.showFav();
         this.getWorkList();
         //console.log(this.pagesize);
-        if(flag===1){
-        this.showFavWork(favoritee_id);}
+        if (flag === 1) {
+          this.showFavWork(favoritee_id);
         }
-        
-         //console.log(res);
-        
-    },
-//展示左侧弹窗
-    async showFavWork(favoritee_id){
-      this.direction2='ltr'
-      //console.log(this.workInfo.work_id);
-        const res=await axios.post('http://localhost:5000/Favorite/GetFavoriteInfo',
-        {
+      }
 
-        favorite_id:favoritee_id,
+      //console.log(res);
+    },
+    //展示左侧弹窗
+    async showFavWork(favoritee_id) {
+      this.direction2 = "ltr";
+      //console.log(this.workInfo.work_id);
+      const res = await axios.post(
+        "http://localhost:5000/Favorite/GetFavoriteInfo",
+        {
+          favorite_id: favoritee_id
         },
         {
           withCredentials: true
-        });
-        if (res.status !== 200) {
+        }
+      );
+      if (res.status !== 200) {
         this.$message.error("Unexpected response");
         return;
         }
@@ -484,49 +554,54 @@ export default {
      
       
         
-  }
+  },
 }
 </script>
 
 <style scoped>
-  .recruitment_breadcrumb{
+.recruitment_breadcrumb {
   position: relative;
-  left:20px;
+  left: 20px;
   margin-bottom: 15px;
   margin-top: 20px;
-  width:90% !important;
+  width: 90% !important;
 }
 
-.recruitment_card{
+.recruitment_card {
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.15) !important;
   position: relative;
-  left:6px;
-  width:99% !important;
+  left: 6px;
+  width: 99% !important;
   height: 90% !important;
-  
 }
 
-.recruitment_card2{
+.recruitment_card2 {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   /*margin-left:70px;
   margin-top:30px;*/
-  width:400px !important;
+  width: 400px !important;
   margin: auto;
-  margin-top:30px;
+  margin-top: 30px;
   background-color: #d3dce6;
-
-  
 }
 
-.recruitment_card3{
+.recruitment_card3 {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width:390px !important;
-  height:590px !important;
+  height:68% !important;
   overflow: auto;
   background-color: #a7b1bb;
 }
 
+.recruitment_card4{
+  box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
+  margin: auto;
+  width:390px !important;
+  height:90% !important;
+  overflow: auto;
+  background-color: #a7b1bb;
+}
 
 .el-select .el-input {
   width: 130px;
@@ -535,10 +610,9 @@ export default {
   background-color: #fff;
 }
 
-.el-pagination{
+.el-pagination {
   margin-top: 15px;
 }
-
 
 .time {
   font-size: 13px;
@@ -554,7 +628,7 @@ export default {
   padding: 0;
   float: center;
   width: 100px;
-  height:40px
+  height: 40px;
 }
 
 .image {
@@ -564,17 +638,22 @@ export default {
 
 .clearfix:before,
 .clearfix:after {
-    display: table;
-    content: "";
+  display: table;
+  content: "";
 }
 
 .clearfix:after {
-    clear: both
+  clear: both;
 }
 
-.demo-ruleFormItem{
+.demo-ruleFormItem {
   margin-left: -10px;
-  
+}
+
+.work_day{
+
+
+width:114px;
 }
 
 
