@@ -83,11 +83,11 @@
       <div style="width:400px;margin:auto;">
         <el-form status-icon label-width="auto" :model="messageData">
           
-          <el-form-item label="内容">
-            <el-input disabled v-model="messageData.content"></el-input>
+          <el-form-item label="内容" >
+            <el-input type="textarea" disabled v-model="messageData.content"></el-input>
           </el-form-item>
           <el-form-item label="发送时间">
-            <el-input disabled v-model="messageData.send_time"></el-input>
+            <el-input type="textarea" disabled v-model="messageData.send_time"></el-input>
           </el-form-item>
           
           
@@ -217,7 +217,7 @@ export default {
       },
 
       async viewMesInfo(row){
-        this.messageData = row;
+      //  this.messageData = row;
         this.checkDialogVisible = true;
         const res = await axios.post(
         "http://localhost:5000/Announce/GetAnnounceContent",
@@ -228,7 +228,7 @@ export default {
           withCredentials: true
         }
       );
-      
+      this.messageData=res.data;
       this.getSysMessageList();
       
       }
