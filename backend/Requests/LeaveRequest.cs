@@ -4,6 +4,8 @@ namespace SyaApi.Requests
 {
     public class LeaveRequest
     {
+        public int leave_id{get; set;}
+
         [Required]
         public int work_id{get; set;}
 

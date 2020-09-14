@@ -81,7 +81,7 @@ namespace SyaApi.Controllers
             account.Password = BCrypt.Net.BCrypt.HashPassword(Sha512Hmac.HashPassword(request.Password), 10);
             account.Id = await AccountAccessor.Create(account);
             await UserAccessor.Create(account); // Create user at the same time
-
+            await AnnounceAccessor.SetNewSend(account.Id);//create user's announce
             // issue cookie
             var claims = new Claim[]
             {
