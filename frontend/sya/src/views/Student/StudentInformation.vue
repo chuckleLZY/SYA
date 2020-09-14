@@ -199,6 +199,14 @@ export default {
       }
       cb(new Error("请输入合法的手机号"));
     };
+     var checkBank = (rule, value, cb) => {
+      //验证手机号正则表达式
+      const pattern = /^([1-9]{1})(\d{14}|\d{18})$/;
+      if (pattern.test(value)) {
+        return cb();
+      }
+      cb(new Error("请输入合法的银行卡号"));
+    };
     return {
       UserInfo: [],
       cardVisible: true, //true显示资料卡，false显示编辑卡
@@ -210,10 +218,13 @@ export default {
       },
       editFormRules: {
         tel: [
-          { required: true, message: "请输入手机号码", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
+          { required: true, message: "请输入手机号码"},
+          { validator: checkMobile}
         ],
-        bank: [{ required: true, message: "请输入银行卡号", trigger: "blur" }]
+        bank: [{ required: true, message: "请输入银行卡号" },
+               { validator: checkBank}
+        
+        ]
       },
       dialogVisible: false,
       loading: false
