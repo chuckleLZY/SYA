@@ -48,13 +48,15 @@
       </el-col>
       <el-col :span="4">
         <div
-          height="38"
+          height="38px"
           style="padding-top:10px;float: right;padding-right:30px"
           class="img"
           v-if="!this.$store.state.role==0"
         >
           <el-dropdown>
-            <el-avatar :src="imgSrc"></el-avatar>
+            <el-avatar shape="square">
+              <el-image :src="imgSrc" fit="fill" style="height:40px;width:40px"></el-image>
+            </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
                 <div @click="toInfo()">个人信息</div>
@@ -117,22 +119,13 @@ export default {
       { withCredentials: true }
     );
     // console.log("header", res.avatar);
-
-    if (res.avatar == "1") {
+    // console.log(res);
+    if (!res.avatar) {
       this.imgSrc =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg";
-    }
-    if (res.avatar == "2") {
-      this.imgSrc =
-        "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3076245205,742402026&fm=26&gp=0.jpg";
-    }
-    if (res.avatar == "3") {
-      this.imgSrc =
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575929381&di=3bc01b19ce6059ac83dc1679c83c1829&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F05%2F20181105142239_uiyqs.jpg";
-    }
-    if (res.avatar == "4") {
-      this.imgSrc =
-        "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1972236278,461088590&fm=26&gp=0.jpg";
+        "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+    } else {
+      this.imgSrc = res.avatar;
+      // console.log("img", typeof res.avatar, res.avatar);
     }
   }
 };
