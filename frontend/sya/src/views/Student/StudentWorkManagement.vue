@@ -15,7 +15,7 @@
             <!--搜索与添加-->
             <el-row  :gutter="30">
                 <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" >
+                    <el-input placeholder="请输入工作名称" v-model="queryInfo.query" >
                         <el-button slot="append" icon="el-icon-search" @click="getWorklist()"></el-button>
                     </el-input>
                 </el-col>
@@ -53,17 +53,19 @@
                         <template slot-scope="scope">
                             <el-row>
                                 <el-col :span="12">
-                                    <el-image :src="scope.row.cover" :fit="fit">
+                                    <el-image :src="scope.row.cover" fit="fit">
                                         <div slot="error" class="image-slot">
                                            <i class="el-icon-picture-outline" style="font-size: 100px"></i>
                                         </div>
                                     </el-image> 
                                 </el-col>
                                 <el-col :span="8" class="inlineCol" style="text-align:left" :offset="2">
-                                    <p class="inlineTitle">工作描述:</p>
-                                    <div class="description" style="text-align:left;display: inline;">
-                                         <p>{{scope.row.work_description}}</p>
-                                    </div>
+                                    <p class="inlineTitle"><i class="el-icon-paperclip"></i> 工作名称 ：
+                                        <span class="inlineInfo"> {{ scope.row.work_name }} </span>
+                                    </p>
+                                    <p class="inlineTitle"><i class="el-icon-tickets "></i> 工作描述 ：
+                                        <span class="inlineInfo"> {{ scope.row.work_description }} </span>
+                                    </p>
                                     <p class="inlineTitle"><i class="el-icon-thumb"></i> 点赞 ： <span class="inlineInfo"> {{scope.row.likes_num}} </span> </p>
                                     <p class="inlineTitle"><i class="el-icon-star-off"></i> 收藏 ： <span class="inlineInfo"> {{scope.row.collect_num}} </span> </p>
                                     <p class="inlineTitle"><i class="el-icon-date"></i> 工作周期 ： <span class="inlineInfo"> {{scope.row.start_day}} </span> ~ <span class="inlineInfo"> {{scope.row.end_day}} </span> </p>
