@@ -13,6 +13,7 @@ using SyaApi.DataAccessors;
 using SyaApi.Entities;
 using SyaApi.Requests;
 using SyaApi.Responses;
+using SyaApi.Constants;
 
 namespace SyaApi.Controllers
 {
@@ -190,19 +191,22 @@ namespace SyaApi.Controllers
 
         [HttpPost("ViewLeave")]
         [AllowAnonymous]
-        public async Task<ActionResult<LeaveResponse>> ViewLeave([FromBody] ViewLeavesRequest request)
+        public async Task<ActionResult<LeaveItemResponse>> ViewLeave([FromBody] ViewLeavesRequest request)
         {
-            ViewLeaveResponse LeaveItem=new ViewLeaveResponse();
+            LeaveItemResponse LeaveItem=new LeaveItemResponse();
             LeaveItem.total=0;
             LeaveItem.pagenum=request.pagenum;
-            LeaveItem.leavelist=new List<LeaveInfoResponse>();
+            LeaveItem.leavelist=new List<LeaveResponse>();
 
             var start=(request.pagenum-1)*request.pagesize;
             var end=request.pagenum*request.pagesize-1;
 
             //取得存在cookie的当前账户id
             var user_id =Int32.Parse(User.Identity.Name);
-
+            if (await UserAccessor.CheckRole(user_id) == Constants.Role.Provider)
+            {
+                return BadRequest(new { message = "Providers cannot manage leave application."});
+            }
             var temp=await LeaveAccessor.ViewLeave(user_id);
 
              if(temp!=null)
@@ -214,7 +218,7 @@ namespace SyaApi.Controllers
                     {
                         var list=await LeaveAccessor.Find(temp.leaveItem[i].leave_id);
                    
-                        LeaveInfoResponse a=_mapper.Map<LeaveInfoResponse>(list);
+                        LeaveResponse a=_mapper.Map<LeaveResponse>(list);
                         
                         LeaveItem.leavelist.Add(a);
                     }
@@ -224,6 +228,73 @@ namespace SyaApi.Controllers
             }
             return Ok(-1);
         }
+
+
+        [HttpPost("UpdateLeave")]
+        [AllowAnonymous]
+        public async Task<ActionResult<LeaveResponse>> UpdateLeave ([FromBody] LeaveRequest request)
+        {
+            var stu_id = Int32.Parse(User.Identity.Name);
+                    
+            if (await UserAccessor.CheckRole(stu_id) == Constants.Role.Provider)
+            {
+                return BadRequest(new { message = "Providers cannot manage leave application."});
+            }
+            var temp = _mapper.Map<LeaveEntity>(request);
+
+            /* 检查请假时间是否在工作时间内 */
+            WorkTimeEntity work_time = await WorkAccessor.GetWorkTime(temp.work_id);
+            DateTimeFormatInfo dtFormat = new System.Globalization.DateTimeFormatInfo();
+
+            dtFormat.ShortDatePattern = "yyyy-MM-dd";
+            DateTime stDay = Convert.ToDateTime(work_time.start_day, dtFormat);
+            DateTime edDay = Convert.ToDateTime(work_time.end_day, dtFormat);
+            DateTime lvDay = Convert.ToDateTime(temp.leave_day);
+            if (lvDay < stDay || lvDay > edDay || Convert.ToInt32(lvDay.DayOfWeek) != work_time.week_day)
+            {
+                return Ok(-10); //"The date of leave is not included in the work date."
+            }
+            
+            dtFormat.ShortDatePattern = "HH:mm";
+            DateTime stTime = Convert.ToDateTime(work_time.start_time, dtFormat);
+            DateTime edTime = Convert.ToDateTime(work_time.end_time, dtFormat);
+            DateTime lvStTime = Convert.ToDateTime(temp.leave_start, dtFormat);
+            DateTime lvEdTime = Convert.ToDateTime(temp.leave_end, dtFormat);
+            if (lvStTime < stTime || lvEdTime > edTime)
+            {
+                return Ok(-11); //"The time of leave is not included in the work time."
+            }
+
+            temp.leave_duration = CalDurationTime(temp.leave_start, temp.leave_end);
+            temp.student_id = stu_id;
+
+            var leavere=await LeaveAccessor.Find(request.leave_id);
+            if(leavere.status==ApplyStatus.Applying)
+            {
+                var ans= await LeaveAccessor.Update(_mapper.Map<LeaveEntity>(temp));
+                leavere=await LeaveAccessor.Find(request.leave_id);
+            }
+            return Ok(_mapper.Map<LeaveResponse>(leavere));
+
+        }
+
+        [HttpDelete("DeleteLeave")]
+        [AllowAnonymous]
+        public async Task<ActionResult<int>> DeleteLeave([FromBody]ManageLeaveRequest request)
+        {
+            var user_id =Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(user_id) == Constants.Role.Provider)
+            {
+                return BadRequest(new { message = "Providers cannot manage leave application."});
+            }
+            if(request.status==ApplyStatus.Applying)
+            {
+                var ans= await LeaveAccessor.Delete(request.leave_id);
+                return Ok(1);
+            }
+            return Ok(-1);            
+        }
+
 
 
     }
