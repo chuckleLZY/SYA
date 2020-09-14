@@ -44,8 +44,8 @@
                     </el-table-column>
                     <el-table-column  label="操作" width="400">
                         <template slot-scope="scope">
-                            <el-button type="primary" size="medium" icon="el-icon-document-remove" :disabled="scope.row.status==1" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;workstart=scope.row.start_day;workend=scope.row.end_day;startTime=scope.row.start_time;endTime=scope.row.end_time;">申请请假</el-button>
-                            <el-button type="warning" size="medium" icon="el-icon-document-delete" :disabled="scope.row.status==1" @click="resignVisible=true; work_id=scope.row.work_id">申请辞职</el-button>
+                            <el-button type="primary" size="medium" icon="el-icon-document-remove" :disabled="scope.row.status==1" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;workstart=scope.row.start_day;workend=scope.row.end_day;startTime=scope.row.start_time;endTime=scope.row.end_time;workDay=scope.row.week_day">申请请假</el-button>
+                            <el-button type="warning" size="medium" icon="el-icon-document-delete" :disabled="scope.row.status==1" @click="resignVisible=true; work_id=scope.row.work_id;">申请辞职</el-button>
                             <el-button type="danger" size="medium" icon="el-icon-circle-close" :disabled="!(scope.row.status)" @click="deleteVisible=true;work_id=scope.row.work_id" >删除工作</el-button>
                         </template>
                     </el-table-column>
@@ -95,16 +95,6 @@
             </el-pagination>
          </el-card>
 
-          <el-date-picker
-                        v-model="AbForm.leave_day"
-                        type="date"
-                        placeholder="开始日期"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
-                        style="width: 100%;"
-                        :picker-options="pickerOptions0">
-          </el-date-picker>
-
          <!--请假的信息-->
          <el-dialog title="请假申请" :visible.sync="AbsentVisible" @close="AbFormClose()" width="50%" center >
             <el-form :model="AbForm" :rules="AbFormRules" label-width="100px" ref="AbFormRef" >
@@ -129,7 +119,7 @@
                         v-model="AbForm.leave_start"
                         :picker-options="{
                         start: startTime,
-                        step: '01:00',
+                        step: '00:15',
                         end: endTime,
                         }"
                         style="width: 100%;">
@@ -144,7 +134,8 @@
                         v-model="AbForm.leave_end"
                         :picker-options="{
                         start: startTime,
-                        step: '01:00',
+                        step: '00:15',
+                        end:endTime,
                         minTime:AbForm.leave_start
                         }"
                         style="width: 100%;">
@@ -251,11 +242,12 @@ export default {
             workend:'',
             startTime:'',
             endTime:'',
+            workDay:'',
 
             pickerOptions0: { //设置日期必须在工作时间之间
       	    disabledDate: (time) => {
             if(this.workstart)
-                return  new Date(this.workstart).getTime()> time.getTime() || new Date(this.workend).getTime()< time.getTime()
+                return  new Date(this.workstart).getTime()> time.getTime() || new Date(this.workend).getTime()< time.getTime() || time.getDay()!=(this.workDay%7)
             }
           },
         }

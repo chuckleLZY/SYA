@@ -13,49 +13,28 @@
                 </el-col>
             </el-row>
             <!--表格区域-->
-            <el-row style="margin-top:1cm">
-                <el-table :data="Worklist" border>
+            <el-row>
+                <el-table :data="LeaveList" border>
                     <el-table-column type="index" label="#" >
                     </el-table-column>
-                    <el-table-column prop="work_name" label="工作名称" >
+                    <el-table-column prop="leave_day" label="请假日期" >
                     </el-table-column>
-                    <el-table-column prop="address" label="工作地址" >
+                    <el-table-column prop="address" label="请假时段" >
                     </el-table-column>
-                    <el-table-column prop="salary" label="工作薪水">
+                    <el-table-column prop="content" label="请假理由">
                     </el-table-column>
-                    <el-table-column prop="work_time" label="工作时长">
+                    <el-table-column prop="proof" label="备注">
                     </el-table-column>
                     <el-table-column  label="操作" width="280">
                         <template slot-scope="scope">
-                            <el-button type="warning" size="medium" icon="el-icon-remove-outline" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;">申请请假</el-button>
-                            <el-button type="danger" size="medium" icon="el-icon-circle-close">我要辞职</el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column type="expand" label="详情" width="75" >
-                        <template slot-scope="scope">
-                            <el-row>
-                                <el-col :span="12">
-                                    <el-image :src="scope.row.cover" :fit="fit">
-                                        <div slot="error" class="image-slot">
-                                           <i class="el-icon-picture-outline" style="font-size: 100px"></i>
-                                        </div>
-                                    </el-image> 
-                                </el-col>
-                                <el-col :span="12" class="inlineCol">
-                                    <p class="inlineTitle">工作描述:</p>
-                                    <div class="description">
-                                         <p>{{scope.row.work_description}}</p>
-                                    </div>
-                                    <p class="inlineTitle"><i class="el-icon-thumb"></i> 点赞 ： <span class="inlineInfo"> {{scope.row.likes_num}} </span> </p>
-                                    <p class="inlineTitle"><i class="el-icon-star-off"></i> 收藏 ： <span class="inlineInfo"> {{scope.row.collect_num}} </span> </p>
-                                </el-col>
-                            </el-row>    
+                            <el-button type="primary" size="medium" icon="el-icon-edit" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;">修改申请</el-button>
+                            <el-button type="danger" size="medium" icon="el-icon-circle-close">撤回申请</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </el-row>
-            <!--分页区域-->
-             <el-pagination
+
+           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="queryInfo.pagenum"
@@ -93,11 +72,10 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            Worklist:[],
+            LeaveList:[],
             queryInfo:{
                 pagenum:1,
                 pagesize:5,
-                query:''
             },
             total:20,
             AbsentVisible:false,
@@ -121,22 +99,22 @@ export default {
         }
     },
     created(){
-        this.getWorklist()
+        this.getLeaveList()
     },
     methods:{
-         async getWorklist(){
-            const {data: res} = await axios.post('http://localhost:5000/Work/FindOwnWork',this.queryInfo,{ withCredentials: true });
-            this.Worklist=res.worklist;
-            this.total=res.totalpage;
-            console.log(this.Worklist);
+         async getLeaveList(){
+            const {data: res} = await axios.post('http://localhost:5000/Leave/ViewLeave',this.queryInfo,{ withCredentials: true });
+            this.LeaveList=res.leavelist;
+            this.total=res.total;
+            console.log(this.LeaveList)
         },
         handleSizeChange(newSize){
             this.queryInfo.pagesize=newSize;
-            this.getWorklist();
+            this.getLeaveList();
         },
         handleCurrentChange(newPage){
             this.queryInfo.pagenum=newPage;
-            this.getWorklist();
+            this.getLeaveList();
         },
         AbFormClose(){
             this.$refs.AbFormRef.resetFields();
