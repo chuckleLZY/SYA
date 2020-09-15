@@ -11,7 +11,7 @@
         router
       >
         <el-menu-item index="/TeacherInformation">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-s-custom"></i>
           <span slot="title">个人资料</span>
         </el-menu-item>
         <!-- <el-menu-item index="/TeacherQualification">

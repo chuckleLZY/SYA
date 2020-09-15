@@ -11,11 +11,11 @@
         router
       >
         <el-menu-item index="/StudentSystemMessage">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-message-solid"></i>
           <span slot="title">系统公告</span>
         </el-menu-item>
         <el-menu-item index="/StudentWorkMessage">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-question"></i>
           <span slot="title">工作通知</span>
         </el-menu-item>
       </el-menu>

@@ -11,15 +11,15 @@
         router
       >
         <el-menu-item index="/ReceivedResume">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-message-solid"></i>
           <span slot="title">查看申请</span>
         </el-menu-item>
         <el-menu-item index="/PublishWorkMessage">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-edit-outline"></i>
           <span slot="title">发布工作</span>
         </el-menu-item>
         <el-menu-item index="/MyPublishedWork">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-s-flag"></i>
           <span slot="title">发布记录</span>
         </el-menu-item>
       </el-menu>

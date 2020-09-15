@@ -24,7 +24,10 @@
           <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
           <!-- <img id="userAva" /> -->
           <!-- </el-avatar> -->
-          <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image>
+          <el-avatar shape="circle" style="height:100px;width:100px">
+            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+          </el-avatar>
+          <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>
@@ -199,7 +202,7 @@ export default {
       }
       cb(new Error("请输入合法的手机号"));
     };
-     var checkBank = (rule, value, cb) => {
+    var checkBank = (rule, value, cb) => {
       //验证手机号正则表达式
       const pattern = /^([1-9]{1})(\d{14}|\d{18})$/;
       if (pattern.test(value)) {
@@ -218,12 +221,12 @@ export default {
       },
       editFormRules: {
         tel: [
-          { required: true, message: "请输入手机号码"},
-          { validator: checkMobile}
+          { required: true, message: "请输入手机号码" },
+          { validator: checkMobile }
         ],
-        bank: [{ required: true, message: "请输入银行卡号" },
-               { validator: checkBank}
-        
+        bank: [
+          { required: true, message: "请输入银行卡号" },
+          { validator: checkBank }
         ]
       },
       dialogVisible: false,

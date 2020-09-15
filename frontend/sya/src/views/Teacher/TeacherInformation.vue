@@ -24,7 +24,10 @@
           <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
           <!-- <img id="userAva" /> -->
           <!-- </el-avatar> -->
-          <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image>
+          <el-avatar shape="circle" style="height:100px;width:100px">
+            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+          </el-avatar>
+          <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>

@@ -54,7 +54,7 @@
           v-if="!this.$store.state.role==0"
         >
           <el-dropdown>
-            <el-avatar shape="square">
+            <el-avatar shape="circle">
               <el-image :src="imgSrc" fit="fill" style="height:40px;width:40px"></el-image>
             </el-avatar>
             <el-dropdown-menu slot="dropdown">
