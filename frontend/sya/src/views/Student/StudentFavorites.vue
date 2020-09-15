@@ -21,7 +21,7 @@
             <el-table-column type="index"></el-table-column>
             <el-table-column label="收藏夹名称" prop="favorite_name"></el-table-column>
             <el-table-column label="工作数量" prop="work_num"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="300px">
               <template slot-scope="scope_favorite">
                 <el-button
                   type="primary"
@@ -311,30 +311,35 @@ export default {
       }
     },
     // 创建新的收藏夹
-    async Create() {
+async Create() {
       console.log(this.form);
+      if(this.form.favname !=""){
       const result = await axios.post(
         "http://localhost:5000/Favorite/CreateFavorite",
         {
           // favorite_id: parseInt(this.form.favid),
-          favorite_name: this.form.favname
+          favorite_name: this.form.favname,
           // work_num: parseInt(this.form.favworknum)
         },
         { withCredentials: true }
       );
       console.log(result);
       if (result.status == 200) {
-        this.dialogCreateVisible = false;
+        this.dialogCreateVisible =false;
         this.getfavoritelist();
         this.$message.success("创建成功");
-      } else {
+      }
+      else{
         this.$message.error("发生了一些错误");
       }
+      }
+      else{this.$message.error("不能创建名字为空的收藏夹");}
     },
     //更新收藏夹名字函数1
     //更新收藏夹名字
-    async Update() {
-      const result = await axios.put(
+    async Update(){
+      if(this.formUpdate.favnamenew !=""){
+       const result = await axios.put(
         "http://localhost:5000/Favorite/UpdateFavorite",
         {
           favorite_id: this.formUpdate.id,
@@ -344,13 +349,15 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
-        this.dialogUpdateVisible = false;
+        this.dialogUpdateVisible=false;
         this.formUpdate.favnamenew = "";
         this.getfavoritelist();
         this.$message.success("更新成功");
-      } else {
-        this.$message.error("发生了一些错误");
       }
+      else{
+        this.$message.error("发生了一些错误");
+      }}
+      else{this.$message.error("不能更新名字为空的收藏夹");}
     },
     cancelForm() {
       this.loading = false;
