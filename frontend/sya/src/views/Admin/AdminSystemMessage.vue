@@ -181,7 +181,12 @@ export default {
       ).catch(err => err);
       //console.log(confirmResulte);
       if (confirmResulte !== "confirm") {
-        return this.$message.info("已取消删除");
+        //return this.$message.info("已取消删除");
+        return this.$message({
+          message: '已取消删除',
+          type: 'info',
+          duration:1000
+        });
       }
       const res = await axios.post(
         "http://localhost:5000/Announce/DeleteAnnounce",
@@ -197,7 +202,13 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      this.$message.info("已成功删除");
+      //this.$message.info("已成功删除");
+      this.$message({
+          message: '已成功删除',
+          type: 'info',
+          duration:1000
+        });
+
       this.getSysMessageList();
     },
 
