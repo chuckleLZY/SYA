@@ -6,7 +6,7 @@
             <el-breadcrumb-item>个人简历</el-breadcrumb-item>
         </el-breadcrumb>
         <!--简历卡片-->
-        <el-card class="resumeCard" v-if="editResume==false && resumeExsit==true">
+        <el-card class="resumeCard" v-if="editResume==false && resumeExsit==true" v-loading="loading">
             <el-row class="header">
                  <el-col class="titlecol" :span="5">
                     <p class="title">个人简历预览</p>
@@ -246,7 +246,8 @@ export default {
             options: regionData,
             selectedOptions:[],
             editResume:false,
-            resumeExsit:true
+            resumeExsit:true,
+            loading:true
         }
     },
      created(){
@@ -258,7 +259,6 @@ export default {
             const {data: res} = await axios.post('http://localhost:5000/User/GetUserInfo',{},{ withCredentials: true });
 
             this.UserInfo=res;
-            console.log(res);
         },
         async getResume(){
             const {data: res} = await axios.post('http://localhost:5000/Resume/GetResume',{},{ withCredentials: true });
@@ -267,7 +267,7 @@ export default {
             if(res==-1){
                 this.resumeExsit=false;
             }
-            console.log(res);
+            this.loading=false;
         },
         save(){
              this.$refs.editFormRef.validate(async valid =>{   
@@ -302,7 +302,6 @@ export default {
             this.addResume.age=this.Resume.age;
             console.log(this.selectedOptions);
             this.editResume=true;
-            card.style.display="block";
         },
          handleChange() {
             var loc = "";
