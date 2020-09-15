@@ -64,17 +64,17 @@
       <img src="../assets/imagebox/login_right2.png" alt class="right" />
     </div>
     <div class="login_box">
-      <div class="avatar_box">
+      <!-- <div class="avatar_box">
         <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg" alt />
-      </div>
+      </div> -->
       <el-form ref="loginFormRef" label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input prefix-icon="el-icon-user" v-model="logInForm.username"></el-input>
+          <el-input prefix-icon="el-icon-user" v-model="logInForm.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="Password">
-          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" type="password"></el-input>
+          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" type="password" placeholder="请输入密码"></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
@@ -160,7 +160,11 @@ export default {
         this.$store.commit("logIn", result.data.role);
         // //将vuex里的信息保存到sessionStorage里
         // sessionStorage.setItem("store", JSON.stringify(this.$store.state));
-        this.$message.success("登录成功");
+        this.$message({
+          message: '登录成功',
+          type: 'success',
+          duration:500
+        });
         this.$router.push("/Main");
       }
     },

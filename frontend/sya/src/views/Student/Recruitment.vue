@@ -83,7 +83,7 @@
           
                 
               
-              <div style="height:239px;width:400px">
+              <div style="height:239px;width:350px">
           <img :src="workInfo.cover" class="image" style="height:100%;width:100%"/>
           </div>
           <div slot="header" class="clearfix">
@@ -439,7 +439,7 @@ export default {
       }
       if (res.data == 0) {
         //console.log('su!');
-        this.$message.success("您已经取消点赞");
+        this.$message.warning("您已经取消点赞");
         this.likestatus[workid] = 0;
         this.findWork();
       } else if (res.data == 1) {

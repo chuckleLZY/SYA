@@ -67,6 +67,9 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+        <div height="38px" style="padding-top:10px;float: right;padding-right:30px">
+          <el-button type="primary" v-if="this.$store.state.role==0" @click="logOut()">退出登录</el-button>
+        </div>
       </el-col>
     </el-row>
   </div>
