@@ -56,7 +56,7 @@ namespace SyaApi.DataAccessors
             message.total=0;
             message.messageItem=new List<MessageEntity>();
 
-            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE receiver_id=@id AND status<>@status AND m_type=@type";
+            var query = "SELECT message_id,message_type,content,message_time,sender_id,receiver_id,status FROM message_library WHERE receiver_id=@id AND status<>@status AND m_type=@type ORDER BY status ASC";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();

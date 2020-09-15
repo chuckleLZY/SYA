@@ -14,7 +14,7 @@ namespace SyaApi.DataAccessors
         ///</summery>
         public static async Task<ApplyEntity> Read(int apply_id)
         {
-            var query = "SELECT apply_id,student_id,teacher_id,work_id,resume_id,status FROM apply WHERE apply_id=@id";
+            var query = "SELECT apply_id,student_id,teacher_id,work_id,resume_id,status FROM apply WHERE apply_id=@id ORDER BY status ASC";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();

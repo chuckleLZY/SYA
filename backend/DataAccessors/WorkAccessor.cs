@@ -235,7 +235,7 @@ namespace SyaApi.DataAccessors
             WorkItemEntity work=new WorkItemEntity();
             work.total=0;
             work.workItem=new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work ORDER BY likes_num DESC";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
