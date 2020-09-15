@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>学生我的</el-breadcrumb-item>
-      <el-breadcrumb-item>我的资料</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
+      <el-breadcrumb-item>我的</el-breadcrumb-item>
+      <el-breadcrumb-item>个人资料</el-breadcrumb-item>
     </el-breadcrumb>
 
     <!--个人资料卡片-->
@@ -24,7 +24,10 @@
           <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
           <!-- <img id="userAva" /> -->
           <!-- </el-avatar> -->
-          <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image>
+          <el-avatar shape="circle" style="height:100px;width:100px">
+            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+          </el-avatar>
+          <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>
@@ -342,7 +345,7 @@ export default {
 }
 
 .infoCard {
-  margin-top: 1cm;
+  margin-top: 20px;
 }
 
 .title {

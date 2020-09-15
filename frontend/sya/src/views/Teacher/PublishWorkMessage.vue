@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>老师我的</el-breadcrumb-item>
-      <el-breadcrumb-item>个人信息</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
+      <el-breadcrumb-item>工作台</el-breadcrumb-item>
+      <el-breadcrumb-item>发布工作</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-card style="margin-top:20px;width: 100%">

@@ -11,16 +11,16 @@
         router
       >
         <el-menu-item index="/TeacherSystemMessage">
-          <i class="el-icon-menu"></i>
-          <span slot="title">系统通知</span>
+          <i class="el-icon-message-solid"></i>
+          <span slot="title">系统公告</span>
         </el-menu-item>
         <el-menu-item index="/TeacherWorkMessage">
-          <i class="el-icon-menu"></i>
-          <span slot="title">请假消息</span>
+          <i class="el-icon-warning"></i>
+          <span slot="title">请假管理</span>
         </el-menu-item>
         
         <el-menu-item index="/TeacherResignMessage">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-remove"></i>
           <span slot="title">辞职消息</span>
         </el-menu-item>
       </el-menu>

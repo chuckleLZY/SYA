@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>老师我的</el-breadcrumb-item>
-      <el-breadcrumb-item>查看已发布工作</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
+      <el-breadcrumb-item>工作台</el-breadcrumb-item>
+      <el-breadcrumb-item>发布记录</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card style="margin-top:20px;width: 98%" v-loading="loading">
       <el-table :data="tableData" style="width: 100%" stripe>
@@ -290,8 +290,8 @@ export default {
 
     //获取一页的申请信息
     async getOnePageworklist() {
-      this.Dialogvisible=false;
-      this.loading=true;
+      this.Dialogvisible = false;
+      this.loading = true;
       const result = await axios.post(
         "http://localhost:5000/Work/ViewHistoryWork",
         this.pageInfo,

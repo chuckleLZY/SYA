@@ -11,13 +11,13 @@
         router
       >
         <el-menu-item index="/TeacherInformation">
-          <i class="el-icon-menu"></i>
-          <span slot="title">老师个人资料</span>
+          <i class="el-icon-s-custom"></i>
+          <span slot="title">个人资料</span>
         </el-menu-item>
-        <el-menu-item index="/TeacherQualification">
+        <!-- <el-menu-item index="/TeacherQualification">
           <i class="el-icon-menu"></i>
           <span slot="title">老师资格认证</span>
-        </el-menu-item>
+        </el-menu-item> -->
       </el-menu>
     </el-aside>
     <el-main>

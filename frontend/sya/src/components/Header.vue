@@ -27,22 +27,22 @@
             background-color="rgba(220,38,38,0)"
             text-color="#fff"
             active-text-color="#ffd04b"
-            :default-active="$route.path"
+            :default-active="getDefaultActive()"
             router
           >
             <el-menu-item index="/Home">首页</el-menu-item>
             <el-menu-item index="/Recruitment">招聘会</el-menu-item>
-            <el-menu-item index="/TeacherTable" v-if="this.$store.state.role==2">老师工作台</el-menu-item>
+            <el-menu-item index="/TeacherTable" v-if="this.$store.state.role==2">工作台</el-menu-item>
             <!-- <el-menu-item index="/AdminTable" v-if="this.$store.state.role==0">管理员工作台</el-menu-item> -->
-            <el-menu-item index="/PublishSystemMessage" v-if="this.$store.state.role==0">管理员工作台</el-menu-item>
-            <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">学生消息</el-menu-item>
-            <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">老师消息</el-menu-item>
+            <el-menu-item index="/PublishSystemMessage" v-if="this.$store.state.role==0">工作台</el-menu-item>
+            <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">消息</el-menu-item>
+            <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">消息</el-menu-item>
             <!--  <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>-->
-            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">学生我的</el-menu-item>
-            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">老师我的</el-menu-item>
-            <el-menu-item index="/AdminMine" v-if="this.$store.state.role==0">管理员我的</el-menu-item>
-            <el-menu-item index="/StudentFavorites" v-if="this.$store.state.role==1">学生收藏夹</el-menu-item>
-            <el-menu-item index="/TeacherFavorites" v-if="this.$store.state.role==2">老师收藏夹</el-menu-item>
+            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">我的</el-menu-item>
+            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">我的</el-menu-item>
+            <!-- <el-menu-item index="/AdminMine" v-if="this.$store.state.role==0">我的</el-menu-item> -->
+            <el-menu-item index="/StudentFavorites" v-if="this.$store.state.role==1">收藏夹</el-menu-item>
+            <!-- <el-menu-item index="/TeacherFavorites" v-if="this.$store.state.role==2">老师收藏夹</el-menu-item> -->
           </el-menu>
         </div>
       </el-col>
@@ -54,12 +54,12 @@
           v-if="!this.$store.state.role==0"
         >
           <el-dropdown>
-            <el-avatar shape="square">
+            <el-avatar shape="circle">
               <el-image :src="imgSrc" fit="fill" style="height:40px;width:40px"></el-image>
             </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <div @click="toInfo()">个人信息</div>
+                <div @click="toInfo()">我的资料</div>
               </el-dropdown-item>
               <el-dropdown-item>
                 <div @click="logOut()">退出登录</div>
@@ -82,8 +82,14 @@ export default {
     };
   },
   methods: {
+    getDefaultActive() {
+      console.log(this.$route.path);
+      // if (this.$route.path == "/TeacherInformation") return "/TeacherMine";
+      // else if (this.$route.path == "/StudentInformation") return "/StudentMine";
+      return;
+    },
     toHome() {
-      if (this.$route.path === "/Home") return;
+      if (("route", this.$route.path === "/Home")) return;
       this.$router.push("/Home");
     },
     async toInfo() {

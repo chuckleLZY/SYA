@@ -1,9 +1,9 @@
 <template>
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>学生我的</el-breadcrumb-item>
-            <el-breadcrumb-item>在线简历</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
+            <el-breadcrumb-item>我的</el-breadcrumb-item>
+            <el-breadcrumb-item>个人简历</el-breadcrumb-item>
         </el-breadcrumb>
         <!--简历卡片-->
         <el-card class="resumeCard" v-if="editResume==false && resumeExsit==true">
@@ -78,7 +78,7 @@
                     <p class="title">在线简历编辑</p>
                 </el-col>
                 <el-col :span="2" :offset="12" >
-                    <el-button class="edit"  icon="el-icon-edit" @click="save()" type="success">保存修改</el-button>
+                    <el-button class="edit"  icon="el-icon-edit" @click="save();" type="success">保存修改</el-button>
                 </el-col>
                  <el-col :span="2" :offset="1">
                     <el-button class="edit"  icon="el-icon-close" @click="dialogVisible=true" type="danger">退出编辑</el-button>
@@ -92,14 +92,16 @@
                     <el-input-number v-model="addResume.age" :min="1" :max="100"></el-input-number>
                 </el-form-item>
                 <el-form-item label="所在城市:" prop="city">
-                     <el-input placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
-                     <el-cascader style="margin-left:15%;"
+                    <el-col :span="10">
+                     <el-cascader
+                        :placeholder="Resume.city"
                         size="large"
                         :options="options"
                         v-model="selectedOptions"
                         @change="handleChange"
                     >
                     </el-cascader>
+                    </el-col>
                 </el-form-item>
                 <el-form-item label="教育经历:" prop="education">
                     <el-input placeholder="请输入您的教育经历" v-model="addResume.education" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
@@ -146,14 +148,15 @@
                     <el-input-number v-model="addResume.age" :min="1" :max="100"></el-input-number>
                 </el-form-item>
                 <el-form-item label="所在城市:" prop="city">
-                     <el-input aria-placeholder="请从右侧选择城市" style="width:40%" v-model="addResume.city" readonly></el-input>
-                     <el-cascader style="margin-left:15%;"
+                      <el-col :span="10">
+                     <el-cascader
                         size="large"
                         :options="options"
                         v-model="selectedOptions"
                         @change="handleChange"
                     >
                     </el-cascader>
+                    </el-col>
                 </el-form-item>
                 <el-form-item label="教育经历:" prop="education">
                     <el-input placeholder="请输入您的教育经历" v-model="addResume.education" type="textarea" :rows="5" maxlength="300" show-word-limit ></el-input>
@@ -337,7 +340,7 @@ export default {
     padding:0;
 }
 .resumeCard{
-    margin-top:1cm;
+    margin-top:20px;
 }
 .title{
     font-size: 25px;

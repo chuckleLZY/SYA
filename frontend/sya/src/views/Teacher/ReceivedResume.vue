@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-card>
+      
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
+      <el-breadcrumb-item>工作台</el-breadcrumb-item>
+      <el-breadcrumb-item>查看申请</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-card style="margin-top:20px;width:100%">
       <el-table :data="tableData" style="width: 100%" v-loading="loading">
         <el-table-column label="#" type="index" width="180px"></el-table-column>
         <el-table-column prop="work_name" label="工作名称" width="280px"></el-table-column>

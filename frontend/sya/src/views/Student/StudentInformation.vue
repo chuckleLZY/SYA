@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>学生我的</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
+      <el-breadcrumb-item>我的</el-breadcrumb-item>
       <el-breadcrumb-item>我的资料</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -24,7 +24,10 @@
           <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
           <!-- <img id="userAva" /> -->
           <!-- </el-avatar> -->
-          <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image>
+          <el-avatar shape="circle" style="height:100px;width:100px">
+            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+          </el-avatar>
+          <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
         <div class="box" id="box3"></div>
         <div class="box" id="box4"></div>
@@ -199,6 +202,14 @@ export default {
       }
       cb(new Error("请输入合法的手机号"));
     };
+    var checkBank = (rule, value, cb) => {
+      //验证手机号正则表达式
+      const pattern = /^([1-9]{1})(\d{14}|\d{18})$/;
+      if (pattern.test(value)) {
+        return cb();
+      }
+      cb(new Error("请输入合法的银行卡号"));
+    };
     return {
       UserInfo: [],
       cardVisible: true, //true显示资料卡，false显示编辑卡
@@ -210,10 +221,13 @@ export default {
       },
       editFormRules: {
         tel: [
-          { required: true, message: "请输入手机号码", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
+          { required: true, message: "请输入手机号码" },
+          { validator: checkMobile }
         ],
-        bank: [{ required: true, message: "请输入银行卡号", trigger: "blur" }]
+        bank: [
+          { required: true, message: "请输入银行卡号" },
+          { validator: checkBank }
+        ]
       },
       dialogVisible: false,
       loading: false
@@ -342,7 +356,7 @@ export default {
 }
 
 .infoCard {
-  margin-top: 1cm;
+  margin-top: 20px;
 }
 
 .title {

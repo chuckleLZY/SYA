@@ -9,7 +9,7 @@
           <div style="font-weight:bolder"> SYA——Show Your Ability</div>
           <br />联系我们： 
           <i class="el-icon-s-custom"></i>同济大学软件学院  
-          <i class="el-icon-position"></i>上海市嘉定区曹安公路4800号
+          <i class="el-icon-location"></i>上海市嘉定区曹安公路4800号
         </div>
       </div>
     </el-footer>

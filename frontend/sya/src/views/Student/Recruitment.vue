@@ -1,11 +1,11 @@
-<template>
+<template style="height:100%">
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>招聘会</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-card class="recruitment_card" v-loading="loading">
+    <el-card class="recruitment_card" v-loading="loading" style="margin-bottom:50px">
       <el-row>
         <el-col :span="7">
           <el-input
@@ -22,12 +22,12 @@
       </el-row>
 
       <!-- 工作卡片-->
-      <el-row v-loading="loading">
+      <el-row>
         <div v-for="work in workList" :key="work.work_id">
           <el-col :span="8" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
             <el-card :body-style="{ padding: '0px'}" class="recruitment_card2">
               <div style="height:239px;width:400px">
-              <img :src="work.cover" class="image" style="height:100%;width:100%"/>
+                <img :src="work.cover" class="image" style="height:100%;width:100%" />
               </div>
               <div style="padding: 14px;">
                 <p>
@@ -50,7 +50,21 @@
                     @click="showDrawer(work.work_id)"
                     plain
                   >查看详情</el-button>
-                  <el-button type="info" class="button" @click="GetLike(work.work_id)" plain>点赞</el-button>
+
+                  <el-button
+                    type="info"
+                    v-if="likestatus[work.work_id]==1"
+                    class="button"
+                    @click="GetLike(work.work_id)"
+                    plain
+                  >已点赞</el-button>
+                  <el-button
+                    type="info"
+                    v-if="likestatus[work.work_id]==0"
+                    class="button"
+                    @click="GetLike(work.work_id)"
+                    plain
+                  >未点赞</el-button>
                 </div>
               </div>
             </el-card>
@@ -83,14 +97,14 @@
                 <el-input v-model="workInfo.salary" disabled></el-input>
               </el-form-item>
               <el-form-item label="工作日期:" prop="start_day" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.start_day" disabled></el-input>
-                <p>至</p>
-                <el-input v-model="workInfo.end_day" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.start_day" disabled></el-input>
+                <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">至</p>
+                <el-input class="work_day" v-model="workInfo.end_day" disabled></el-input>
               </el-form-item>
               <el-form-item label="工作时间:" prop="start_time" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.start_time" disabled></el-input>
-                <p>至</p>
-                <el-input v-model="workInfo.end_time" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.start_time" disabled></el-input>
+                <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">至</p>
+                <el-input class="work_day" v-model="workInfo.end_time" disabled></el-input>
               </el-form-item>
               <el-form-item label="工作描述:" prop="work_description" class="demo-ruleFormItem">
                 <el-input v-model="workInfo.work_description" disabled></el-input>
@@ -125,11 +139,11 @@
 
       <!--  分页区域  -->
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange3"
+        @current-change="handleCurrentChange3"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[3, 6, 9]"
-        :page-size="3"
+        :page-sizes="[6, 9, 12]"
+        :page-size="6"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
@@ -185,7 +199,7 @@
       :direction="direction2"
       :before-close="handleClose2"
     >
-      <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
+      <el-card :body-style="{ padding: '10px'}" class="recruitment_card4">
         <el-table :data="favWorkList" v-loading="loading" class="addfav">
           <el-table-column label="#" type="index"></el-table-column>
           <el-table-column label="工作名称" prop="work_name"></el-table-column>
@@ -219,15 +233,16 @@ export default {
       //获取工作列表的参数对象
       queryInfo: {
         pagenum: 1,
-        pagesize: 3,
+        pagesize: 6,
         query: ""
       },
       queryInfo2: {
         pagenum: 1,
-        pagesize: 3,
+        pagesize: 6,
         query: ""
       },
       workList: [],
+
       favItem: [],
       total: 0,
       total2: 0,
@@ -236,13 +251,14 @@ export default {
       workInfo: {},
       favInfo: {},
       fav_id: -1,
-      favWorkList: []
+      favWorkList: [],
+      likestatus: []
     };
   },
-  created() {
+  async created() {
     //调用获取发布的工作的API函数
     //  this.getWorkInfo()
-    this.getWorkList();
+    await this.getWorkList();
   },
   methods: {
     //监听每页条数选项改变的事件
@@ -277,6 +293,21 @@ export default {
       this.showFav();
       this.loading = false;
     },
+    async handleSizeChange3(newSize) {
+      this.loading = true;
+      //console.log(newSize)
+      this.queryInfo.pagesize = newSize;
+      await this.findWork();
+      this.loading = false;
+    },
+    //监听页码改变的事件
+    async handleCurrentChange3(newPage) {
+      this.loading = true;
+      //console.log(newPage)
+      this.queryInfo.pagenum = newPage;
+      await this.findWork();
+      this.loading = false;
+    },
 
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -291,6 +322,21 @@ export default {
           done();
         })
         .catch(_ => {});
+    },
+
+    async showLike(workid) {
+      const res = await axios.post(
+        "http://localhost:5000/Work/ShowLike",
+        {
+          work_id: workid
+        },
+        { withCredentials: true }
+      );
+      if (res.status !== 200) {
+        this.$message.error("Unexpected response");
+        return 0;
+      }
+      return res.data;
     },
 
     //展示右侧弹窗
@@ -329,12 +375,22 @@ export default {
         return;
       }
       this.workList = res.data.worklist;
+      for (var i = 0; i < this.workList.length; i++) {
+        let a = await this.showLike(this.workList[i].work_id);
+        console.log("???", i, a);
+
+        this.likestatus[this.workList[i].work_id] = a;
+      }
       this.total = res.data.totalpage;
-      // this.pagesize=res.data.totalpage/res.data.pagenum;
-      // this.pagenum=res.data.pagenum;
+      this.pagesize = res.data.totalpage / res.data.pagenum;
+      this.pagenum = res.data.pagenum;
       this.loading = false;
       // console.log(this.pagesize);
       //  console.log(res);
+      console.log(this.workList);
+
+      console.log("yes");
+      console.log(this.likestatus);
     },
 
     async findWork() {
@@ -352,8 +408,16 @@ export default {
         return;
       }
       this.workList = res.data.worklist;
+      for (var i = 0; i < this.workList.length; i++) {
+        let a = await this.showLike(this.workList[i].work_id);
+        console.log("???", i, a);
+
+        this.likestatus[this.workList[i].work_id] = a;
+      }
       this.total = res.data.totalpage;
-      // console.log(res);
+
+      this.pagenum = res.data.pagenum;
+      console.log(res);
     },
 
     async GetLike(workid) {
@@ -368,13 +432,20 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      //console.log('su!');
-      this.$message.success("感谢您的点赞");
-      this.getWorkList();
+      if (res.data == 0) {
+        //console.log('su!');
+        this.$message.success("您已经取消点赞");
+        this.likestatus[workid] = 0;
+        this.findWork();
+      } else if (res.data == 1) {
+        this.$message.success("感谢您的点赞");
+        this.likestatus[workid] = 1;
+        this.findWork();
+      }
     },
     async appWork() {
       const res = await axios.post(
-        "http://localhost:5000/Work/GetLike",
+        "http://localhost:5000/Apply/CreateApply",
         { work_id: this.workInfo.work_id },
         {
           withCredentials: true
@@ -499,7 +570,16 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width: 390px !important;
-  height: 590px !important;
+  height: 68% !important;
+  overflow: auto;
+  background-color: #a7b1bb;
+}
+
+.recruitment_card4 {
+  box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
+  margin: auto;
+  width: 390px !important;
+  height: 90% !important;
   overflow: auto;
   background-color: #a7b1bb;
 }
@@ -549,5 +629,9 @@ export default {
 
 .demo-ruleFormItem {
   margin-left: -10px;
+}
+
+.work_day {
+  width: 114px;
 }
 </style>

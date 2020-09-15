@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>学生我的</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/home' }">学生</el-breadcrumb-item>
+            <el-breadcrumb-item>我的</el-breadcrumb-item>
             <el-breadcrumb-item>工作管理</el-breadcrumb-item>
         </el-breadcrumb>
         
@@ -15,7 +15,7 @@
             <!--搜索与添加-->
             <el-row  :gutter="30">
                 <el-col :span="7">
-                    <el-input placeholder="请输入内容" v-model="queryInfo.query" >
+                    <el-input placeholder="请输入工作名称" v-model="queryInfo.query" >
                         <el-button slot="append" icon="el-icon-search" @click="getWorklist()"></el-button>
                     </el-input>
                 </el-col>
@@ -44,8 +44,8 @@
                     </el-table-column>
                     <el-table-column  label="操作" width="400">
                         <template slot-scope="scope">
-                            <el-button type="primary" size="medium" icon="el-icon-document-remove" :disabled="scope.row.status==1" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;workstart=scope.row.start_day;workend=scope.row.end_day;startTime=scope.row.start_time;endTime=scope.row.end_time;">申请请假</el-button>
-                            <el-button type="warning" size="medium" icon="el-icon-document-delete" :disabled="scope.row.status==1" @click="resignVisible=true; work_id=scope.row.work_id">申请辞职</el-button>
+                            <el-button type="primary" size="medium" icon="el-icon-document-remove" :disabled="scope.row.status==1" @click="AbForm.work_id=scope.row.work_id; AbsentVisible=true;workstart=scope.row.start_day;workend=scope.row.end_day;startTime=scope.row.start_time;endTime=scope.row.end_time;workDay=scope.row.week_day">申请请假</el-button>
+                            <el-button type="warning" size="medium" icon="el-icon-document-delete" :disabled="scope.row.status==1" @click="resignVisible=true; work_id=scope.row.work_id;">申请辞职</el-button>
                             <el-button type="danger" size="medium" icon="el-icon-circle-close" :disabled="!(scope.row.status)" @click="deleteVisible=true;work_id=scope.row.work_id" >删除工作</el-button>
                         </template>
                     </el-table-column>
@@ -53,17 +53,19 @@
                         <template slot-scope="scope">
                             <el-row>
                                 <el-col :span="12">
-                                    <el-image :src="scope.row.cover" :fit="fit">
+                                    <el-image :src="scope.row.cover" fit="fit">
                                         <div slot="error" class="image-slot">
                                            <i class="el-icon-picture-outline" style="font-size: 100px"></i>
                                         </div>
                                     </el-image> 
                                 </el-col>
                                 <el-col :span="8" class="inlineCol" style="text-align:left" :offset="2">
-                                    <p class="inlineTitle">工作描述:</p>
-                                    <div class="description" style="text-align:left;display: inline;">
-                                         <p>{{scope.row.work_description}}</p>
-                                    </div>
+                                    <p class="inlineTitle"><i class="el-icon-paperclip"></i> 工作名称 ：
+                                        <span class="inlineInfo"> {{ scope.row.work_name }} </span>
+                                    </p>
+                                    <p class="inlineTitle"><i class="el-icon-tickets "></i> 工作描述 ：
+                                        <span class="inlineInfo"> {{ scope.row.work_description }} </span>
+                                    </p>
                                     <p class="inlineTitle"><i class="el-icon-thumb"></i> 点赞 ： <span class="inlineInfo"> {{scope.row.likes_num}} </span> </p>
                                     <p class="inlineTitle"><i class="el-icon-star-off"></i> 收藏 ： <span class="inlineInfo"> {{scope.row.collect_num}} </span> </p>
                                     <p class="inlineTitle"><i class="el-icon-date"></i> 工作周期 ： <span class="inlineInfo"> {{scope.row.start_day}} </span> ~ <span class="inlineInfo"> {{scope.row.end_day}} </span> </p>
@@ -95,16 +97,6 @@
             </el-pagination>
          </el-card>
 
-          <el-date-picker
-                        v-model="AbForm.leave_day"
-                        type="date"
-                        placeholder="开始日期"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
-                        style="width: 100%;"
-                        :picker-options="pickerOptions0">
-          </el-date-picker>
-
          <!--请假的信息-->
          <el-dialog title="请假申请" :visible.sync="AbsentVisible" @close="AbFormClose()" width="50%" center >
             <el-form :model="AbForm" :rules="AbFormRules" label-width="100px" ref="AbFormRef" >
@@ -129,7 +121,7 @@
                         v-model="AbForm.leave_start"
                         :picker-options="{
                         start: startTime,
-                        step: '01:00',
+                        step: '00:15',
                         end: endTime,
                         }"
                         style="width: 100%;">
@@ -144,7 +136,8 @@
                         v-model="AbForm.leave_end"
                         :picker-options="{
                         start: startTime,
-                        step: '01:00',
+                        step: '00:15',
+                        end:endTime,
                         minTime:AbForm.leave_start
                         }"
                         style="width: 100%;">
@@ -251,11 +244,12 @@ export default {
             workend:'',
             startTime:'',
             endTime:'',
+            workDay:'',
 
             pickerOptions0: { //设置日期必须在工作时间之间
       	    disabledDate: (time) => {
             if(this.workstart)
-                return  new Date(this.workstart).getTime()> time.getTime() || new Date(this.workend).getTime()< time.getTime()
+                return  new Date(this.workstart).getTime()> time.getTime() || new Date(this.workend).getTime()< time.getTime() || time.getDay()!=(this.workDay%7)
             }
           },
         }
@@ -328,7 +322,7 @@ export default {
 
 <style scoped>
 .workCard{
-    margin-top:1cm;
+    margin-top:20px;
     padding:0;
 }
 .title{
