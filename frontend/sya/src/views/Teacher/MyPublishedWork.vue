@@ -45,12 +45,11 @@
             </el-form>
           </template>
         </el-table-column>
-        <el-table-column label="#" type="index" width="130"></el-table-column>
-
-        <el-table-column label="工作名称" prop="work_name" width="430"></el-table-column>
-        <el-table-column prop="likes_num" label="点赞" width="120"></el-table-column>
-        <el-table-column prop="collect_num" label="收藏" width="120"></el-table-column>
-        <el-table-column prop="share_num" label="分享" width="160"></el-table-column>
+        <el-table-column label="#" type="index"></el-table-column>
+        <el-table-column label="工作名称" prop="work_name"></el-table-column>
+        <el-table-column prop="likes_num" label="点赞"></el-table-column>
+        <el-table-column prop="collect_num" label="收藏"></el-table-column>
+        <!-- <el-table-column prop="share_num" label="分享" width="160"></el-table-column> -->
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
@@ -77,7 +76,13 @@
     </el-card>
 
     <el-dialog title="修改" :visible.sync="DialogVisible" width="50%">
-      <el-form :model="editdata" :rules="formrules2" style="width:500px;margin:auto;" label-position="left" ref="thisform">
+      <el-form
+        :model="editdata"
+        :rules="formrules2"
+        style="width:500px;margin:auto;"
+        label-position="left"
+        ref="thisform"
+      >
         <el-form-item label="工作ID" prop="work_id">
           <el-input type="textarea" disabled v-model="editdata.work_id"></el-input>
         </el-form-item>
@@ -90,7 +95,7 @@
             show-word-limit
           ></el-input>
         </el-form-item>
-        <el-form-item label="工作图像"  required>
+        <el-form-item label="工作图像" required>
           <!-- <el-row>
           <el-col :span="24">
             <el-image :src="editdata.new_cover" :fit="fit">
@@ -125,64 +130,64 @@
         <el-form-item label="工作薪资" prop="new_salary">
           <el-input v-model="editdata.new_salary"></el-input>
         </el-form-item>
-        <el-form-item label="工作日期"  required>
+        <el-form-item label="工作日期" required>
           <el-col :span="9">
-<el-form-item prop="new_start_day">
-            <el-date-picker
-              v-model="editdata.new_start_day"
-              type="date"
-              placeholder="开始日期"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              style="width: 100%;"
-              :picker-options="pickerOptions2"
-            ></el-date-picker>
+            <el-form-item prop="new_start_day">
+              <el-date-picker
+                v-model="editdata.new_start_day"
+                type="date"
+                placeholder="开始日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                style="width: 100%;"
+                :picker-options="pickerOptions2"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
             <el-form-item prop="new_end_day">
-            <el-date-picker
-              v-model="editdata.new_end_day"
-              type="date"
-              placeholder="结束日期"
-              format="yyyy-MM-dd"
-              value-format="yyyy-MM-dd"
-              style="width: 100%;"
-              :picker-options="pickerOptions3"
-            ></el-date-picker>
+              <el-date-picker
+                v-model="editdata.new_end_day"
+                type="date"
+                placeholder="结束日期"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                style="width: 100%;"
+                :picker-options="pickerOptions3"
+              ></el-date-picker>
             </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item label="工作时间" required>
           <el-col :span="9">
             <el-form-item prop="new_start_time">
-            <el-time-select
-              placeholder="起始时间"
-              v-model="editdata.new_start_time"
-              :picker-options="{
+              <el-time-select
+                placeholder="起始时间"
+                v-model="editdata.new_start_time"
+                :picker-options="{
       start: '08:00',
       step: '01:00',
       end: '20:00'
     }"
-              style="width: 100%;"
-            ></el-time-select>
+                style="width: 100%;"
+              ></el-time-select>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
             <el-form-item prop="new_end_time">
-            <el-time-select
-              placeholder="结束时间"
-              v-model="editdata.new_end_time"
-              :picker-options="{
+              <el-time-select
+                placeholder="结束时间"
+                v-model="editdata.new_end_time"
+                :picker-options="{
       start: '08:00',
       step: '01:00',
       end: '21:00',
       minTime: editdata.new_start_time
     }"
-              style="width: 100%;"
-            ></el-time-select>
+                style="width: 100%;"
+              ></el-time-select>
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -250,32 +255,51 @@ export default {
         new_desc: ""
       },
       formrules2: {
-          
-          new_start_day: [
-            { type: 'string', required: true, message: '请选择工作开始日期', trigger: 'change' }
-          ],
-          new_end_day: [
-            { type: 'string', required: true, message: '请选择工作结束日期', trigger: 'change' }
-          ],
-          new_start_time: [
-            { type: 'string', required: true, message: '请选择工作开始时间', trigger: 'change' }
-          ],
-          new_end_time: [
-            { type: 'string', required: true, message: '请选择工作结束时间', trigger: 'change' }
-          ],
-          new_week_day: [
-           { required: true, message: '请选择工作日', trigger: 'change' }
-          ],
-          new_address: [
-            { required: true, message: '请填写工作地址', trigger: 'change' }
-          ],
-          new_salary: [
-            { required: true, message: '请填写工作薪资', trigger: 'change' }
-          ],
-          new_desc: [
-            { required: true, message: '请填写工作描述', trigger: 'blur' }
-          ]
-        },
+        new_start_day: [
+          {
+            type: "string",
+            required: true,
+            message: "请选择工作开始日期",
+            trigger: "change"
+          }
+        ],
+        new_end_day: [
+          {
+            type: "string",
+            required: true,
+            message: "请选择工作结束日期",
+            trigger: "change"
+          }
+        ],
+        new_start_time: [
+          {
+            type: "string",
+            required: true,
+            message: "请选择工作开始时间",
+            trigger: "change"
+          }
+        ],
+        new_end_time: [
+          {
+            type: "string",
+            required: true,
+            message: "请选择工作结束时间",
+            trigger: "change"
+          }
+        ],
+        new_week_day: [
+          { required: true, message: "请选择工作日", trigger: "change" }
+        ],
+        new_address: [
+          { required: true, message: "请填写工作地址", trigger: "change" }
+        ],
+        new_salary: [
+          { required: true, message: "请填写工作薪资", trigger: "change" }
+        ],
+        new_desc: [
+          { required: true, message: "请填写工作描述", trigger: "blur" }
+        ]
+      },
       //设置选择日期
       pickerOptions2: {
         //结束时间不能大于开始时间
@@ -309,26 +333,27 @@ export default {
   methods: {
     //重置
     cancel2(formName) {
-
-        this.$confirm('是否清除表格内容', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+      this.$confirm("是否清除表格内容", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
           this.$refs[formName].resetFields();
           this.DialogVisible = false;
           this.$message({
-            type: 'success',
-            message: '已清除!'
+            type: "success",
+            message: "已清除!"
           });
-        }).catch(() => {
+        })
+        .catch(() => {
           this.DialogVisible = false;
           this.$message({
-            type: 'info',
-            message: '未清除'
-          });          
+            type: "info",
+            message: "未清除"
+          });
         });
-      },
+    },
     async getWorkList() {
       const result = await axios.post(
         "http://localhost:5000/Work/ViewHistoryWork",
@@ -371,45 +396,45 @@ export default {
 
     // 编辑工作
     async Editework() {
-       this.$refs.thisform.validate(async valid => {
-          if (!valid) {
-            this.$message.error("请按照提示正确填写工作内容");
+      this.$refs.thisform.validate(async valid => {
+        if (!valid) {
+          this.$message.error("请按照提示正确填写工作内容");
           return;
-          } 
-      // console.log(this.form);
-      const result = await axios.post(
-        "http://localhost:5000/Work/ChangeWorkInfo",
-        {
-          work_id: this.editdata.work_id,
-          work_name: this.editdata.work_name,
-          cover: this.uploadImg, //上传的封面
-          work_description: this.editdata.new_desc,
-          address: this.editdata.new_address,
-          salary: parseInt(this.editdata.new_salary),
-          start_day: this.editdata.new_start_day,
-          end_day: this.editdata.new_end_day,
-          start_time: this.editdata.new_start_time,
-          end_time: this.editdata.new_end_time,
-          week_day: parseInt(this.editdata.new_week_day)
-        },
-        { withCredentials: true }
-      );
-      // console.log(result);
-      if (result.status == 200) {
-        console.log("edit success");
-        this.$message.success("修改成功");
-        this.Dialogvisible = false;
-        console.log("edit success222");
-        await this.getOnePageworklist();
-        console.log("edit success333");
-        setTimeout(() => {
-          this.$router.go(0);
-        }, 500);
-        this.$router.push("MyPublishedWork");
-      } else {
-        this.$message.error("发生了一些错误");
-      }
-       });
+        }
+        // console.log(this.form);
+        const result = await axios.post(
+          "http://localhost:5000/Work/ChangeWorkInfo",
+          {
+            work_id: this.editdata.work_id,
+            work_name: this.editdata.work_name,
+            cover: this.uploadImg, //上传的封面
+            work_description: this.editdata.new_desc,
+            address: this.editdata.new_address,
+            salary: parseInt(this.editdata.new_salary),
+            start_day: this.editdata.new_start_day,
+            end_day: this.editdata.new_end_day,
+            start_time: this.editdata.new_start_time,
+            end_time: this.editdata.new_end_time,
+            week_day: parseInt(this.editdata.new_week_day)
+          },
+          { withCredentials: true }
+        );
+        // console.log(result);
+        if (result.status == 200) {
+          console.log("edit success");
+          this.$message.success("修改成功");
+          this.Dialogvisible = false;
+          console.log("edit success222");
+          await this.getOnePageworklist();
+          console.log("edit success333");
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 500);
+          this.$router.push("MyPublishedWork");
+        } else {
+          this.$message.error("发生了一些错误");
+        }
+      });
     },
 
     async handleSizeChange(val) {
