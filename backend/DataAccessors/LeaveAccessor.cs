@@ -132,7 +132,7 @@ namespace SyaApi.DataAccessors
             content,leave_time,proof,status,leave_duration,
             request_time,leave_day,leave_start,leave_end
             FROM leave_information NATURAL JOIN work
-            WHERE teacher_id=@id";
+            WHERE teacher_id=@id ORDER BY status ASC";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
