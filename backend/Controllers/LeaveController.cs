@@ -61,11 +61,30 @@ namespace SyaApi.Controllers
         /// 更改请假时间，计算请假时长
         /// dumei 09.12
         ///</summery>
+        ///<summery>
+        /// 更新：请假查重(一个工作不能在同一天请假2次)
+        /// dumei 09.15
+        ///</summery>
         [HttpPost("RequestRest")]
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult<LeaveResponse>> RequestRest([FromBody] LeaveRequest request)
         {
-            var stu_id = Int32.Parse(User.Identity.Name);
+            var stu_id = Int32.Parse(User.Identity.Name);      
+            if (await UserAccessor.CheckRole(stu_id) == Constants.Role.Provider)
+            {
+                return BadRequest(new { message = "Providers cannot create leave application."});
+            }
+            int check_leave = await LeaveAccessor.CheckLeave(stu_id, request.work_id, request.leave_day);
+            if (check_leave == 1)
+            {
+                // 已成功申请
+                return Ok(-21);
+            }
+            else if (check_leave == 2)
+            {
+                // 正在申请中
+                return Ok(-22);
+            }
             var temp = _mapper.Map<LeaveEntity>(request);
 
             /* 检查请假时间是否在工作时间内 */
@@ -240,6 +259,7 @@ namespace SyaApi.Controllers
             {
                 return BadRequest(new { message = "Providers cannot manage leave application."});
             }
+            
             var temp = _mapper.Map<LeaveEntity>(request);
 
             /* 检查请假时间是否在工作时间内 */
