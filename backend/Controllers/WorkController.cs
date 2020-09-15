@@ -282,7 +282,7 @@ namespace SyaApi.Controllers
             }
             var work = _mapper.Map<WorkEntity>(request);
             work.teacher_id = provider_id;
-            work.work_time = "none"; //tobe delete
+            //work.work_time = "none"; //tobe delete
 
             // 计算工作总小时数total_time
             work.total_time = CalTotalTime(request.start_day, request.end_day, request.start_time, request.end_time, request.week_day);

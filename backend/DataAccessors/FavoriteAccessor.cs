@@ -188,7 +188,7 @@ namespace SyaApi.DataAccessors
             work.total=0;
             work.workItem=new List<WorkEntity>();
 
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,share_num FROM work WHERE work_id=ANY (SELECT work_id FROM favorite_has_work WHERE favorite_id=@id);";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,likes_num,collect_num,share_num FROM work WHERE work_id=ANY (SELECT work_id FROM favorite_has_work WHERE favorite_id=@id);";
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
@@ -205,7 +205,7 @@ namespace SyaApi.DataAccessors
                 temp.cover=reader.GetString("cover");
                 temp.work_description=reader.GetString("work_description");
                 temp.address=reader.GetString("address");
-                temp.work_time=reader.GetString("work_time");
+                //temp.work_time=reader.GetString("work_time");
                 temp.salary=reader.GetInt32("salary");
                 temp.likes_num=reader.GetInt32("likes_num");
                 temp.collect_num=reader.GetInt32("collect_num");

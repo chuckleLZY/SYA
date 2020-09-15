@@ -160,7 +160,11 @@ export default {
         this.$store.commit("logIn", result.data.role);
         // //将vuex里的信息保存到sessionStorage里
         // sessionStorage.setItem("store", JSON.stringify(this.$store.state));
-        this.$message.success("登录成功");
+        this.$message({
+          message: '登录成功',
+          type: 'success',
+          duration:500
+        });
         this.$router.push("/Main");
       }
     },

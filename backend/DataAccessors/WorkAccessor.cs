@@ -15,7 +15,7 @@ namespace SyaApi.DataAccessors
             TakesItemEntity takes=new TakesItemEntity();
             takes.total=0;
             takes.TakesItem=new List<TakesEntity>();
-            var query = "SELECT student_id,work_id,takes.work_time,absent_num,absent_time,work_name FROM takes JOIN work USING (work_id)WHERE student_id=@id";
+            var query = "SELECT student_id,work_id,absent_num,absent_time,work_name FROM takes JOIN work USING (work_id)WHERE student_id=@id";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -31,7 +31,7 @@ namespace SyaApi.DataAccessors
                 
                 temp.student_id=reader.GetInt32("student_id");
                 temp.work_id=reader.GetInt32("work_id");
-                temp.work_time=reader.GetDouble("work_time");
+                //temp.work_time=reader.GetDouble("work_time");
                 temp.absent_num=reader.GetInt32("absent_num");
                 temp.absent_time=reader.GetDouble("absent_time");
                 temp.work_name=reader.GetString("work_name");
@@ -45,7 +45,7 @@ namespace SyaApi.DataAccessors
         public static async Task<WorkEntity> FindWorkInfo(int id)
         {
             WorkEntity temp=new WorkEntity();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_id=@id";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_id=@id";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -65,7 +65,7 @@ namespace SyaApi.DataAccessors
                     work_description=reader.GetString("work_description"),
                     address=reader.GetString("address"),
                     salary=reader.GetInt32("salary"),
-                    work_time=reader.GetString("work_time"),
+                    //work_time=reader.GetString("work_time"),
                     likes_num=reader.GetInt32("likes_num"),
                     collect_num=reader.GetInt32("collect_num"),
                     
@@ -94,7 +94,7 @@ namespace SyaApi.DataAccessors
             provide.total = 0;
             provide.workItem = new List<WorkEntity>();
             var query = @"SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,
-            work_time,likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day
+            likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day
             FROM work WHERE teacher_id=@id";
 
             using var connection = DatabaseConnector.Connect();
@@ -116,7 +116,7 @@ namespace SyaApi.DataAccessors
                     work_description=reader.GetString("work_description"),
                     address=reader.GetString("address"),
                     salary=reader.GetInt32("salary"),
-                    work_time=reader.GetString("work_time"),
+                    //work_time=reader.GetString("work_time"),
                     likes_num=reader.GetInt32("likes_num"),
                     collect_num=reader.GetInt32("collect_num"),
                     share_num=reader.GetInt32("share_num"),
@@ -193,9 +193,9 @@ namespace SyaApi.DataAccessors
         ///</summery>
         public static async Task<int> Create(WorkEntity work)
         {
-            var query = @"INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,work_time,
+            var query = @"INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,
             likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day) 
-            VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,@work_time,
+            VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,
             @likes,@collect,@share,@start_day,@end_day,@start_time,@end_time,@total_time,@week_day)";
 
             using var connection = DatabaseConnector.Connect();
@@ -211,7 +211,7 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@address", work.address);
             command.Parameters.AddWithValue("@salary", work.salary);
             //command.Parameters.AddWithValue("@work_time", work.work_time);
-            command.Parameters.AddWithValue("@work_time", "none"); //to be delete
+            //command.Parameters.AddWithValue("@work_time", "none"); //to be delete
             command.Parameters.AddWithValue("@start_day", work.start_day);
             command.Parameters.AddWithValue("@end_day", work.end_day);
             command.Parameters.AddWithValue("@start_time", work.start_time);
@@ -235,7 +235,7 @@ namespace SyaApi.DataAccessors
             WorkItemEntity work=new WorkItemEntity();
             work.total=0;
             work.workItem=new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -254,7 +254,7 @@ namespace SyaApi.DataAccessors
                 temp.cover=reader.GetString("cover");
                 temp.work_description=reader.GetString("work_description");
                 temp.address=reader.GetString("address");
-                temp.work_time=reader.GetString("work_time");
+                //temp.work_time=reader.GetString("work_time");
                 temp.salary=reader.GetInt32("salary");
                 temp.likes_num=reader.GetInt32("likes_num");
                 temp.collect_num=reader.GetInt32("collect_num");
@@ -281,7 +281,7 @@ namespace SyaApi.DataAccessors
             WorkItemEntity work=new WorkItemEntity();
             work.total=0;
             work.workItem=new List<WorkEntity>();
-            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,work_time,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_name LIKE @search OR work_description LIKE @search OR address LIKE @search ";
+            var query = "SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day FROM work WHERE work_name LIKE @search OR work_description LIKE @search OR address LIKE @search ";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -300,7 +300,7 @@ namespace SyaApi.DataAccessors
                 temp.cover=reader.GetString("cover");
                 temp.work_description=reader.GetString("work_description");
                 temp.address=reader.GetString("address");
-                temp.work_time=reader.GetString("work_time");
+                //temp.work_time=reader.GetString("work_time");
                 temp.salary=reader.GetInt32("salary");
                 temp.likes_num=reader.GetInt32("likes_num");
                 temp.collect_num=reader.GetInt32("collect_num");

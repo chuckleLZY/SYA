@@ -16,7 +16,7 @@ namespace SyaApi.Responses
         
         public string content{get; set;}
 
-        public string leave_time{get; set;}
+        //public string leave_time{get; set;}
 
         public string proof{get; set;}
 
@@ -43,7 +43,7 @@ namespace SyaApi.Responses
         
         public string content{get; set;}
 
-        public string leave_time{get; set;}
+        //public string leave_time{get; set;}
 
         public string proof{get; set;}
 

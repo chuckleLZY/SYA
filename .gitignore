@@ -38,3 +38,4 @@ msbuild.wrn
 
 # Config file
 config.json
+frontend/sya/package-lock.json
