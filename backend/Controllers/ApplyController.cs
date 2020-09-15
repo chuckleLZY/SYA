@@ -139,17 +139,32 @@ namespace SyaApi.Controllers
         /// 学生用户提交工作申请
         /// chuckle 08.26
         ///</summery>
+        ///<summery>
+        /// 更新：检查重复申请
+        /// dumei 09.15
+        ///</summery>
         [HttpPost("CreateApply")]
         [AllowAnonymous]
          public async Task<ActionResult<int>> CreateApply(ApplyRequest request)
          {
-            var pro_id = Int32.Parse(User.Identity.Name);
-            if (await UserAccessor.CheckRole(pro_id) != Role.Student)
+            var stu_id = Int32.Parse(User.Identity.Name);
+            if (await UserAccessor.CheckRole(stu_id) != Role.Student)
             {
                 return BadRequest(new { message = "CreateApply is for students."});
             }
+            int check_apply = await ApplyAccessor.CheckApply(stu_id, request.work_id);
+            if (check_apply == 1)
+            {
+                // 已通过改工作的申请
+                return Ok(-21);
+            }
+            else if (check_apply == 2)
+            {
+                // 正在申请该工作
+                return Ok(-22);
+            }
             var temp=_mapper.Map<ApplyEntity>(request);
-            temp.student_id=pro_id;
+            temp.student_id=stu_id;
             temp.teacher_id= await WorkAccessor.GetTeacher(temp.work_id);
             temp.resume_id= await ResumeAccessor.GetResume(temp.student_id);
             if(temp.resume_id==-1)
