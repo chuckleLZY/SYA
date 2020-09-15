@@ -38,11 +38,11 @@
             <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">消息</el-menu-item>
             <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">消息</el-menu-item>
             <!--  <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>-->
-            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">我的</el-menu-item>
-            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">我的</el-menu-item>
             <!-- <el-menu-item index="/AdminMine" v-if="this.$store.state.role==0">我的</el-menu-item> -->
             <el-menu-item index="/StudentFavorites" v-if="this.$store.state.role==1">收藏夹</el-menu-item>
             <!-- <el-menu-item index="/TeacherFavorites" v-if="this.$store.state.role==2">老师收藏夹</el-menu-item> -->
+            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">我的</el-menu-item>
+            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">我的</el-menu-item>
           </el-menu>
         </div>
       </el-col>
