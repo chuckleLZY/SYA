@@ -67,7 +67,7 @@
       <div class="avatar_box">
         <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg" alt />
       </div>
-      <el-form label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
+      <el-form ref="loginFormRef" label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
         <!-- 用户名 -->
         <el-form-item prop="username">
           <el-input prefix-icon="el-icon-user" v-model="logInForm.username"></el-input>
@@ -80,6 +80,7 @@
         <el-form-item class="btns">
           <el-button type="primary" @click="login()">登录</el-button>
           <el-button type="info" @click="register()">注册</el-button>
+          <el-button  @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -97,8 +98,8 @@ export default {
     return {
       //登录表单
       logInForm: {
-        username: "student",
-        Password: "123456"
+        username: "",
+        Password: ""
       },
       loginFormRules: {
         username: [
@@ -137,6 +138,11 @@ export default {
     };
   },
   methods: {
+     resetLoginForm () {
+      // console.log(this)
+      // resetFields：element-ui提供的表单方法
+      this.$refs.loginFormRef.resetFields()
+    },
     async login() {
       console.log(this.logInForm);
       const result = await axios.post(
