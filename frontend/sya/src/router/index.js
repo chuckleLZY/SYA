@@ -14,7 +14,7 @@ import TeacherMessage from '../components/TeacherMessage.vue'
 import AdminMessage from '../components/AdminMessage.vue'
 import StudentMine from '../components/StudentMine.vue'
 import TeacherMine from '../components/TeacherMine.vue'
-import AdminMine from '../components/AdminMine.vue'
+// import AdminMine from '../components/AdminMine.vue'
 
 import Recruitment from '../views/Student/Recruitment.vue'
 import StudentFavorites from '../views/Student/StudentFavorites.vue'
@@ -37,7 +37,7 @@ import TeacherResignMessage from '../views/Teacher/TeacherResignMessage.vue'
 
 
 import TeacherInformation from '../views/Teacher/TeacherInformation.vue'
-import TeacherQualification from '../views/Teacher/TeacherQualification.vue'
+// import TeacherQualification from '../views/Teacher/TeacherQualification.vue'
 
 
 import PublishSystemMessage from '../views/Admin/PublishSystemMessage.vue'
@@ -46,8 +46,8 @@ import AuditWork from '../views/Admin/AuditWork.vue'
 
 import AdminSystemMessage from '../views/Admin/AdminSystemMessage.vue'
 
-import AdminInformation from '../views/Admin/AdminInformation.vue'
-import AdminQualification from '../views/Admin/AdminQualification.vue'
+// import AdminInformation from '../views/Admin/AdminInformation.vue'
+// import AdminQualification from '../views/Admin/AdminQualification.vue'
 
 
 
@@ -216,29 +216,29 @@ const routes = [
                 name: 'TeacherInformation',
                 component: TeacherInformation,
             },
-            {
-                path: '/TeacherQualification',
-                name: 'TeacherQualification',
-                component: TeacherQualification,
-            }
+            // {
+            //     path: '/TeacherQualification',
+            //     name: 'TeacherQualification',
+            //     component: TeacherQualification,
+            // }Qu
             ]
         },
-        {
-            path: '/AdminMine',
-            name: 'AdminMine',
-            component: AdminMine,
-            children: [{
-                path: '/AdminInformation',
-                name: 'AdminInformation',
-                component: AdminInformation,
-            },
-            {
-                path: '/AdminQualification',
-                name: 'AdminQualification',
-                component: AdminQualification,
-            }
-            ]
-        },
+        // {
+        //     path: '/AdminMine',
+        //     name: 'AdminMine',
+        //     component: AdminMine,
+        //     children: [{
+        //         path: '/AdminInformation',
+        //         name: 'AdminInformation',
+        //         component: AdminInformation,
+        //     },
+        //     {
+        //         path: '/AdminQualification',
+        //         name: 'AdminQualification',
+        //         component: AdminQualification,
+        //     }
+        //     ]
+        // },
         {
             path: '/StudentFavorites',
             name: 'StudentFavorites',

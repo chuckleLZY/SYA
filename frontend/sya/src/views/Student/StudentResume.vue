@@ -2,8 +2,8 @@
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>学生我的</el-breadcrumb-item>
-            <el-breadcrumb-item>在线简历</el-breadcrumb-item>
+            <el-breadcrumb-item>我的</el-breadcrumb-item>
+            <el-breadcrumb-item>个人简历</el-breadcrumb-item>
         </el-breadcrumb>
         <!--简历卡片-->
         <el-card class="resumeCard" v-if="editResume==false && resumeExsit==true">

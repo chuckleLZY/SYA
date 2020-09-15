@@ -1,7 +1,7 @@
 <template>
   <div>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
-            <el-breadcrumb-item :to="{ path: '/home' }">老师</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
             <el-breadcrumb-item>消息</el-breadcrumb-item>
             <el-breadcrumb-item>请假管理</el-breadcrumb-item>
         </el-breadcrumb>

@@ -12,15 +12,15 @@
       >
         <el-menu-item index="/ReceivedResume">
           <i class="el-icon-menu"></i>
-          <span slot="title">查看收到的简历</span>
+          <span slot="title">查看申请</span>
         </el-menu-item>
         <el-menu-item index="/PublishWorkMessage">
           <i class="el-icon-menu"></i>
-          <span slot="title">发布工作招聘信息</span>
+          <span slot="title">发布工作</span>
         </el-menu-item>
         <el-menu-item index="/MyPublishedWork">
           <i class="el-icon-menu"></i>
-          <span slot="title">发布过的工作</span>
+          <span slot="title">发布记录</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

@@ -12,19 +12,19 @@
       >
         <el-menu-item index="/StudentInformation">
           <i class="el-icon-menu"></i>
-          <span slot="title">学生我的资料</span>
+          <span slot="title">我的资料</span>
         </el-menu-item>
         <el-menu-item index="/StudentResume">
           <i class="el-icon-menu"></i>
-          <span slot="title">学生个人简历</span>
+          <span slot="title">个人简历</span>
         </el-menu-item>
         <el-menu-item index="/StudentWorkManagement">
           <i class="el-icon-menu"></i>
-          <span slot="title">学生工作管理</span>
+          <span slot="title">工作管理</span>
         </el-menu-item>
         <el-menu-item index="/StudentLeaveManagement">
           <i class="el-icon-menu"></i>
-          <span slot="title">学生请假管理</span>
+          <span slot="title">请假管理</span>
         </el-menu-item>
       </el-menu>
     </el-aside>

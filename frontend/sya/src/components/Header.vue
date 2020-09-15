@@ -32,17 +32,17 @@
           >
             <el-menu-item index="/Home">首页</el-menu-item>
             <el-menu-item index="/Recruitment">招聘会</el-menu-item>
-            <el-menu-item index="/TeacherTable" v-if="this.$store.state.role==2">老师工作台</el-menu-item>
+            <el-menu-item index="/TeacherTable" v-if="this.$store.state.role==2">工作台</el-menu-item>
             <!-- <el-menu-item index="/AdminTable" v-if="this.$store.state.role==0">管理员工作台</el-menu-item> -->
-            <el-menu-item index="/PublishSystemMessage" v-if="this.$store.state.role==0">管理员工作台</el-menu-item>
-            <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">学生消息</el-menu-item>
-            <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">老师消息</el-menu-item>
+            <el-menu-item index="/PublishSystemMessage" v-if="this.$store.state.role==0">工作台</el-menu-item>
+            <el-menu-item index="/StudentMessage" v-if="this.$store.state.role==1">消息</el-menu-item>
+            <el-menu-item index="/TeacherMessage" v-if="this.$store.state.role==2">消息</el-menu-item>
             <!--  <el-menu-item index="/AdminMessage" v-if="this.$store.state.role==2">管理员消息</el-menu-item>-->
-            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">学生我的</el-menu-item>
-            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">老师我的</el-menu-item>
-            <el-menu-item index="/AdminMine" v-if="this.$store.state.role==0">管理员我的</el-menu-item>
-            <el-menu-item index="/StudentFavorites" v-if="this.$store.state.role==1">学生收藏夹</el-menu-item>
-            <el-menu-item index="/TeacherFavorites" v-if="this.$store.state.role==2">老师收藏夹</el-menu-item>
+            <el-menu-item index="/StudentMine" v-if="this.$store.state.role==1">我的</el-menu-item>
+            <el-menu-item index="/TeacherMine" v-if="this.$store.state.role==2">我的</el-menu-item>
+            <!-- <el-menu-item index="/AdminMine" v-if="this.$store.state.role==0">我的</el-menu-item> -->
+            <el-menu-item index="/StudentFavorites" v-if="this.$store.state.role==1">收藏夹</el-menu-item>
+            <!-- <el-menu-item index="/TeacherFavorites" v-if="this.$store.state.role==2">老师收藏夹</el-menu-item> -->
           </el-menu>
         </div>
       </el-col>
@@ -59,7 +59,7 @@
             </el-avatar>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <div @click="toInfo()">个人信息</div>
+                <div @click="toInfo()">我的资料</div>
               </el-dropdown-item>
               <el-dropdown-item>
                 <div @click="logOut()">退出登录</div>

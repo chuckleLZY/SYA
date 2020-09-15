@@ -122,7 +122,6 @@
       ></el-pagination>
     </el-card>
     </div>
-  </div>
 </template>
 
 <script>
