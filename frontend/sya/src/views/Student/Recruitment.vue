@@ -1,11 +1,11 @@
-<template>
-  <div style="height:100%">
+<template style="height:100%">
+  <div>
     <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>招聘会</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-card class="recruitment_card" v-loading="loading">
+    <el-card class="recruitment_card" v-loading="loading" style="margin-bottom:50px">
       <el-row>
         <el-col :span="7">
           <el-input
@@ -142,8 +142,8 @@
         @size-change="handleSizeChange3"
         @current-change="handleCurrentChange3"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[3, 6, 9]"
-        :page-size="3"
+        :page-sizes="[6, 9, 12]"
+        :page-size="6"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       ></el-pagination>
@@ -233,12 +233,12 @@ export default {
       //获取工作列表的参数对象
       queryInfo: {
         pagenum: 1,
-        pagesize: 3,
+        pagesize: 6,
         query: ""
       },
       queryInfo2: {
         pagenum: 1,
-        pagesize: 3,
+        pagesize: 6,
         query: ""
       },
       workList: [],

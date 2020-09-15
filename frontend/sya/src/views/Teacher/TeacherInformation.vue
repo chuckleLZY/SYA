@@ -345,7 +345,7 @@ export default {
 }
 
 .infoCard {
-  margin-top: 1cm;
+  margin-top: 20px;
 }
 
 .title {
