@@ -233,8 +233,8 @@ export default {
       loading: false
     };
   },
-  created() {
-    this.getUserInfo();
+  async created() {
+    await this.getUserInfo();
   },
   methods: {
     async getUserInfo() {

@@ -52,14 +52,14 @@
                   >查看详情</el-button>
 
                   <el-button
-                    type="info"
+                    type="success"
                     v-if="likestatus[work.work_id]==1"
                     class="button"
                     @click="GetLike(work.work_id)"
                     plain
                   >取消点赞</el-button>
                   <el-button
-                    type="info"
+                    type="warning"
                     v-if="likestatus[work.work_id]==0"
                     class="button"
                     @click="GetLike(work.work_id)"

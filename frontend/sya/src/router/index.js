@@ -101,7 +101,7 @@ const routes = [
             path: '/TeacherTable',
             name: 'TeacherTable',
             component: TeacherTable,
-            redirect:'/ReceivedResume',
+            redirect: '/ReceivedResume',
             children: [{
                 path: '/ReceivedResume',
                 name: 'ReceivedResume',
@@ -156,7 +156,7 @@ const routes = [
             path: '/TeacherMessage',
             name: 'TeacherMessage',
             component: TeacherMessage,
-            redirect:'/TeacherSystemMessage',
+            redirect: '/TeacherSystemMessage',
             children: [{
                 path: '/TeacherSystemMessage',
                 name: 'TeacherSystemMessage',
@@ -168,9 +168,9 @@ const routes = [
                 component: TeacherWorkMessage,
             },
             {
-                path:'/TeacherResignMessage',
-                name:'TeacherResignMessage',
-                component:TeacherResignMessage,
+                path: '/TeacherResignMessage',
+                name: 'TeacherResignMessage',
+                component: TeacherResignMessage,
             }
             ]
         },
@@ -221,11 +221,11 @@ const routes = [
                 name: 'TeacherInformation',
                 component: TeacherInformation,
             },
-            // {
-            //     path: '/TeacherQualification',
-            //     name: 'TeacherQualification',
-            //     component: TeacherQualification,
-            // }Qu
+                // {
+                //     path: '/TeacherQualification',
+                //     name: 'TeacherQualification',
+                //     component: TeacherQualification,
+                // }Qu
             ]
         },
         // {
@@ -269,12 +269,17 @@ const routes = [
 const router = new VueRouter({
     routes
 })
-
-router.beforeEach((to, from, next) => {
-    if (to.path === '/LogIn' || to.path === '/Register') return next();
-    const store = JSON.parse(sessionStorage.getItem("store"));
-    if (!store) return next('/LogIn');
-    else if (store.isLoggedIn == false) return next('/LogIn');
-    else return next();
-})
+// import axios from "axios";
+// router.beforeEach((to, from, next) => {
+//     console.log("beforeEach");
+//     const result = axios.post("http://localhost:5000/Account/LoginStatus", {}, { withCredentials: true });
+//     console.log(result);
+//     if(result.status==200)return next();
+//     else return next('/LogIn');
+//     // if (to.path === '/LogIn' || to.path === '/Register') return next();
+//     // // const store = JSON.parse(sessionStorage.getItem("store"));
+//     // // if (!store) return next('/LogIn');
+//     // else if (store.isLoggedIn == false) return next('/LogIn');
+//     // else return next();
+// })
 export default router

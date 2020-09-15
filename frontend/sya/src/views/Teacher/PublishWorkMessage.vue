@@ -13,13 +13,14 @@
         <el-form
           ref="form"
           :model="form"
+          :rules="formrules"
           label-width="150px"
           style="width: 550px;margin-left:280px;margin-top:40px"
         >
           <el-form-item label="工作名称" prop="name">
             <el-input v-model="form.name" maxlength="20" show-word-limit></el-input>
           </el-form-item>
-          <el-form-item label="工作图像" prop="cover">
+          <el-form-item label="工作图像"  required>
             <!-- 上传 -->
             <el-tooltip class="item" effect="dark" content="点击上传图片" placement="top">
               <el-upload
@@ -63,8 +64,9 @@
           <el-form-item label="工作薪资" prop="salary">
             <el-input v-model="form.salary"></el-input>
           </el-form-item>
-          <el-form-item label="工作日期" prop="date">
+          <el-form-item label="工作日期" required>
             <el-col :span="11">
+              <el-form-item prop="start_day">
               <el-date-picker
                 v-model="form.start_day"
                 type="date"
@@ -74,9 +76,11 @@
                 style="width: 100%;"
                 :picker-options="pickerOptions0"
               ></el-date-picker>
+              </el-form-item>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
+              <el-form-item prop="end_day">
               <el-date-picker
                 v-model="form.end_day"
                 type="date"
@@ -86,10 +90,12 @@
                 style="width: 100%;"
                 :picker-options="pickerOptions1"
               ></el-date-picker>
+              </el-form-item>
             </el-col>
           </el-form-item>
-          <el-form-item label="工作时间" prop="time">
+          <el-form-item label="工作时间" required>
             <el-col :span="11">
+              <el-form-item prop="start_time">
               <el-time-select
                 placeholder="起始时间"
                 v-model="form.start_time"
@@ -100,9 +106,11 @@
     }"
                 style="width: 100%;"
               ></el-time-select>
+              </el-form-item>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
+              <el-form-item prop="end_time">
               <el-time-select
                 placeholder="结束时间"
                 v-model="form.end_time"
@@ -114,6 +122,7 @@
     }"
                 style="width: 100%;"
               ></el-time-select>
+              </el-form-item>
             </el-col>
           </el-form-item>
           <el-form-item label="工作日" prop="week_day">
@@ -142,7 +151,7 @@
 
       <div class="choose_btm">
         <el-button type="success" @click="Creatework()">新建</el-button>
-        <el-button @click="cancelForm()">取 消</el-button>
+        <el-button @click="cancel('form')">取 消</el-button>
       </div>
     </el-card>
   </div>
@@ -171,6 +180,37 @@ export default {
         salary: "",
         desc: ""
       },
+      formrules: {
+          name: [
+            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度小于20个字符', trigger: 'blur' }
+          ],
+          start_day: [
+            { type: 'string', required: true, message: '请选择工作开始日期', trigger: 'change' }
+          ],
+          end_day: [
+            { type: 'string', required: true, message: '请选择工作结束日期', trigger: 'change' }
+          ],
+          start_time: [
+            { type: 'string', required: true, message: '请选择工作开始时间', trigger: 'change' }
+          ],
+          end_time: [
+            { type: 'string', required: true, message: '请选择工作结束时间', trigger: 'change' }
+          ],
+          week_day: [
+           { required: true, message: '请选择工作日', trigger: 'change' }
+          ],
+          address: [
+            { required: true, message: '请填写工作地址', trigger: 'change' }
+          ],
+          salary: [
+            { required: true, message: '请填写工作薪资', trigger: 'change' }
+          ],
+          desc: [
+            { required: true, message: '请填写工作描述', trigger: 'blur' }
+          ]
+        },
+
       uploadImg: "",
       //设置选择日期
       pickerOptions0: {
@@ -204,8 +244,32 @@ export default {
     onSubmit() {
       console.log("submit!");
     },
+    //取消重置
+     cancel(formName) {
+        this.$confirm('是否清除表格内容', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$refs[formName].resetFields();
+          this.$message({
+            type: 'success',
+            message: '已清除!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });          
+        });
+      },
     //创建工作
     async Creatework() {
+      this.$refs.form.validate(async valid => {
+          if (!valid) {
+            this.$message.error("请按照提示正确填写工作内容");
+          return;
+          } 
       console.log(this.form);
       const result = await axios.post(
         "http://localhost:5000/Work/CreateWork",
@@ -231,6 +295,7 @@ export default {
       } else {
         this.$message.error("发生了一些错误");
       }
+      });
     },
     Upload(file) {
       var fileName = "banner" + `${Date.parse(new Date())}` + ".jpg"; //定义唯一的文件名
@@ -248,15 +313,15 @@ export default {
       const isJPEG = file.name.split(".")[1] === "jpeg";
       const isJPG = file.name.split(".")[1] === "jpg";
       const isPNG = file.name.split(".")[1] === "png";
-      const isLt500K = file.size / 1024 / 500 < 2;
+      const isLt1000K = file.size / 1024 / 1000 < 2;
       if (!isJPG && !isJPEG && !isPNG) {
         this.$message.error("上传图片只能是 JPEG/JPG/PNG 格式!");
       }
-      if (!isLt500K) {
-        this.$message.error("单张图片大小不能超过 500KB!");
+      if (!isLt1000K) {
+        this.$message.error("单张图片大小不能超过 1000KB!");
       }
 
-      return (isJPEG || isJPG || isPNG) && isLt500K;
+      return (isJPEG || isJPG || isPNG) && isLt1000K;
     }
   }
 };

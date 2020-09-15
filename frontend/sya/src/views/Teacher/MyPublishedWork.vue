@@ -77,11 +77,11 @@
     </el-card>
 
     <el-dialog title="修改" :visible.sync="DialogVisible" width="50%">
-      <el-form :model="editdata" style="width:500px;margin:auto;" label-position="left">
+      <el-form :model="editdata" :rules="formrules2" style="width:500px;margin:auto;" label-position="left" ref="thisform">
         <el-form-item label="工作ID" prop="work_id">
           <el-input type="textarea" disabled v-model="editdata.work_id"></el-input>
         </el-form-item>
-        <el-form-item label="工作名称" prop="work_name">
+        <el-form-item label="工作名称" prop="name">
           <el-input
             type="textarea"
             disabled
@@ -90,7 +90,7 @@
             show-word-limit
           ></el-input>
         </el-form-item>
-        <el-form-item label="工作图像" prop="new_cover">
+        <el-form-item label="工作图像"  required>
           <!-- <el-row>
           <el-col :span="24">
             <el-image :src="editdata.new_cover" :fit="fit">
@@ -125,8 +125,9 @@
         <el-form-item label="工作薪资" prop="new_salary">
           <el-input v-model="editdata.new_salary"></el-input>
         </el-form-item>
-        <el-form-item label="工作日期" prop="new_date">
+        <el-form-item label="工作日期"  required>
           <el-col :span="9">
+<el-form-item prop="new_start_day">
             <el-date-picker
               v-model="editdata.new_start_day"
               type="date"
@@ -136,9 +137,11 @@
               style="width: 100%;"
               :picker-options="pickerOptions2"
             ></el-date-picker>
+            </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
+            <el-form-item prop="new_end_day">
             <el-date-picker
               v-model="editdata.new_end_day"
               type="date"
@@ -148,10 +151,12 @@
               style="width: 100%;"
               :picker-options="pickerOptions3"
             ></el-date-picker>
+            </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="工作时间" prop="new_time">
+        <el-form-item label="工作时间" required>
           <el-col :span="9">
+            <el-form-item prop="new_start_time">
             <el-time-select
               placeholder="起始时间"
               v-model="editdata.new_start_time"
@@ -162,9 +167,11 @@
     }"
               style="width: 100%;"
             ></el-time-select>
+            </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
+            <el-form-item prop="new_end_time">
             <el-time-select
               placeholder="结束时间"
               v-model="editdata.new_end_time"
@@ -176,6 +183,7 @@
     }"
               style="width: 100%;"
             ></el-time-select>
+            </el-form-item>
           </el-col>
         </el-form-item>
         <el-form-item label="工作日" prop="new_week_day">
@@ -203,8 +211,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="DialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="Editework()">编 辑</el-button>
+        <el-button @click="cancel2()">取 消</el-button>
+        <el-button type="primary" @click="Editework('editdate')">编 辑</el-button>
       </div>
     </el-dialog>
   </div>
@@ -241,6 +249,33 @@ export default {
         new_salary: "",
         new_desc: ""
       },
+      formrules2: {
+          
+          new_start_day: [
+            { type: 'string', required: true, message: '请选择工作开始日期', trigger: 'change' }
+          ],
+          new_end_day: [
+            { type: 'string', required: true, message: '请选择工作结束日期', trigger: 'change' }
+          ],
+          new_start_time: [
+            { type: 'string', required: true, message: '请选择工作开始时间', trigger: 'change' }
+          ],
+          new_end_time: [
+            { type: 'string', required: true, message: '请选择工作结束时间', trigger: 'change' }
+          ],
+          new_week_day: [
+           { required: true, message: '请选择工作日', trigger: 'change' }
+          ],
+          new_address: [
+            { required: true, message: '请填写工作地址', trigger: 'change' }
+          ],
+          new_salary: [
+            { required: true, message: '请填写工作薪资', trigger: 'change' }
+          ],
+          new_desc: [
+            { required: true, message: '请填写工作描述', trigger: 'blur' }
+          ]
+        },
       //设置选择日期
       pickerOptions2: {
         //结束时间不能大于开始时间
@@ -272,6 +307,28 @@ export default {
     };
   },
   methods: {
+    //重置
+    cancel2(formName) {
+
+        this.$confirm('是否清除表格内容', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$refs[formName].resetFields();
+          this.DialogVisible = false;
+          this.$message({
+            type: 'success',
+            message: '已清除!'
+          });
+        }).catch(() => {
+          this.DialogVisible = false;
+          this.$message({
+            type: 'info',
+            message: '未清除'
+          });          
+        });
+      },
     async getWorkList() {
       const result = await axios.post(
         "http://localhost:5000/Work/ViewHistoryWork",
@@ -314,6 +371,11 @@ export default {
 
     // 编辑工作
     async Editework() {
+       this.$refs.thisform.validate(async valid => {
+          if (!valid) {
+            this.$message.error("请按照提示正确填写工作内容");
+          return;
+          } 
       // console.log(this.form);
       const result = await axios.post(
         "http://localhost:5000/Work/ChangeWorkInfo",
@@ -347,6 +409,7 @@ export default {
       } else {
         this.$message.error("发生了一些错误");
       }
+       });
     },
 
     async handleSizeChange(val) {
@@ -379,15 +442,15 @@ export default {
       const isJPEG = file.name.split(".")[1] === "jpeg";
       const isJPG = file.name.split(".")[1] === "jpg";
       const isPNG = file.name.split(".")[1] === "png";
-      const isLt500K = file.size / 1024 / 500 < 2;
+      const isLt1000K = file.size / 1024 / 1000 < 2;
       if (!isJPG && !isJPEG && !isPNG) {
         this.$message.error("上传图片只能是 JPEG/JPG/PNG 格式!");
       }
-      if (!isLt500K) {
-        this.$message.error("单张图片大小不能超过 500KB!");
+      if (!isLt1000K) {
+        this.$message.error("单张图片大小不能超过 1000KB!");
       }
 
-      return (isJPEG || isJPG || isPNG) && isLt500K;
+      return (isJPEG || isJPG || isPNG) && isLt1000K;
     }
   },
   async mounted() {

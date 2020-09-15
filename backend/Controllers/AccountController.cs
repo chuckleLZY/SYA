@@ -104,12 +104,16 @@ namespace SyaApi.Controllers
         }
 
         [HttpPost("LoginStatus")]
+        [AllowAnonymous]
         public async Task<ActionResult> GetLoginStatus()
         {
+            
+            if(User.Identity.Name==null)
+                return Ok(-1);
             var account = await AccountAccessor.Read(Int32.Parse(User.Identity.Name));
             if (account == null)
             {
-                return BadRequest();
+                return Ok(-1);
             }
 
             return Ok(_mapper.Map<AccountResponse>(account));
