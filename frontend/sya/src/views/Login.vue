@@ -152,8 +152,8 @@ export default {
       if (result.status == 200) {
         //将登录信息保存到vuex
         this.$store.commit("logIn", result.data.role);
-        //将vuex里的信息保存到sessionStorage里
-        sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+        // //将vuex里的信息保存到sessionStorage里
+        // sessionStorage.setItem("store", JSON.stringify(this.$store.state));
         this.$message.success("登录成功");
         this.$router.push("/Main");
       }
