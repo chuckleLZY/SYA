@@ -1,7 +1,7 @@
 <template>
   <div style="height:100%">
     <!-- 卡片视图 -->
-    <el-container style="height:100%">
+    <el-container>
       <el-aside width="200px"></el-aside>
       <el-main>
         <el-card v-loading="loading">
@@ -66,7 +66,8 @@
       <el-aside width="200px"></el-aside>
     </el-container>
 
-    <el-drawer title="收藏夹的工作内容!" :visible.sync="table" direction="rtl" size="40%">
+    <el-drawer title="收藏夹的工作内容!" :visible.sync="table"
+    :before-close="handleClose" direction="rtl" size="40%">
       <el-table :data="Favorite_work" :model="Favorite_work_table">
         <el-table-column
           property="work_name"
@@ -218,6 +219,13 @@ export default {
     //   console.log(newSize)
     //   this.queryInfo.pagesize1=newSize
     // },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
     //监听页码改变的事件
     handleCurrentChange(newPage) {
       //console.log(newPage)
