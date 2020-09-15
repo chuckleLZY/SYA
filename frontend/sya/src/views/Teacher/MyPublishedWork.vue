@@ -442,15 +442,15 @@ export default {
       const isJPEG = file.name.split(".")[1] === "jpeg";
       const isJPG = file.name.split(".")[1] === "jpg";
       const isPNG = file.name.split(".")[1] === "png";
-      const isLt500K = file.size / 1024 / 500 < 2;
+      const isLt1000K = file.size / 1024 / 1000 < 2;
       if (!isJPG && !isJPEG && !isPNG) {
         this.$message.error("上传图片只能是 JPEG/JPG/PNG 格式!");
       }
-      if (!isLt500K) {
-        this.$message.error("单张图片大小不能超过 500KB!");
+      if (!isLt1000K) {
+        this.$message.error("单张图片大小不能超过 1000KB!");
       }
 
-      return (isJPEG || isJPG || isPNG) && isLt500K;
+      return (isJPEG || isJPG || isPNG) && isLt1000K;
     }
   },
   async mounted() {
