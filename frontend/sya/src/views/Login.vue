@@ -145,7 +145,7 @@ export default {
     },
     async login() {
       console.log(this.logInForm);
-      const result = await axios.post(
+     try{ const result = await axios.post(
         "http://localhost:5000/Account/Login",
         {
           username: this.logInForm.username,
@@ -167,11 +167,19 @@ export default {
         });
         this.$router.push("/Main");
       }
-    },
-    async register() {
+     }
+      catch(err){       
+          this.$message({
+          message: '登录失败',
+          type: 'error',
+          duration:500
+          });
+        }
+      },
+         async register() {
       this.$router.push("/Register");
     }
-  }
+    }
 };
 </script>
 
