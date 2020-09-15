@@ -455,7 +455,11 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      //console.log(res);
+      console.log(res);
+      if(res.data==-10){
+        this.$message.warning("请先创建简历");
+        return;
+      }
       this.$message.success("申请此工作成功");
     },
     async showFav() {
