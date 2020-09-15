@@ -152,7 +152,10 @@ namespace SyaApi.Controllers
             temp.student_id=pro_id;
             temp.teacher_id= await WorkAccessor.GetTeacher(temp.work_id);
             temp.resume_id= await ResumeAccessor.GetResume(temp.student_id);
-
+            if(temp.resume_id==-1)
+            {
+                return Ok(-10);
+            }
             var ans=await ApplyAccessor.Create(temp);
             if(ans>0)
             {  
