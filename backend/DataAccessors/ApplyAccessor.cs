@@ -136,7 +136,39 @@ namespace SyaApi.DataAccessors
 
         }
 
+        ///<summery>
+        /// 学生申请该工作已通过，返回1
+        /// 正在申请该工作，返回2
+        /// 其它（可以继续申请）返回0
+        /// dumei 08.23
+        ///</summery>
+        public static async Task<int> CheckApply(int stu_id, int work_id)
+        {
+            var query = "SELECT status FROM apply WHERE student_id=@stu_id AND work_id=@work_id";
 
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@stu_id", stu_id);
+            command.Parameters.AddWithValue("@work_id", work_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                int status = reader.GetInt32("status");
+                if (status == Constants.ApplyStatus.Applying)
+                {
+                    return 2;
+                }
+                else if (status == Constants.ApplyStatus.Accepted)
+                {
+                    return 1;
+                }
+                else return 0;
+            }
+            return 0;
+        }
         
     }
 }
