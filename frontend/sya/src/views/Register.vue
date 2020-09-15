@@ -150,7 +150,11 @@ export default {
       );
       console.log(result);
       if (result.status == 200) {
-        this.$message.success("注册成功");
+        this.$message({
+          message: '注册成功',
+          type: 'success',
+          duration:500
+        });
         this.$router.push("/");
       }
       else{
