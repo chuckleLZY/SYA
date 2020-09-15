@@ -41,7 +41,7 @@
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="Password">
-          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" placeholder="请输入密码，长度为3-10字符"></el-input>
+          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" placeholder="请输入密码，长度为3-10字符" type="password"></el-input>
         </el-form-item>
         <!-- 邮箱 -->
         <el-form-item prop="email">
