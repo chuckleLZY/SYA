@@ -101,6 +101,7 @@ const routes = [
             path: '/TeacherTable',
             name: 'TeacherTable',
             component: TeacherTable,
+            redirect:'/ReceivedResume',
             children: [{
                 path: '/ReceivedResume',
                 name: 'ReceivedResume',
@@ -138,6 +139,7 @@ const routes = [
             path: '/StudentMessage',
             name: 'StudentMessage',
             component: StudentMessage,
+            redirect: '/StudentSystemMessage',
             children: [{
                 path: '/StudentSystemMessage',
                 name: 'StudentSystemMessage',
@@ -154,6 +156,7 @@ const routes = [
             path: '/TeacherMessage',
             name: 'TeacherMessage',
             component: TeacherMessage,
+            redirect:'/TeacherSystemMessage',
             children: [{
                 path: '/TeacherSystemMessage',
                 name: 'TeacherSystemMessage',
@@ -185,6 +188,7 @@ const routes = [
             path: '/StudentMine',
             name: 'StudentMine',
             component: StudentMine,
+            redirect: '/StudentInformation',
             children: [{
                 path: '/StudentInformation',
                 name: 'StudentInformation',
@@ -211,6 +215,7 @@ const routes = [
             path: '/TeacherMine',
             name: 'TeacherMine',
             component: TeacherMine,
+            redirect: '/TeacherInformation',
             children: [{
                 path: '/TeacherInformation',
                 name: 'TeacherInformation',

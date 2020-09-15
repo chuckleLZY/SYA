@@ -27,7 +27,7 @@
             background-color="rgba(220,38,38,0)"
             text-color="#fff"
             active-text-color="#ffd04b"
-            :default-active="$route.path"
+            :default-active="getDefaultActive()"
             router
           >
             <el-menu-item index="/Home">首页</el-menu-item>
@@ -82,8 +82,14 @@ export default {
     };
   },
   methods: {
+    getDefaultActive() {
+      console.log(this.$route.path);
+      // if (this.$route.path == "/TeacherInformation") return "/TeacherMine";
+      // else if (this.$route.path == "/StudentInformation") return "/StudentMine";
+      return;
+    },
     toHome() {
-      if (this.$route.path === "/Home") return;
+      if (("route", this.$route.path === "/Home")) return;
       this.$router.push("/Home");
     },
     async toInfo() {
