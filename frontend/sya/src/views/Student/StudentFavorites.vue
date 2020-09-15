@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="height:100%">
     <!-- 卡片视图 -->
-    <el-container>
+    <el-container style="height:100%">
       <el-aside width="200px"></el-aside>
       <el-main>
         <el-card v-loading="loading">
