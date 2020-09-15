@@ -211,7 +211,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel2()">取 消</el-button>
+        <el-button @click="cancel2('thisform')">取 消</el-button>
         <el-button type="primary" @click="Editework('editdate')">编 辑</el-button>
       </div>
     </el-dialog>
