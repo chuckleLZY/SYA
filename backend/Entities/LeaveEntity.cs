@@ -16,7 +16,7 @@ namespace SyaApi.Entities
 
         public string content{get; set;}
 
-        public string leave_time{get; set;} //请假的开始时间
+        //public string leave_time{get; set;} //请假的开始时间
 
         public string proof{get; set;}
 

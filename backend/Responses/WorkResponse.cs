@@ -10,7 +10,7 @@ namespace SyaApi.Responses
         public string work_description{get; set;}
         public string address{get; set;}
         public int salary{get; set;}
-        public string work_time{get; set;}
+        //public string work_time{get; set;}
         public int likes_num{get; set;}
         public int collect_num{get; set;}
         public int share_num{get; set;}
