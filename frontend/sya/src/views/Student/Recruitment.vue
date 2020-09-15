@@ -80,7 +80,12 @@
         :before-close="handleClose"
       >
         <el-card :body-style="{ padding: '10px'}" class="recruitment_card3">
-          <img :src="workInfo.cover" class="image" />
+          
+                
+              
+              <div style="height:239px;width:400px">
+          <img :src="workInfo.cover" class="image" style="height:100%;width:100%"/>
+          </div>
           <div slot="header" class="clearfix">
             <!--<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>-->
           </div>
@@ -377,7 +382,7 @@ export default {
       this.workList = res.data.worklist;
       for (var i = 0; i < this.workList.length; i++) {
         let a = await this.showLike(this.workList[i].work_id);
-        console.log("???", i, a);
+        //console.log("???", i, a);
 
         this.likestatus[this.workList[i].work_id] = a;
       }
@@ -574,7 +579,7 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width: 390px !important;
-  height: 68% !important;
+  height: 78% !important;
   overflow: auto;
   background-color: #a7b1bb;
 }
@@ -583,7 +588,7 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width: 390px !important;
-  height: 90% !important;
+  height: 90.6% !important;
   overflow: auto;
   background-color: #a7b1bb;
 }
