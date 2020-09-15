@@ -235,7 +235,12 @@ export default {
         }
       );
       this.loading=true;
-      this.$message.info("已同意");
+      //this.$message.info("已同意");
+      this.$message({
+          message: '已同意',
+          type: 'info',
+          duration:1000
+        });
       this.checkDialogVisible = false;
       await this.getWorkMessageList();
       // console.log(res);
@@ -270,7 +275,12 @@ export default {
         }
       );
       this.loading=true;
-      this.$message.info("已拒绝");
+      //this.$message.info("已拒绝");
+      this.$message({
+          message: '已拒绝',
+          type: 'info',
+          duration:1000
+        });
       this.checkDialogVisible = false;
       await this.getWorkMessageList();
       // console.log(res);

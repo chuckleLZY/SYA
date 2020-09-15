@@ -339,6 +339,7 @@ export default {
       );
       if (res.status !== 200) {
         this.$message.error("Unexpected response");
+        
         return 0;
       }
       return res.data;
@@ -439,11 +440,21 @@ export default {
       }
       if (res.data == 0) {
         //console.log('su!');
-        this.$message.warning("您已经取消点赞");
+        //this.$message.warning("您已经取消点赞");
+        this.$message({
+          message: '您已经取消点赞',
+          type: 'warning',
+          duration:1000
+        });
         this.likestatus[workid] = 0;
         this.findWork();
       } else if (res.data == 1) {
-        this.$message.success("感谢您的点赞");
+       // this.$message.success("感谢您的点赞");
+        this.$message({
+          message: '感谢您的点赞',
+          type: 'success',
+          duration:1000
+        });
         this.likestatus[workid] = 1;
         this.findWork();
       }
@@ -462,10 +473,20 @@ export default {
       }
       console.log(res);
       if(res.data==-10){
-        this.$message.warning("请先创建简历");
+        //this.$message.warning("请先创建简历");
+        this.$message({
+          message: '请先创建简历',
+          type: 'warning',
+          duration:1000
+        });
         return;
       }
-      this.$message.success("申请此工作成功");
+     // this.$message.success("申请此工作成功");
+      this.$message({
+          message: '申请此工作成功',
+          type: 'success',
+          duration:1000
+        });
     },
     async showFav() {
       const res = await axios.post(
@@ -507,9 +528,19 @@ export default {
         return;
       }
       if (res.data !== 0) {
-        this.$message.error("该工作已在收藏夹内，无法添加");
+       // this.$message.error("该工作已在收藏夹内，无法添加");
+        this.$message({
+          message: '该工作已在收藏夹内，无法添加',
+          type: 'error',
+          duration:1000
+        });
       } else {
         this.$message.success("加入收藏夹成功");
+        this.$message({
+          message: '加入收藏夹成功',
+          type: 'success',
+          duration:1000
+        });
 
         this.showFav();
         this.getWorkList();
@@ -579,7 +610,7 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width: 390px !important;
-  height: 78% !important;
+  height: 80% !important;
   overflow: auto;
   background-color: #a7b1bb;
 }

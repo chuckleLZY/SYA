@@ -335,7 +335,12 @@ export default {
     updateAbsent() {
       this.$refs.AbFormRef.validate(async (valid) => {
         if (!valid) {
-          this.$message.error("请按照验证提示正确填写请假申请后再进行");
+          //this.$message.error("请按照验证提示正确填写请假申请后再进行");
+          this.$message({
+          message: '请按照验证提示正确填写请假申请后再进行',
+          type: 'error',
+          duration:1000
+        });
           return;
         }
         if (this.AbForm.proof == "") {
@@ -348,7 +353,12 @@ export default {
           this.AbForm,
           { withCredentials: true }
         );
-        this.$message.success("请假申请更新成功!");
+        //this.$message.success("请假申请更新成功!");
+        this.$message({
+          message: '请假申请更新成功',
+          type: 'success',
+          duration:1000
+        });
         this.AbsentVisible = false;
       });
     },
