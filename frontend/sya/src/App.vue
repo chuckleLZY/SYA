@@ -8,7 +8,7 @@
 <script>
 import Main from "./components/Main.vue";
 import axios from "axios";
-import { chownSync } from "fs";
+
 export default {
   name: "App",
   components: {
