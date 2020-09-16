@@ -94,7 +94,7 @@ namespace SyaApi.DataAccessors
             provide.total = 0;
             provide.workItem = new List<WorkEntity>();
             var query = @"SELECT teacher_id,work_id,work_name,cover,work_description,address,salary,
-            likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day
+            likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day
             FROM work WHERE teacher_id=@id";
 
             using var connection = DatabaseConnector.Connect();
@@ -119,7 +119,7 @@ namespace SyaApi.DataAccessors
                     //work_time=reader.GetString("work_time"),
                     likes_num=reader.GetInt32("likes_num"),
                     collect_num=reader.GetInt32("collect_num"),
-                    share_num=reader.GetInt32("share_num"),
+                    //share_num=reader.GetInt32("num"),
                     start_day=reader.GetString("start_day"),
                     end_day=reader.GetString("end_day"),
                     start_time=reader.GetString("start_time"),
@@ -194,9 +194,9 @@ namespace SyaApi.DataAccessors
         public static async Task<int> Create(WorkEntity work)
         {
             var query = @"INSERT INTO work(teacher_id,work_name,cover,work_description,address,salary,
-            likes_num,collect_num,share_num,start_day,end_day,start_time,end_time,total_time,week_day) 
+            likes_num,collect_num,start_day,end_day,start_time,end_time,total_time,week_day) 
             VALUES(@teacher_id,@work_name,@cover,@description,@address,@salary,
-            @likes,@collect,@share,@start_day,@end_day,@start_time,@end_time,@total_time,@week_day)";
+            @likes,@collect,@start_day,@end_day,@start_time,@end_time,@total_time,@week_day)";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
@@ -220,7 +220,7 @@ namespace SyaApi.DataAccessors
             command.Parameters.AddWithValue("@week_day", work.week_day);
             command.Parameters.AddWithValue("@likes", 0);
             command.Parameters.AddWithValue("@collect", 0);
-            command.Parameters.AddWithValue("@share", 0);
+            //command.Parameters.AddWithValue("@share", 0);
 
             await command.ExecuteNonQueryAsync();
             return (int)command.LastInsertedId;

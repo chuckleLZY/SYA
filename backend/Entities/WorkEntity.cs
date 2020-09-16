@@ -15,7 +15,7 @@ namespace SyaApi.Entities
         //public string work_time{get; set;}
         public int likes_num{get; set;}
         public int collect_num{get; set;}
-        public int share_num{get; set;}
+        //public int share_num{get; set;}
         public string start_day{get; set;}
         public string end_day{get; set;}
         public string start_time{get; set;}
