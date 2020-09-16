@@ -162,7 +162,7 @@ export default {
    //   }
    async getWorkMessageList(){
          const res = await axios.post(
-        "http://localhost:5000/Message/FindReceiveMessage",
+        this.$appconfig.toAbsUrl("/Message/FindReceiveMessage"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -187,7 +187,7 @@ export default {
         this.messageData = row;
         this.checkDialogVisible = true;
         const res = await axios.post(
-        "http://localhost:5000/Message/ViewedMessage",
+        this.$appconfig.toAbsUrl("/Message/ViewedMessage"),
         {
           message_id: row.message_id
         },
@@ -230,7 +230,7 @@ export default {
         });
         }
         const res = await axios.post(
-        "http://localhost:5000/Message/DeleteMessage",
+        this.$appconfig.toAbsUrl("/Message/DeleteMessage"),
         {
           message_id: id
           

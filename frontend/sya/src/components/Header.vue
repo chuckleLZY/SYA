@@ -106,7 +106,7 @@ export default {
     },
     async logOut() {
       const res = await axios.post(
-        "http://localhost:5000/Account/Logout",
+        this.$appconfig.toAbsUrl("/Account/Logout"),
         {},
         { withCredentials: true }
       );
@@ -123,7 +123,7 @@ export default {
   },
   async created() {
     const { data: res } = await axios.post(
-      "http://localhost:5000/User/GetUserInfo",
+      this.$appconfig.toAbsUrl("/User/GetUserInfo"),
       {},
       { withCredentials: true }
     );

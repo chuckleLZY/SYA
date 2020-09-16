@@ -240,7 +240,7 @@ export default {
     async getUserInfo() {
       this.loading = true;
       const { data: res } = await axios.post(
-        "http://localhost:5000/User/GetUserInfo",
+        this.$appconfig.toAbsUrl("/User/GetUserInfo"),
         {},
         { withCredentials: true }
       );
@@ -285,7 +285,7 @@ export default {
           return;
         }
         const { data: res } = await axios.post(
-          "http://localhost:5000/User/UpdateUser",
+          this.$appconfig.toAbsUrl("/User/UpdateUser"),
           {
             gender: this.editForm.gender,
             avatar: this.editForm.avatar,

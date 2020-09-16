@@ -331,7 +331,7 @@ export default {
 
     async showLike(workid) {
       const res = await axios.post(
-        "http://localhost:5000/Work/ShowLike",
+        this.$appconfig.toAbsUrl("/Work/ShowLike"),
         {
           work_id: workid
         },
@@ -350,7 +350,7 @@ export default {
       this.direction = "rtl";
       //console.log(workid)
       const res = await axios.post(
-        "http://localhost:5000/Work/ViewWorkInfo",
+        this.$appconfig.toAbsUrl("/Work/ViewWorkInfo"),
         { work_id: workid },
         { withCredentials: true }
       );
@@ -367,7 +367,7 @@ export default {
     //获取工作列表的函数
     async getWorkList() {
       const res = await axios.post(
-        "http://localhost:5000/Work/ViewAllWork",
+        this.$appconfig.toAbsUrl("/Work/ViewAllWork"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -401,7 +401,7 @@ export default {
 
     async findWork() {
       const res = await axios.post(
-        "http://localhost:5000/Work/FindWork",
+        this.$appconfig.toAbsUrl("/Work/FindWork"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize,
@@ -428,7 +428,7 @@ export default {
 
     async GetLike(workid) {
       const res = await axios.post(
-        "http://localhost:5000/Work/GetLike",
+        this.$appconfig.toAbsUrl("/Work/GetLike"),
         {
           work_id: workid
         },
@@ -461,7 +461,7 @@ export default {
     },
     async appWork() {
       const res = await axios.post(
-        "http://localhost:5000/Apply/CreateApply",
+        this.$appconfig.toAbsUrl("/Apply/CreateApply"),
         { work_id: this.workInfo.work_id },
         {
           withCredentials: true
@@ -506,7 +506,7 @@ export default {
     },
     async showFav() {
       const res = await axios.post(
-        "http://localhost:5000/Favorite/GetFavorite",
+        this.$appconfig.toAbsUrl("/Favorite/GetFavorite"),
         {
           pagenum: this.queryInfo2.pagenum,
           pagesize: this.queryInfo2.pagesize
@@ -530,7 +530,7 @@ export default {
     },
     async addWorkFav(favoritee_id, flag) {
       const res = await axios.post(
-        "http://localhost:5000/Favorite/AddFavoriteWork",
+        this.$appconfig.toAbsUrl("/Favorite/AddFavoriteWork"),
         {
           favorite_id: favoritee_id,
           work_id: this.workInfo.work_id
@@ -573,7 +573,7 @@ export default {
       this.direction2 = "ltr";
       //console.log(this.workInfo.work_id);
       const res = await axios.post(
-        "http://localhost:5000/Favorite/GetFavoriteInfo",
+        this.$appconfig.toAbsUrl("/Favorite/GetFavoriteInfo"),
         {
           favorite_id: favoritee_id
         },

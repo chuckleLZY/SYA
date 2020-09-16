@@ -118,7 +118,7 @@ export default {
         return;
       }
       const result = await axios.post(
-        "http://localhost:5000/Announce/CreateAnnounce",
+        this.$appconfig.toAbsUrl("/Announce/CreateAnnounce"),
         this.addForm,
         { withCredentials: true }
       );
@@ -133,7 +133,7 @@ export default {
     async getAllAnnounce() {
       this.loading = true;
       const result = await axios.post(
-        "http://localhost:5000/Announce/GetSendAnnounce",
+        this.$appconfig.toAbsUrl("/Announce/GetSendAnnounce"),
         this.pageInfo,
         { withCredentials: true }
       );
@@ -166,7 +166,7 @@ export default {
     async deleteMessage() {
       // console.log(this.systemDataData.announcement_id);
       const result = await axios.post(
-        "http://localhost:5000/Announce/DeleteAnnounceAll",
+        this.$appconfig.toAbsUrl("/Announce/DeleteAnnounceAll"),
         {
           announcement_id: this.systemDataData.announcement_id
         },

@@ -137,8 +137,9 @@ export default {
     },
     async Register() {
       console.log(this.logInForm);
-      try{const result = await axios.post(
-        "http://localhost:5000/Account/Register",
+      try{
+        const result = await axios.post(
+        this.$appconfig.toAbsUrl("/Account/Register"),
         {
           username: this.logInForm.username,
           email: this.logInForm.email,

@@ -305,7 +305,7 @@ export default {
       const {
         data: res,
       } = await axios.post(
-        "http://localhost:5000/Leave/ViewLeave",
+        this.$appconfig.toAbsUrl("/Leave/ViewLeave"),
         this.queryInfo,
         { withCredentials: true }
       );
@@ -323,7 +323,7 @@ export default {
     },
     async getWorkInfo(workID) {
       const { data: res } = await axios.post(
-        "http://localhost:5000/Work/ViewWorkInfo",
+        this.$appconfig.toAbsUrl("/Work/ViewWorkInfo"),
         { work_id: workID },
         { withCredentials: true }
       );
@@ -350,7 +350,7 @@ export default {
         const {
           data: res,
         } = await axios.post(
-          "http://localhost:5000/Leave/UpdateLeave",
+          this.$appconfig.toAbsUrl("/Leave/UpdateLeave"),
           this.AbForm,
           { withCredentials: true }
         );

@@ -243,7 +243,7 @@ export default {
     },
     async showDrawer(favoriteid) {
       const res = await axios.post(
-        "http://localhost:5000/Favorite/GetFavoriteInfo",
+        this.$appconfig.toAbsUrl("/Favorite/GetFavoriteInfo"),
         { favorite_id: favoriteid },
         { withCredentials: true }
       );
@@ -263,7 +263,7 @@ export default {
     async getfavoritelist() {
       this.loading=true;
       const res = await axios.post(
-        "http://localhost:5000/Favorite/GetFavorite",
+        this.$appconfig.toAbsUrl("/Favorite/GetFavorite"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -285,7 +285,7 @@ export default {
     // 删除收藏夹中的工作
     async DeleteWork(workIdDeleteWork) {
       const result = await axios.post(
-        "http://localhost:5000/Favorite/DeleteFavoriteWork",
+        this.$appconfig.toAbsUrl("/Favorite/DeleteFavoriteWork"),
         {
           favorite_id: this.Favorite_work_table.id,
           work_id: workIdDeleteWork
@@ -304,7 +304,7 @@ export default {
     // 删除收藏夹
     async Delete(favoriteIdDelete) {
       const result = await axios.post(
-        "http://localhost:5000/Favorite/DeleteFavorite",
+        this.$appconfig.toAbsUrl("/Favorite/DeleteFavorite"),
         {
           favorite_id: favoriteIdDelete
         },
@@ -323,7 +323,7 @@ async Create() {
       console.log(this.form);
       if(this.form.favname !=""){
       const result = await axios.post(
-        "http://localhost:5000/Favorite/CreateFavorite",
+        this.$appconfig.toAbsUrl("/Favorite/CreateFavorite"),
         {
           // favorite_id: parseInt(this.form.favid),
           favorite_name: this.form.favname,
@@ -348,7 +348,7 @@ async Create() {
     async Update(){
       if(this.formUpdate.favnamenew !=""){
        const result = await axios.put(
-        "http://localhost:5000/Favorite/UpdateFavorite",
+        this.$appconfig.toAbsUrl("/Favorite/UpdateFavorite"),
         {
           favorite_id: this.formUpdate.id,
           favorite_name: this.formUpdate.favnamenew

@@ -152,7 +152,7 @@ export default {
       console.log(this.logInForm);
       try {
         const result = await axios.post(
-          "http://localhost:5000/Account/Login",
+          this.$appconfig.toAbsUrl("/Account/Login"),
           {
             username: this.logInForm.username,
             // 密码哈希

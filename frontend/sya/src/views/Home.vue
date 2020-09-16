@@ -125,7 +125,7 @@ export default {
     },
     async getWorkList() {
       var aaa = await axios.post(
-        "http://localhost:5000/Work/ViewAllWork",
+        this.$appconfig.toAbsUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
           pagesize: 1
@@ -143,7 +143,7 @@ export default {
       //console.log(aaa.data.totalpage);
       //console.log(this.totalpage);
       const res = await axios.post(
-        "http://localhost:5000/Work/ViewAllWork",
+        this.$appconfig.toAbsUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
           pagesize: this.totalpage
@@ -169,7 +169,7 @@ export default {
       if (this.$store.state.role == 0) {
         var bbb;
         bbb = await axios.post(
-          "http://localhost:5000/Announce/GetSendAnnounce",
+          this.$appconfig.toAbsUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
             pagesize: 1
@@ -181,7 +181,7 @@ export default {
         // console.log("res111", res);
       } else {
         bbb = await axios.post(
-          "http://localhost:5000/Announce/GetAnnounce",
+          this.$appconfig.toAbsUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
             pagesize: 1
@@ -202,7 +202,7 @@ export default {
       if (this.$store.state.role == 0) {
         var res;
         res = await axios.post(
-          "http://localhost:5000/Announce/GetSendAnnounce",
+          this.$appconfig.toAbsUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
             pagesize: this.totalpage2
@@ -214,7 +214,7 @@ export default {
         // console.log("res111", res);
       } else {
         res = await axios.post(
-          "http://localhost:5000/Announce/GetAnnounce",
+          this.$appconfig.toAbsUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
             pagesize: this.totalpage2

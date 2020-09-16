@@ -268,18 +268,6 @@ const routes = [
 
 const router = new VueRouter({
     routes
-})
-// import axios from "axios";
-// router.beforeEach((to, from, next) => {
-//     console.log("beforeEach");
-//     const result = axios.post("http://localhost:5000/Account/LoginStatus", {}, { withCredentials: true });
-//     console.log(result);
-//     if(result.status==200)return next();
-//     else return next('/LogIn');
-//     // if (to.path === '/LogIn' || to.path === '/Register') return next();
-//     // // const store = JSON.parse(sessionStorage.getItem("store"));
-//     // // if (!store) return next('/LogIn');
-//     // else if (store.isLoggedIn == false) return next('/LogIn');
-//     // else return next();
-// })
-export default router
+});
+
+export default router;
