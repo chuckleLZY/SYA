@@ -481,6 +481,22 @@ export default {
         });
         return;
       }
+      else if(res.data==-21){
+        this.$message({
+          message: '您已经获得该工作，请到工作管理中查看',
+          type: 'warning',
+          duration:1000
+        });
+        return;
+      }
+      else if(res.data==-22){
+        this.$message({
+          message: '您已经申请过该工作并正在审核，请耐心等待',
+          type: 'warning',
+          duration:1000
+        });
+        return;
+      }
      // this.$message.success("申请此工作成功");
       this.$message({
           message: '申请此工作成功',

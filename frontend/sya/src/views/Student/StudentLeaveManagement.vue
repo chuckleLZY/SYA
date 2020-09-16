@@ -6,7 +6,7 @@
       <el-breadcrumb-item>请假管理</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-card class="workCard">
+    <el-card class="workCard" v-loading="loading">
       <el-row class="header">
         <el-col class="titlecol" :span="5">
           <p class="title">请假管理</p>
@@ -256,6 +256,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      loading:true,
       WorkList: [],
       LeaveList: [],
       workVisible: false,
@@ -310,7 +311,7 @@ export default {
       );
       this.LeaveList = res.leavelist;
       this.total = res.total;
-      console.log(this.LeaveList);
+      this.loading=false;
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize;
@@ -360,6 +361,7 @@ export default {
           duration:1000
         });
         this.AbsentVisible = false;
+        this.loading=false;
       });
     },
   },

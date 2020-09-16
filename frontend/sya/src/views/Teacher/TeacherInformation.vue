@@ -80,10 +80,9 @@
         </el-form>
       </el-row>
       <!--信息标题-->
-      <el-row class="section">
+      <!-- <el-row class="section">
         <p class="subTitle">工作情况</p>
         <hr class="sectionHr" align="center" />
-        <!--表单-->
         <el-form label-width="0px" class="infoForm">
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
@@ -118,7 +117,7 @@
             <el-input class="infoItem" readonly v-model="UserInfo.income"></el-input>
           </el-form-item>
         </el-form>
-      </el-row>
+      </el-row> -->
       <div style="text-align:center">
         <p class="syaSup">SYA——Show Your Ability</p>
       </div>

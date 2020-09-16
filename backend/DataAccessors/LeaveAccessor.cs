@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
@@ -89,6 +91,45 @@ namespace SyaApi.DataAccessors
             return null;
         }
 
+        ///<summery>
+        /// 请假查重
+        /// 已经请假成功返回1
+        /// 正在申请请假返回2
+        /// 其它（可以继续请假）返回0
+        /// dumei 09.15
+        ///</summery>
+        public static async Task<int> CheckLeave(int stu_id, int work_id, string request_lv_day)
+        {
+            var query = @"SELECT status,leave_day
+            FROM leave_information
+            WHERE student_id=@stu_id AND work_id=@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@stu_id", stu_id);
+            command.Parameters.AddWithValue("@work_id", work_id);
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (reader.Read())
+            {
+                int status = reader.GetInt32("status");
+                string leave_day = reader.GetString("leave_day");
+                if (leave_day.Equals(request_lv_day))
+                {
+                    if (status == Constants.ApplyStatus.Accepted)
+                    {
+                        return 1;
+                    }
+                    else if (status == Constants.ApplyStatus.Applying)
+                    {
+                        return 2;
+                    }
+                }
+            }
+            return 0;
+        }
 
         public static async Task<int> Create(LeaveEntity leave)
         {

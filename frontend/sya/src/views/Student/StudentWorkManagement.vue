@@ -6,7 +6,7 @@
             <el-breadcrumb-item>工作管理</el-breadcrumb-item>
         </el-breadcrumb>
         
-         <el-card class="workCard" >
+         <el-card class="workCard" v-loading="loading">
             <el-row class="header">
                  <el-col class="titlecol" :span="5">
                     <p class="title">工作管理</p>
@@ -203,6 +203,7 @@ import axios from 'axios';
 export default {
     data(){
         return{
+            loading:true,
             Worklist:[],
             queryInfo:{
                 pagenum:1,
@@ -262,7 +263,7 @@ export default {
             const {data: res} = await axios.post('http://localhost:5000/Work/FindOwnWork',this.queryInfo,{ withCredentials: true });
             this.Worklist=res.worklist;
             this.total=res.totalpage;
-            console.log(this.Worklist);
+            this.loading=false;
         },
         handleSizeChange(newSize){
             this.queryInfo.pagesize=newSize;
@@ -286,8 +287,13 @@ export default {
                 this.AbForm.proof='无备注';
                 }
                 const {data: res} = await axios.post('http://localhost:5000/Leave/RequestRest',this.AbForm,{ withCredentials: true });
-                if (res.error_code == -1) {
+                console.log(res)
+                if (res == -1) {
                     this.$message.error("请假申请提交失败，请稍后重试");
+                    return;
+                }
+                 if (res == -21||res == -22) {
+                    this.$message.error("抱歉，您不能在同一天重复申请请假");
                     return;
                 }
                 this.$message.success('请假申请提交成功,您可以在请假管理中进行查看');
