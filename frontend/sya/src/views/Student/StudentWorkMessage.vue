@@ -200,7 +200,7 @@ export default {
       },
 
     /*  async findWorkMes(){
-        const res=await axios.post('http://localhost:5000/Message/FindSendMessage',{
+        const res=await axios.post(this.$appconfig.toAbsUrl("/Message/FindSendMessage"),{
                     pagenum: this.queryInfo.pagenum,
                      pagesize: this.queryInfo.pagesize,
                     query: this.queryInfo.query
