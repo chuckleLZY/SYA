@@ -1,0 +1,4 @@
+{
+    "ConnectionString": "Server=localhost;User ID=username;Password=password;Database=mydatabase",
+    "Pepper": "awesomepepper"
+}
