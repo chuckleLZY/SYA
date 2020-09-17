@@ -196,7 +196,7 @@ export default {
         }
       );
       this.getWorkMessageList();
-      console.log(res);
+      //console.log(res);
       },
 
     /*  async findWorkMes(){
@@ -211,7 +211,7 @@ export default {
         }
         this.workMessageList=res.data.messageItem;
         this.total=res.data.totalpage;
-        console.log(res);
+        //console.log(res);
     },*/
 
 

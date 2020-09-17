@@ -291,16 +291,7 @@ export default {
             this.$message.warning("您所作的更改并未保存");
         },
         edit(){
-            this.addResume.education=this.Resume.education;
-            this.addResume.skill=this.Resume.skill;
-            this.addResume.academic=this.Resume.academic;
-            this.addResume.project=this.Resume.project;
-            this.addResume.community=this.Resume.community;
-            this.addResume.introduction=this.Resume.introduction;
-            this.addResume.student_name=this.Resume.student_name;
-            this.addResume.city=this.Resume.city;
-            this.addResume.age=this.Resume.age;
-            console.log(this.selectedOptions);
+            Object.assign(this.addResume, this.Resume);
             this.editResume=true;
         },
          handleChange() {

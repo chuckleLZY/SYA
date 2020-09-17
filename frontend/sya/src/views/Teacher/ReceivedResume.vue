@@ -110,7 +110,7 @@ export default {
     //接收申请
     async accept() {
       this.checkDialogVisible = false;
-      console.log("resumeData",this.reSumeData)
+      //console.log("resumeData",this.reSumeData)
       const result = await axios.post(
         this.$helper.endpointUrl("/Apply/ProManageApp"),
         {
@@ -136,7 +136,7 @@ export default {
           withCredentials: true
         }
       );
-      console.log(result);
+      //console.log(result);
 
       //刷新
       this.$message.success("接受成功");
@@ -238,7 +238,7 @@ export default {
           withCredentials: true
         }
       );
-      console.log(result);
+      //console.log(result);
       this.tableData = result.data.applist;
       for (var i = 0; i < this.tableData.length; i++) {
         // console.log(this.tableData[i].resume_id);

@@ -207,7 +207,7 @@ export default {
           type: 'info',
           duration:1000
         });
-      console.log(res);
+      //console.log(res);
       this.getSysMessageList();
     },
 

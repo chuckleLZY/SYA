@@ -252,7 +252,7 @@ export default {
         this.UserInfo.avatar = res.avatar;
         // console.log("img", typeof res.avatar, res.avatar);
       }
-      console.log(res);
+
       this.loading = false;
     },
     errorHandler() {
@@ -323,7 +323,6 @@ export default {
       client()
         .multipartUpload(fileName, file.file)
         .then(result => {
-          console.log(result);
           this.editForm.avatar = this.$helper.ossFileUrl(result.name);
         });
     },

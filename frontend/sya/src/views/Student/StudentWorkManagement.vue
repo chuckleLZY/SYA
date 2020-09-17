@@ -277,7 +277,6 @@ export default {
             this.$refs.AbFormRef.resetFields();
         },
         addAbsentPre(){
-            console.log(this.AbForm.leave_day)
             this.$refs.AbFormRef.validate(async valid =>{
                 if(!valid) {
                     this.$message.error("请按照验证提示正确填写请假申请后再进行提交");
@@ -287,7 +286,6 @@ export default {
                 this.AbForm.proof='无备注';
                 }
                 const {data: res} = await axios.post(this.$helper.endpointUrl("/Leave/RequestRest"),this.AbForm,{ withCredentials: true });
-                console.log(res)
                 if (res == -1) {
                     this.$message.error("请假申请提交失败，请稍后重试");
                     return;

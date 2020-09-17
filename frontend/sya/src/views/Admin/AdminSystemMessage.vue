@@ -165,8 +165,6 @@ export default {
       this.pagesize = res.data.totalpage / res.data.pagenum;
       this.pagenum = res.data.pagenum;
       this.loading = false;
-      //console.log(this.pagesize);
-      console.log(this.sysMessageList);
     },
 
     async removeMesById(id) {

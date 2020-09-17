@@ -421,12 +421,12 @@ export default {
         );
         // console.log(result);
         if (result.status == 200) {
-          console.log("edit success");
+          //console.log("edit success");
           this.$message.success("修改成功");
           this.Dialogvisible = false;
-          console.log("edit success222");
+          //console.log("edit success222");
           await this.getOnePageworklist();
-          console.log("edit success333");
+          //console.log("edit success333");
           setTimeout(() => {
             this.$router.go(0);
           }, 500);

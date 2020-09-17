@@ -122,7 +122,6 @@ export default {
         this.addForm,
         { withCredentials: true }
       );
-      console.log(result);
       if (result.status == 200) {
         this.$message.success("公告发布成功");
         this.dialogVisible = false;
@@ -137,7 +136,6 @@ export default {
         this.pageInfo,
         { withCredentials: true }
       );
-      console.log(result);
       if (result.status == 200) {
         this.tableData = result.data.announceItem;
         this.total = result.data.totalpage;

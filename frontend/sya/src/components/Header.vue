@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     getDefaultActive() {
-      console.log(this.$route.path);
+      //console.log(this.$route.path);
       // if (this.$route.path == "/TeacherInformation") return "/TeacherMine";
       // else if (this.$route.path == "/StudentInformation") return "/StudentMine";
       return;
@@ -100,8 +100,6 @@ export default {
         this.$router.push("/StudentInformation");
       } else if (this.$store.state.role == 2) {
         this.$router.push("/TeacherInformation");
-      } else {
-        console.log("toInfo error");
       }
     },
     async logOut() {
@@ -110,7 +108,7 @@ export default {
         {},
         { withCredentials: true }
       );
-      console.log(res);
+      //console.log(res);
       if (res.status == 204) {
         //将登录信息保存到vuex
         this.$store.commit("logOut");

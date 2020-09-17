@@ -192,7 +192,7 @@ export default {
     },
     async viewMesInfo(row) {
       this.messageData = row;
-      console.log(this.messageData);
+      //console.log(this.messageData);
       this.checkDialogVisible = true;
       const res = await axios.post(
         this.$helper.endpointUrl("/Leave/ProViewLeaves"),

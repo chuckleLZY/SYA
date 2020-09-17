@@ -242,7 +242,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("submit!");
+      //console.log("submit!");
     },
     //取消重置
      cancel(formName) {
@@ -270,7 +270,7 @@ export default {
             this.$message.error("请按照提示正确填写工作内容");
           return;
           } 
-      console.log(this.form);
+      //console.log(this.form);
       const result = await axios.post(
         this.$helper.endpointUrl("/Work/CreateWork"),
         {
@@ -303,7 +303,7 @@ export default {
       client()
         .multipartUpload(fileName, file.file)
         .then(result => {
-          console.log(result);
+          //console.log(result);
           this.uploadImg = this.$helper.ossFileUrl(result.name);
         });
     },

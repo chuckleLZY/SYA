@@ -391,12 +391,6 @@ export default {
       this.pagesize = res.data.totalpage / res.data.pagenum;
       this.pagenum = res.data.pagenum;
       this.loading = false;
-      // console.log(this.pagesize);
-      //  console.log(res);
-      console.log(this.workList);
-
-      console.log("yes");
-      console.log(this.likestatus);
     },
 
     async findWork() {
@@ -416,14 +410,12 @@ export default {
       this.workList = res.data.worklist;
       for (var i = 0; i < this.workList.length; i++) {
         let a = await this.showLike(this.workList[i].work_id);
-        console.log("???", i, a);
 
         this.likestatus[this.workList[i].work_id] = a;
       }
       this.total = res.data.totalpage;
 
       this.pagenum = res.data.pagenum;
-      console.log(res);
     },
 
     async GetLike(workid) {
@@ -471,7 +463,6 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      console.log(res);
       if(res.data==-10){
         //this.$message.warning("请先创建简历");
         this.$message({

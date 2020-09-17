@@ -328,7 +328,6 @@ export default {
         { withCredentials: true }
       );
       this.WorkList = res;
-      console.log(this.WorkList);
     },
     AbFormClose() {
       this.$refs.AbFormRef.resetFields();

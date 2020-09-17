@@ -149,7 +149,6 @@ export default {
       this.$refs.loginFormRef.resetFields();
     },
     async login() {
-      console.log(this.logInForm);
       try {
         const result = await axios.post(
           this.$helper.endpointUrl("/Account/Login"),
@@ -160,7 +159,7 @@ export default {
           },
           { withCredentials: true }
         );
-        console.log(result);
+
         if (result.status == 200) {
           //将登录信息保存到vuex
           this.$store.commit("logIn", result.data.role);

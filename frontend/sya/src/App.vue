@@ -20,20 +20,20 @@ export default {
       {},
       { withCredentials: true }
     );
-    console.log("result", result);
+    //console.log("result", result);
     if (result.status == 200) {
-      console.log("result", 200);
+      //console.log("result", 200);
       if (result.data == -1) {
         //未登录，无cookies
         this.$router.push("/LogIn");
         return;
       } else {
         //已登录，有cookies
-        console.log(this.$route.path);
+        //console.log(this.$route.path);
         this.$store.commit("logIn", result.data.role);
       }
     } else {
-      console.log("error");
+      //console.log("error");
       // this.$router.push("/LogIn");
     }
   }

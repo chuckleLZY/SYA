@@ -292,7 +292,6 @@ export default {
         },
         { withCredentials: true }
       );
-      console.log(result);
       if (result.status == 200) {
         this.table = false;
         this.getfavoritelist();
@@ -310,7 +309,6 @@ export default {
         },
         { withCredentials: true }
       );
-      console.log(result);
       if (result.status == 200) {
         this.getfavoritelist();
         this.$message.success("删除成功");
@@ -320,7 +318,6 @@ export default {
     },
     // 创建新的收藏夹
 async Create() {
-      console.log(this.form);
       if(this.form.favname !=""){
       const result = await axios.post(
         this.$helper.endpointUrl("/Favorite/CreateFavorite"),
@@ -331,7 +328,6 @@ async Create() {
         },
         { withCredentials: true }
       );
-      console.log(result);
       if (result.status == 200) {
         this.dialogCreateVisible =false;
         this.getfavoritelist();
@@ -355,7 +351,7 @@ async Create() {
         },
         { withCredentials: true }
       );
-      console.log(result);
+
       if (result.status == 200) {
         this.dialogUpdateVisible=false;
         this.formUpdate.favnamenew = "";

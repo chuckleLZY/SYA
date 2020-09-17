@@ -136,7 +136,6 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     async Register() {
-      console.log(this.logInForm);
       try{
         const result = await axios.post(
         this.$helper.endpointUrl("/Account/Register"),
@@ -149,7 +148,7 @@ export default {
         },
         { withCredentials: true }
       );
-      console.log(result);
+
       if (result.status == 200) {
         this.$message({
           message: '注册成功',
