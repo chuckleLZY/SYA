@@ -21,11 +21,8 @@
       <div class="box" id="box2"></div>
       <el-row class="avaRow">
         <div class="block">
-          <!-- <el-avatar shape="circle" :size="100" :src="UserInfo.avatar" fit="fill"> -->
-          <!-- <img id="userAva" /> -->
-          <!-- </el-avatar> -->
           <el-avatar shape="circle" style="height:100px;width:100px">
-            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+            <el-image :src="UserInfo.avatar ? UserInfo.avatar : $helper.defaultAvatar" fit="fill" style="height:100%;width:100%"></el-image>
           </el-avatar>
           <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
@@ -215,7 +212,7 @@ export default {
       cardVisible: true, //true显示资料卡，false显示编辑卡
       editForm: {
         gender: true,
-        avatar: "A.png",
+        avatar: "",
         tel: "",
         bank: ""
       },
@@ -246,8 +243,7 @@ export default {
       );
       this.UserInfo = res;
       if (!res.avatar) {
-        this.UserInfo.avatar =
-          "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+        this.UserInfo.avatar = this.$helper.defaultAvatar;
       } else {
         this.UserInfo.avatar = res.avatar;
         // console.log("img", typeof res.avatar, res.avatar);

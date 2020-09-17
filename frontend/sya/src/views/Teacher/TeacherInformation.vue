@@ -234,8 +234,7 @@ export default {
       );
       this.UserInfo = res;
       if (!res.avatar) {
-        this.UserInfo.avatar =
-          "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+        this.UserInfo.avatar = this.$helper.defaultAvatar;
       } else {
         this.UserInfo.avatar = res.avatar;
         // console.log("img", typeof res.avatar, res.avatar);

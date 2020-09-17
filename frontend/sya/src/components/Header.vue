@@ -128,8 +128,7 @@ export default {
     // console.log("header", res.avatar);
     // console.log(res);
     if (!res.avatar) {
-      this.imgSrc =
-        "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png";
+      this.imgSrc = this.$helper.defaultAvatar;
     } else {
       this.imgSrc = res.avatar;
       // console.log("img", typeof res.avatar, res.avatar);
