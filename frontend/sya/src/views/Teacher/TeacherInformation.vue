@@ -312,8 +312,7 @@ export default {
         .multipartUpload(fileName, file.file)
         .then(result => {
           console.log(result);
-          this.editForm.avatar =
-            "http://fccimg.oss-cn-beijing.aliyuncs.com/" + result.name;
+          this.editForm.avatar = this.$helper.ossFileUrl(result.name);
         });
     },
     // 图片限制
