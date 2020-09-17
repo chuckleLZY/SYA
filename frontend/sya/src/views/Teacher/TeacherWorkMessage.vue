@@ -168,7 +168,7 @@ export default {
     async getWorkMessageList() {
       // this.loading=true;
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Leave/ProViewLeaves"),
+        this.$helper.endpointUrl("/Leave/ProViewLeaves"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -195,7 +195,7 @@ export default {
       console.log(this.messageData);
       this.checkDialogVisible = true;
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Leave/ProViewLeaves"),
+        this.$helper.endpointUrl("/Leave/ProViewLeaves"),
         {},
         {
           withCredentials: true
@@ -209,7 +209,7 @@ export default {
       //console.log(confirmResulte);
 
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Leave/ProManageLeave"),
+        this.$helper.endpointUrl("/Leave/ProManageLeave"),
         {
           leave_id: this.messageData.leave_id,
           status: 1
@@ -224,7 +224,7 @@ export default {
         return;
       }
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/CreateMessage"),
+        this.$helper.endpointUrl("/Message/CreateMessage"),
         {
           message_type: 0,
           content: this.messageData.work_name + "的请假已被接受",
@@ -249,7 +249,7 @@ export default {
       //console.log(confirmResulte);
 
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Leave/ProManageLeave"),
+        this.$helper.endpointUrl("/Leave/ProManageLeave"),
         {
           leave_id: this.messageData.leave_id,
           status: 2
@@ -264,7 +264,7 @@ export default {
         return;
       }
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/CreateMessage"),
+        this.$helper.endpointUrl("/Message/CreateMessage"),
         {
           message_type: 0,
           content: this.messageData.work_name + "的请假已被拒绝",

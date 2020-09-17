@@ -139,7 +139,7 @@ export default {
       console.log(this.logInForm);
       try{
         const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Account/Register"),
+        this.$helper.endpointUrl("/Account/Register"),
         {
           username: this.logInForm.username,
           email: this.logInForm.email,

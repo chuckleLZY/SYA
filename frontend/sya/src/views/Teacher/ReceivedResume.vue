@@ -112,7 +112,7 @@ export default {
       this.checkDialogVisible = false;
       console.log("resumeData",this.reSumeData)
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Apply/ProManageApp"),
+        this.$helper.endpointUrl("/Apply/ProManageApp"),
         {
           apply_id: this.reSumeData.apply_id,
           status: 1 //同意
@@ -126,7 +126,7 @@ export default {
 
       //发消息
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/CreateMessage"),
+        this.$helper.endpointUrl("/Message/CreateMessage"),
         {
           message_type: 0,
           content: "Congratulations!"+this.reSumeData.teacher_name+" 接受了 "+this.reSumeData.work_name+" 的工作申请",
@@ -148,7 +148,7 @@ export default {
       this.checkDialogVisible = false;
       this.checkDialogVisible = false;
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Apply/ProManageApp"),
+        this.$helper.endpointUrl("/Apply/ProManageApp"),
         {
           apply_id: this.reSumeData.apply_id,
           status: 2 //拒绝
@@ -162,7 +162,7 @@ export default {
 
       //发消息
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/CreateMessage"),
+        this.$helper.endpointUrl("/Message/CreateMessage"),
         {
           message_type: 0,
           content: this.reSumeData.teacher_name+" 拒绝了 "+this.reSumeData.work_name+" 的工作申请",
@@ -187,7 +187,7 @@ export default {
     //获得简历信息
     async getResume(resumeId) {
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Resume/GetResumeInfo"),
+        this.$helper.endpointUrl("/Resume/GetResumeInfo"),
         {
           resume_id: resumeId
         },
@@ -200,7 +200,7 @@ export default {
     //获得所有申请信息
     async getReceivedResume() {
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Apply/ProViewApps"),
+        this.$helper.endpointUrl("/Apply/ProViewApps"),
         this.pageInfo,
         {
           withCredentials: true
@@ -232,7 +232,7 @@ export default {
     //获取一页的申请信息
     async getOnePageReceivedResume() {
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Apply/ProViewApps"),
+        this.$helper.endpointUrl("/Apply/ProViewApps"),
         this.pageInfo,
         {
           withCredentials: true

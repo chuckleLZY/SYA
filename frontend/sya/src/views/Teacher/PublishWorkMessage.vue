@@ -272,7 +272,7 @@ export default {
           } 
       console.log(this.form);
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Work/CreateWork"),
+        this.$helper.endpointUrl("/Work/CreateWork"),
         {
           work_name: this.form.name,
           cover: this.uploadImg,//上传的封面

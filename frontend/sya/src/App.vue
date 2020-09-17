@@ -16,7 +16,7 @@ export default {
   },
   async created() {
     const result = await axios.post(
-      this.$appconfig.toAbsUrl("/Account/LoginStatus"),
+      this.$helper.endpointUrl("/Account/LoginStatus"),
       {},
       { withCredentials: true }
     );

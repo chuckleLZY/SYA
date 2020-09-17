@@ -162,7 +162,7 @@ export default {
    //   }
    async getWorkMessageList(){
          const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/FindReceiveMessage"),
+        this.$helper.endpointUrl("/Message/FindReceiveMessage"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -187,7 +187,7 @@ export default {
         this.messageData = row;
         this.checkDialogVisible = true;
         const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/ViewedMessage"),
+        this.$helper.endpointUrl("/Message/ViewedMessage"),
         {
           message_id: row.message_id
         },
@@ -200,7 +200,7 @@ export default {
       },
 
     /*  async findWorkMes(){
-        const res=await axios.post(this.$appconfig.toAbsUrl("/Message/FindSendMessage"),{
+        const res=await axios.post(this.$helper.endpointUrl("/Message/FindSendMessage"),{
                     pagenum: this.queryInfo.pagenum,
                      pagesize: this.queryInfo.pagesize,
                     query: this.queryInfo.query
@@ -230,7 +230,7 @@ export default {
         });
         }
         const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Message/DeleteMessage"),
+        this.$helper.endpointUrl("/Message/DeleteMessage"),
         {
           message_id: id
           

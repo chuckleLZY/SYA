@@ -6,5 +6,5 @@
     "accessKeySecret": "myaccesssecrect",
     "bucket": "bucket"
   },
-  "OSS_URL": ""
+  "OSS_URL": "http://myawesomebucket.com/"
 }

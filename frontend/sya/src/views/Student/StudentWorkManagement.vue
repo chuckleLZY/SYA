@@ -260,7 +260,7 @@ export default {
     },
     methods:{
          async getWorklist(){
-            const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Work/FindOwnWork"),this.queryInfo,{ withCredentials: true });
+            const {data: res} = await axios.post(this.$helper.endpointUrl("/Work/FindOwnWork"),this.queryInfo,{ withCredentials: true });
             this.Worklist=res.worklist;
             this.total=res.totalpage;
             this.loading=false;
@@ -286,7 +286,7 @@ export default {
                 if(this.AbForm.proof==''){
                 this.AbForm.proof='无备注';
                 }
-                const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Leave/RequestRest"),this.AbForm,{ withCredentials: true });
+                const {data: res} = await axios.post(this.$helper.endpointUrl("/Leave/RequestRest"),this.AbForm,{ withCredentials: true });
                 console.log(res)
                 if (res == -1) {
                     this.$message.error("请假申请提交失败，请稍后重试");
@@ -301,7 +301,7 @@ export default {
             })
         },
         async handleResign(){
-            const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Work/Getresign"),{ work_id:this.work_id },{ withCredentials: true });
+            const {data: res} = await axios.post(this.$helper.endpointUrl("/Work/Getresign"),{ work_id:this.work_id },{ withCredentials: true });
             this.getWorklist();
             if(res==1){
                 this.$message.success('您辞职的消息已经发给工作发布者，感谢您参与工作！');
@@ -311,7 +311,7 @@ export default {
             } 
         },
         async handleDelete(){
-            const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Work/Deleteresign"),{ work_id:this.work_id },{ withCredentials: true });
+            const {data: res} = await axios.post(this.$helper.endpointUrl("/Work/Deleteresign"),{ work_id:this.work_id },{ withCredentials: true });
             this.getWorklist();
             if(res==1){
                 this.$message.success('该工作已经成功地从工作管理中移除');

@@ -356,7 +356,7 @@ export default {
     },
     async getWorkList() {
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Work/ViewHistoryWork"),
+        this.$helper.endpointUrl("/Work/ViewHistoryWork"),
         this.pageInfo,
         {
           withCredentials: true
@@ -375,7 +375,7 @@ export default {
       this.Dialogvisible = false;
       this.loading = true;
       const result = await axios.post(
-        this.$appconfig.toAbsUrl("/Work/ViewHistoryWork"),
+        this.$helper.endpointUrl("/Work/ViewHistoryWork"),
         this.pageInfo,
         {
           withCredentials: true
@@ -403,7 +403,7 @@ export default {
         }
         // console.log(this.form);
         const result = await axios.post(
-          this.$appconfig.toAbsUrl("/Work/ChangeWorkInfo"),
+          this.$helper.endpointUrl("/Work/ChangeWorkInfo"),
           {
             work_id: this.editdata.work_id,
             work_name: this.editdata.work_name,

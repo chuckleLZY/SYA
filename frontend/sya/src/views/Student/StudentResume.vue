@@ -256,12 +256,12 @@ export default {
     },
      methods:{
           async getUserInfo(){
-            const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/User/GetUserInfo"),{},{ withCredentials: true });
+            const {data: res} = await axios.post(this.$helper.endpointUrl("/User/GetUserInfo"),{},{ withCredentials: true });
 
             this.UserInfo=res;
         },
         async getResume(){
-            const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Resume/GetResume"),{},{ withCredentials: true });
+            const {data: res} = await axios.post(this.$helper.endpointUrl("/Resume/GetResume"),{},{ withCredentials: true });
 
             this.Resume=res;
             if(res==-1){
@@ -275,7 +275,7 @@ export default {
                     this.$message.error("请按照验证提示正确填写在线简历后再进行保存");
                     return;
                 }
-                const {data: res} = await axios.put(this.$appconfig.toAbsUrl("/Resume/UpdateResume"),this.addResume,{ withCredentials: true });
+                const {data: res} = await axios.put(this.$helper.endpointUrl("/Resume/UpdateResume"),this.addResume,{ withCredentials: true });
                 if (res.status > 400) {
                 this.$message.error("保存失败，请稍后重试");
                 return;
@@ -319,7 +319,7 @@ export default {
                     this.$message.error("只有按照验证提示完成所有简历信息的正确填写后才能创建简历哦");
                     return;
                 }
-                const {data: res} = await axios.post(this.$appconfig.toAbsUrl("/Resume/CreateResume"),this.addResume,{ withCredentials: true });
+                const {data: res} = await axios.post(this.$helper.endpointUrl("/Resume/CreateResume"),this.addResume,{ withCredentials: true });
                 if (res.status > 400) {
                 this.$message.error("创建简历失败，请稍后再试");
                 return;

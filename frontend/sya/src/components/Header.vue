@@ -106,7 +106,7 @@ export default {
     },
     async logOut() {
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Account/Logout"),
+        this.$helper.endpointUrl("/Account/Logout"),
         {},
         { withCredentials: true }
       );
@@ -123,7 +123,7 @@ export default {
   },
   async created() {
     const { data: res } = await axios.post(
-      this.$appconfig.toAbsUrl("/User/GetUserInfo"),
+      this.$helper.endpointUrl("/User/GetUserInfo"),
       {},
       { withCredentials: true }
     );

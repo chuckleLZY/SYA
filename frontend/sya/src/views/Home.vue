@@ -125,7 +125,7 @@ export default {
     },
     async getWorkList() {
       var aaa = await axios.post(
-        this.$appconfig.toAbsUrl("/Work/ViewAllWork"),
+        this.$helper.endpointUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
           pagesize: 1
@@ -143,7 +143,7 @@ export default {
       //console.log(aaa.data.totalpage);
       //console.log(this.totalpage);
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Work/ViewAllWork"),
+        this.$helper.endpointUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
           pagesize: this.totalpage
@@ -169,7 +169,7 @@ export default {
       if (this.$store.state.role == 0) {
         var bbb;
         bbb = await axios.post(
-          this.$appconfig.toAbsUrl("/Announce/GetSendAnnounce"),
+          this.$helper.endpointUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
             pagesize: 1
@@ -181,7 +181,7 @@ export default {
         // console.log("res111", res);
       } else {
         bbb = await axios.post(
-          this.$appconfig.toAbsUrl("/Announce/GetAnnounce"),
+          this.$helper.endpointUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
             pagesize: 1
@@ -202,7 +202,7 @@ export default {
       if (this.$store.state.role == 0) {
         var res;
         res = await axios.post(
-          this.$appconfig.toAbsUrl("/Announce/GetSendAnnounce"),
+          this.$helper.endpointUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
             pagesize: this.totalpage2
@@ -214,7 +214,7 @@ export default {
         // console.log("res111", res);
       } else {
         res = await axios.post(
-          this.$appconfig.toAbsUrl("/Announce/GetAnnounce"),
+          this.$helper.endpointUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
             pagesize: this.totalpage2

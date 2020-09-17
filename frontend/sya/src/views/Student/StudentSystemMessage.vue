@@ -148,7 +148,7 @@ export default {
     //获取工作列表的函数
     async getSysMessageList() {
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Announce/GetAnnounce"),
+        this.$helper.endpointUrl("/Announce/GetAnnounce"),
         {
           pagenum: this.queryInfo.pagenum,
           pagesize: this.queryInfo.pagesize
@@ -190,7 +190,7 @@ export default {
 
       }
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Announce/DeleteAnnounce"),
+        this.$helper.endpointUrl("/Announce/DeleteAnnounce"),
         {
           announcement_id: id
         },
@@ -216,7 +216,7 @@ export default {
       //  this.messageData = row;
       this.checkDialogVisible = true;
       const res = await axios.post(
-        this.$appconfig.toAbsUrl("/Announce/GetAnnounceContent"),
+        this.$helper.endpointUrl("/Announce/GetAnnounceContent"),
         {
           announcement_id: row.announcement_id
         },
