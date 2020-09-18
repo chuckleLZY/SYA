@@ -282,7 +282,7 @@ namespace SyaApi.DataAccessors
     {
         var query ="";
         var temp= await FindAll(); 
-
+        if(temp.Count==0)return -1;
         for(int i=0;i<temp.Count;i++)
         {
             query += "INSERT INTO announce_send(announcement_id,receive_id,status) VALUES("+temp[i]+",@id,@status);";
