@@ -40,7 +40,7 @@ namespace SyaApi.DataAccessors
             announce.totalpage=0;
             announce.AnnounceItem=new List<AnnounceEntity>();
 
-            var query = "SELECT announcement_id,user_id,title,announce_send.status,send_time FROM announcement JOIN announce_send USING (announcement_id) WHERE receive_id=@id";
+            var query = "SELECT announcement_id,user_id,title,announce_send.status,send_time FROM announcement JOIN announce_send USING (announcement_id) WHERE receive_id=@id ORDER BY announce_send.status ASC";
 
             using var connection = DatabaseConnector.Connect();
             await connection.OpenAsync();
