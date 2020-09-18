@@ -498,7 +498,7 @@ namespace SyaApi.Controllers
         }
 
 
-        [HttpDelete("DeleteWork")]
+        [HttpPost("DeleteWork")]
         [AllowAnonymous]
         public async Task<int> DeleteWork([FromBody]FindworkRequest request)
         {

@@ -9,9 +9,9 @@
     <el-card style="margin-top:20px;width:100%">
       <el-table :data="tableData" style="width: 100%" v-loading="loading">
         <el-table-column label="#" type="index" width="180px"></el-table-column>
-        <el-table-column prop="work_name" label="工作名称" width="280px"></el-table-column>
-        <el-table-column prop="student_name" label="学生姓名" width="280px"></el-table-column>
-        <el-table-column prop="edit" label="状态" width="280px">
+        <el-table-column prop="work_name" label="工作名称" width="250px"></el-table-column>
+        <el-table-column prop="student_name" label="学生姓名" width="250px"></el-table-column>
+        <el-table-column prop="edit" label="状态" width="250px">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status==1">已接受</el-tag>
             <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>

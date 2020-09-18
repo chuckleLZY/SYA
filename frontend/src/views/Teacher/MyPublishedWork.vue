@@ -54,10 +54,18 @@
           <template slot-scope="scope">
             <el-button
               @click="editInfo(scope.row)"
-              type="danger"
+              type="success"
               icon="el-icon-edit"
               size="medium"
             >编辑</el-button>
+            <el-button
+            @click="deleteWork(scope.row.work_id)"
+              type="danger"
+              icon="el-icon-delete"
+              size="medium"
+            >
+            删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -75,7 +83,7 @@
       </div>
     </el-card>
 
-    <el-dialog title="修改" :visible.sync="DialogVisible" width="50%">
+    <el-dialog title="修改" :visible.sync="DialogVisible" width="50%" center>
       <el-form
         :model="editdata"
         :rules="formrules2"
@@ -83,33 +91,22 @@
         label-position="left"
         ref="thisform"
       >
-        
         <el-form-item label="工作名称" prop="name">
           <el-input
-            
             v-model="editdata.work_name"
             maxlength="15"
             show-word-limit
           ></el-input>
         </el-form-item>
         <el-form-item label="工作图像" required>
-          <!-- <el-row>
-          <el-col :span="24">
-            <el-image :src="editdata.new_cover" :fit="fit">
-              <div slot="error" class="image-slot">
-                   <i class="el-icon-picture-outline" style="font-size: 100px"></i>
-                </div>
-              </el-image> 
-            </el-col>
-    </el-row>
-    <el-radio-group v-model="editdata.new_cover">
-      <el-radio border label="http://photo.tongji.edu.cn/__local/8/E4/D1/653D3735DC6F0691C6B2C1D4089_8C3254E4_59616.jpg" >封面一</el-radio>
-      <el-radio border label="http://photo.tongji.edu.cn/__local/4/34/82/827E6293ACF9838C9C6F4D455B6_C35BBE06_74B1C.jpg" >封面二</el-radio>
-      <el-radio border label="http://photo.tongji.edu.cn/__local/F/94/46/A22A1DF1FEF48DCCD579B1121F9_A1090C4F_69757.jpg" >封面三</el-radio>
-          </el-radio-group>-->
         </el-form-item>
         <!-- 上传 -->
-        <el-tooltip class="item" effect="dark" content="点击上传图片" placement="top">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="点击上传需要替换的工作封面"
+          placement="top"
+        >
           <el-upload
             class="avatar-uploader"
             action
@@ -122,16 +119,16 @@
           </el-upload>
         </el-tooltip>
         <el-form-item label="工作地点" prop="new_address">
-          <el-input width="300px" v-model="editdata.new_address"></el-input>
+          <el-input width="300px" v-model="editdata.address"></el-input>
         </el-form-item>
-        <el-form-item label="工作薪资" prop="new_salary">
-          <el-input v-model="editdata.new_salary"></el-input>
+        <el-form-item label="工作薪资" prop="salary">
+          <el-input v-model="editdata.salary"></el-input>
         </el-form-item>
         <el-form-item label="工作日期" required>
           <el-col :span="9">
-            <el-form-item prop="new_start_day">
+            <el-form-item prop="start_day">
               <el-date-picker
-                v-model="editdata.new_start_day"
+                v-model="editdata.start_day"
                 type="date"
                 placeholder="开始日期"
                 format="yyyy-MM-dd"
@@ -143,9 +140,9 @@
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
-            <el-form-item prop="new_end_day">
+            <el-form-item prop="end_day">
               <el-date-picker
-                v-model="editdata.new_end_day"
+                v-model="editdata.end_day"
                 type="date"
                 placeholder="结束日期"
                 format="yyyy-MM-dd"
@@ -158,38 +155,38 @@
         </el-form-item>
         <el-form-item label="工作时间" required>
           <el-col :span="9">
-            <el-form-item prop="new_start_time">
+            <el-form-item prop="start_time">
               <el-time-select
                 placeholder="起始时间"
-                v-model="editdata.new_start_time"
+                v-model="editdata.start_time"
                 :picker-options="{
-      start: '08:00',
-      step: '01:00',
-      end: '20:00'
-    }"
+                  start: '08:00',
+                  step: '01:00',
+                  end: '20:00',
+                }"
                 style="width: 100%;"
               ></el-time-select>
             </el-form-item>
           </el-col>
           <el-col class="line" :span="2">-</el-col>
           <el-col :span="9">
-            <el-form-item prop="new_end_time">
+            <el-form-item prop="end_time">
               <el-time-select
                 placeholder="结束时间"
-                v-model="editdata.new_end_time"
+                v-model="editdata.end_time"
                 :picker-options="{
-      start: '08:00',
-      step: '01:00',
-      end: '21:00',
-      minTime: editdata.new_start_time
-    }"
+                  start: '08:00',
+                  step: '01:00',
+                  end: '21:00',
+                  minTime: editdata.start_time,
+                }"
                 style="width: 100%;"
               ></el-time-select>
             </el-form-item>
           </el-col>
         </el-form-item>
-        <el-form-item label="工作日" prop="new_week_day">
-          <el-select v-model="editdata.new_week_day" placeholder="请选择工作日">
+        <el-form-item label="工作日" prop="week_day">
+          <el-select v-model="editdata.week_day" placeholder="请选择工作日">
             <el-option label="星期一" value="1"></el-option>
             <el-option label="星期二" value="2"></el-option>
             <el-option label="星期三" value="3"></el-option>
@@ -202,24 +199,25 @@
         <!-- <el-form-item label="工作薪资（元/天）" prop="new_salary">
           <el-input v-model="editdata.new_salary"></el-input>
         </el-form-item>-->
-        <el-form-item label="工作描述" prop="new_desc">
+        <el-form-item label="工作描述" prop="work_description">
           <el-input
             type="textarea"
-            v-model="editdata.new_desc"
+            v-model="editdata.work_description"
             maxlength="100"
             show-word-limit
-            :autosize="{ minRows: 3, maxRows: 6}"
+            :autosize="{ minRows: 3, maxRows: 6 }"
           ></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancel2('thisform')">取 消</el-button>
-        <el-button type="primary" @click="Editework('editdate')">编 辑</el-button>
+        <el-button @click="DialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="Editework('editdate')"
+          >确 认</el-button
+        >
       </div>
     </el-dialog>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -232,10 +230,22 @@ export default {
       DialogVisible: false,
       pageInfo: {
         pagenum: 1,
-        pagesize: 10
+        pagesize: 10,
       },
       total: 0,
-      editdata: {},
+      editdata: {
+        work_id: "",
+        work_name: "",
+        cover: "",
+        work_description: "",
+        address: "",
+        salary: "",
+        start_day: "",
+        end_day: "",
+        start_time: "",
+        end_time: "",
+        week_day: "",
+      },
       tableData: [],
       form: {
         new_name: "",
@@ -249,58 +259,58 @@ export default {
         new_week_day: "",
         new_time: "",
         new_salary: "",
-        new_desc: ""
+        new_desc: "",
       },
       formrules2: {
-        new_start_day: [
+        start_day: [
           {
             type: "string",
             required: true,
             message: "请选择工作开始日期",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        new_end_day: [
+        end_day: [
           {
             type: "string",
             required: true,
             message: "请选择工作结束日期",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        new_start_time: [
+        start_time: [
           {
             type: "string",
             required: true,
             message: "请选择工作开始时间",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        new_end_time: [
+        end_time: [
           {
             type: "string",
             required: true,
             message: "请选择工作结束时间",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        new_week_day: [
-          { required: true, message: "请选择工作日", trigger: "change" }
+        week_day: [
+          { required: true, message: "请选择工作日", trigger: "change" },
         ],
-        new_address: [
-          { required: true, message: "请填写工作地址", trigger: "change" }
+        address: [
+          { required: true, message: "请填写工作地址", trigger: "change" },
         ],
-        new_salary: [
-          { required: true, message: "请填写工作薪资", trigger: "change" }
+        salary: [
+          { required: true, message: "请填写工作薪资", trigger: "change" },
         ],
-        new_desc: [
-          { required: true, message: "请填写工作描述", trigger: "blur" }
-        ]
+        work_description: [
+          { required: true, message: "请填写工作描述", trigger: "blur" },
+        ],
       },
       //设置选择日期
       pickerOptions2: {
         //结束时间不能大于开始时间
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.editdata.new_end_day) {
             return (
               time.getTime() > new Date(this.editdata.new_end_day).getTime() ||
@@ -310,11 +320,11 @@ export default {
             //没有选择结束时间，只能选择今天之后的时间不包括今天
             return time.getTime() < Date.now();
           }
-        }
+        },
       },
       pickerOptions3: {
         //结束时间小于开始时间
-        disabledDate: time => {
+        disabledDate: (time) => {
           if (this.editdata.new_start_day) {
             return (
               time.getTime() < new Date(this.editdata.new_start_day).getTime()
@@ -323,40 +333,17 @@ export default {
             //若未输入开始时间则默认为今天后时间不包括今天
             return time.getTime() < Date.now();
           }
-        }
-      }
+        },
+      },
     };
   },
   methods: {
-    //重置
-    cancel2(formName) {
-      this.$confirm("是否清除表格内容", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
-        .then(() => {
-          this.$refs[formName].resetFields();
-          this.DialogVisible = false;
-          this.$message({
-            type: "success",
-            message: "已清除!"
-          });
-        })
-        .catch(() => {
-          this.DialogVisible = false;
-          this.$message({
-            type: "info",
-            message: "未清除"
-          });
-        });
-    },
     async getWorkList() {
       const result = await axios.post(
         this.$helper.endpointUrl("/Work/ViewHistoryWork"),
         this.pageInfo,
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       this.total = result.data.totalpage;
@@ -375,7 +362,7 @@ export default {
         this.$helper.endpointUrl("/Work/ViewHistoryWork"),
         this.pageInfo,
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       // console.log(result);
@@ -384,16 +371,112 @@ export default {
       //取消加载的转圈圈
       this.loading = false;
     },
+
     //编辑信息
     editInfo(row) {
-      // console.log(row);
-      this.editdata = row;
+       console.log(this.editdata);
+       this.editdata.work_id=row.work_id;
+       this.editdata.work_name=row.work_name;
+       this.editdata.cover=row.cover;
+       this.editdata.work_description=row.work_description;
+       this.editdata.address=row.address;
+       this.editdata.salary=row.salary;
+       this.editdata.start_day=row.start_day;
+       this.editdata.end_day=row.end_day;
+       this.editdata.start_time=row.start_time;
+       this.editdata.end_time=row.end_time;
+       if(row.week_day==1){
+         this.editdata.week_day="星期一";
+       }
+       if(row.week_day==2){
+         this.editdata.week_day="星期二";
+       }
+       if(row.week_day==3){
+         this.editdata.week_day="星期三";
+       }
+       if(row.week_day==4){
+         this.editdata.week_day="星期四";
+       }
+       if(row.week_day==5){
+         this.editdata.week_day="星期五";
+       }
+       if(row.week_day==6){
+         this.editdata.week_day="星期六";
+       }
+       if(row.week_day==7){
+         this.editdata.week_day="星期日";
+       }
       this.DialogVisible = true;
+    },
+    //删除工作
+    async deleteWork(id) {
+      //console.log(id);
+      const confirmResulte = await this.$confirm(
+        "此操作将永久删除该工作, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).catch(err => err);
+
+       if (confirmResulte !== "confirm") {
+       // return this.$message.info("已取消删除");
+        return this.$message({
+          message: '已取消删除',
+          type: 'info',
+          duration:1000
+        });
+
+      }
+      
+      const result = await axios.post(
+        this.$helper.endpointUrl("/Work/DeleteWork"),
+        {work_id:id},
+        {
+          withCredentials: true
+        }
+      );
+       console.log(result);
+      
+      if(result.data==-1){
+        this.$message.error("删除失败");
+      }
+      this.$message({
+          message: '已成功删除',
+          type: 'info',
+          duration:1000
+        });
+      this.getWorkList();
     },
 
     // 编辑工作
     async Editework() {
-      this.$refs.thisform.validate(async valid => {
+      if(this.editdata.week_day=="星期一"){
+         this.editdata.week_day=1;
+       }
+       if(this.editdata.week_day=="星期二"){
+         this.editdata.week_day=2;
+       }
+       if(this.editdata.week_day=="星期三"){
+         this.editdata.week_day=3;
+       }
+       if(this.editdata.week_day=="星期四"){
+         this.editdata.week_day=4;
+       }
+       if(this.editdata.week_day=="星期五"){
+         this.editdata.week_day=5;
+       }
+       if(this.editdata.week_day=="星期六"){
+         this.editdata.week_day=6;
+       }
+        if(this.editdata.week_day=="星期日"){
+         this.editdata.week_day=7;
+       }
+      this.editdata.week_day=parseInt(this.editdata.week_day);
+      console.log(this.editdata);
+      this.$refs.thisform.validate(async (valid) => {
         if (!valid) {
           this.$message.error("请按照提示正确填写工作内容");
           return;
@@ -401,33 +484,21 @@ export default {
         // console.log(this.form);
         const result = await axios.post(
           this.$helper.endpointUrl("/Work/ChangeWorkInfo"),
-          {
-            work_id: this.editdata.work_id,
-            work_name: this.editdata.work_name,
-            cover: this.uploadImg, //上传的封面
-            work_description: this.editdata.new_desc,
-            address: this.editdata.new_address,
-            salary: parseInt(this.editdata.new_salary),
-            start_day: this.editdata.new_start_day,
-            end_day: this.editdata.new_end_day,
-            start_time: this.editdata.new_start_time,
-            end_time: this.editdata.new_end_time,
-            week_day: parseInt(this.editdata.new_week_day)
-          },
+          this.editdata,
           { withCredentials: true }
         );
         // console.log(result);
         if (result.status == 200) {
           //console.log("edit success");
           this.$message.success("修改成功");
-          this.Dialogvisible = false;
+          this.DialogVisible=false;
           //console.log("edit success222");
-          await this.getOnePageworklist();
+          this.getOnePageworklist();
           //console.log("edit success333");
-          setTimeout(() => {
-            this.$router.go(0);
+          /*setTimeout(() => {
+           this.$router.go(0);
           }, 500);
-          this.$router.push("MyPublishedWork");
+          this.$router.push("MyPublishedWork");*/
         } else {
           this.$message.error("发生了一些错误");
         }
@@ -453,7 +524,7 @@ export default {
       //定义唯一的文件名，打印出来的uid其实就是时间戳
       client()
         .multipartUpload(fileName, file.file)
-        .then(result => {
+        .then((result) => {
           // console.log(result);
           this.uploadImg = this.$helper.ossFileUrl(result.name);
         });
@@ -472,15 +543,14 @@ export default {
       }
 
       return (isJPEG || isJPG || isPNG) && isLt1000K;
-    }
+    },
   },
   async mounted() {
     await this.getWorkList();
     // console.log(this.tableData);
-  }
+  },
 };
 </script>
-
 
 <style scoped>
 .demo-table-expand {
