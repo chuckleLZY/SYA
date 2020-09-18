@@ -542,7 +542,7 @@ export default {
           duration:1000
         });
       } else {
-        this.$message.success("加入收藏夹成功");
+        //this.$message.success("加入收藏夹成功");
         this.$message({
           message: '加入收藏夹成功',
           type: 'success',
@@ -610,7 +610,7 @@ export default {
   width: 400px !important;
   margin: auto;
   margin-top: 30px;
-  background-color: #d3dce6;
+  background-color: #fff;
 }
 
 .recruitment_card3 {
@@ -619,7 +619,7 @@ export default {
   width: 390px !important;
   height: 80% !important;
   overflow: auto;
-  background-color: #a7b1bb;
+  background-color: #fff;
 }
 
 .recruitment_card4 {
@@ -628,7 +628,7 @@ export default {
   width: 390px !important;
   height: 90.6% !important;
   overflow: auto;
-  background-color: #a7b1bb;
+  background-color: #fff;
 }
 
 .el-select .el-input {
