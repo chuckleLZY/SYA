@@ -83,13 +83,10 @@
         label-position="left"
         ref="thisform"
       >
-        <el-form-item label="工作ID" prop="work_id">
-          <el-input type="textarea" disabled v-model="editdata.work_id"></el-input>
-        </el-form-item>
+        
         <el-form-item label="工作名称" prop="name">
           <el-input
-            type="textarea"
-            disabled
+            
             v-model="editdata.work_name"
             maxlength="15"
             show-word-limit
