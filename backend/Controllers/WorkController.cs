@@ -497,5 +497,20 @@ namespace SyaApi.Controllers
             return num;
         }
 
+
+        [HttpPost("DeleteWork")]
+        [AllowAnonymous]
+        public async Task<int> DeleteWork([FromBody]FindworkRequest request)
+        {
+            //取得存在cookie的当前账户id
+            var pro_id = Int32.Parse(User.Identity.Name);
+            var temp = await WorkAccessor.FindWorkInfo(request.work_id);
+            if(temp!=null)
+            {
+                var num = await WorkAccessor.DeleteWork(request.work_id);
+                return num;
+            }          
+            return -1;
+        }
     }
 }

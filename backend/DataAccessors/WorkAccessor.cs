@@ -548,7 +548,23 @@ namespace SyaApi.DataAccessors
             return work;
         }
 
-        
+        public static async Task<int> DeleteWork(int work_id)
+        {
+            var query = "DELETE FROM work where work_id=@work_id";
+
+            using var connection = DatabaseConnector.Connect();
+            await connection.OpenAsync();
+            using var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@work_id", work_id);
+            var row = await command.ExecuteNonQueryAsync();
+            if(row>0)
+            {
+                return work_id;
+            }
+            return 0;
+        }
 
     }
 }

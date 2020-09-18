@@ -54,11 +54,18 @@
           <template slot-scope="scope">
             <el-button
               @click="editInfo(scope.row)"
-              type="danger"
+              type="success"
               icon="el-icon-edit"
               size="medium"
-              >编辑</el-button
+            >编辑</el-button>
+            <el-button
+            @click="deleteWork(scope.row.work_id)"
+              type="danger"
+              icon="el-icon-delete"
+              size="medium"
             >
+            删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,7 +83,7 @@
       </div>
     </el-card>
 
-    <el-dialog title="修改" :visible.sync="DialogVisible" width="50%">
+    <el-dialog title="修改" :visible.sync="DialogVisible" width="50%" center>
       <el-form
         :model="editdata"
         :rules="formrules2"
@@ -205,7 +212,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="DialogVisible=false">取 消</el-button>
         <el-button type="primary" @click="Editework('editdate')"
-          >编 辑</el-button
+          >确 认</el-button
         >
       </div>
     </el-dialog>
@@ -401,6 +408,49 @@ export default {
        }
       this.DialogVisible = true;
     },
+    //删除工作
+    async deleteWork(id) {
+      //console.log(id);
+      const confirmResulte = await this.$confirm(
+        "此操作将永久删除该工作, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).catch(err => err);
+
+       if (confirmResulte !== "confirm") {
+       // return this.$message.info("已取消删除");
+        return this.$message({
+          message: '已取消删除',
+          type: 'info',
+          duration:1000
+        });
+
+      }
+      
+      const result = await axios.post(
+        this.$helper.endpointUrl("/Work/DeleteWork"),
+        {work_id:id},
+        {
+          withCredentials: true
+        }
+      );
+       console.log(result);
+      
+      if(result.data==-1){
+        this.$message.error("删除失败");
+      }
+      this.$message({
+          message: '已成功删除',
+          type: 'info',
+          duration:1000
+        });
+      this.getWorkList();
+    },
+
     // 编辑工作
     async Editework() {
       if(this.editdata.week_day=="星期一"){
