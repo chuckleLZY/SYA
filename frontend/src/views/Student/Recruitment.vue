@@ -93,26 +93,29 @@
             <br />
             <el-form :model="workInfo" label-width="75px" class="demo-ruleForm">
               <el-form-item label="工作名称:" prop="work_name" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.work_name" disabled></el-input>
+                <el-input v-model="workInfo.work_name" readonly></el-input>
               </el-form-item>
               <el-form-item label="工作地点:" prop="address" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.address" disabled></el-input>
+                <el-input v-model="workInfo.address" readonly></el-input>
               </el-form-item>
               <el-form-item label="薪资:" prop="salary" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.salary" disabled></el-input>
+                <el-input v-model="workInfo.salary" readonly></el-input>
               </el-form-item>
               <el-form-item label="工作日期:" prop="start_day" class="demo-ruleFormItem">
-                <el-input class="work_day" v-model="workInfo.start_day" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.start_day" readonly></el-input>
                 <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">至</p>
-                <el-input class="work_day" v-model="workInfo.end_day" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.end_day" readonly></el-input>
               </el-form-item>
               <el-form-item label="工作时间:" prop="start_time" class="demo-ruleFormItem">
-                <el-input class="work_day" v-model="workInfo.start_time" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.start_time" readonly></el-input>
                 <p style="display:inline;width:100px;margin-left:15px;margin-right:15px;">至</p>
-                <el-input class="work_day" v-model="workInfo.end_time" disabled></el-input>
+                <el-input class="work_day" v-model="workInfo.end_time" readonly></el-input>
               </el-form-item>
+               <el-form-item label="工作日:" prop="start_time" class="demo-ruleFormItem" style="width:50%">
+                 <el-input class="work_day" v-model="weeklist[workInfo.week_day]" readonly></el-input>
+               </el-form-item>
               <el-form-item label="工作描述:" prop="work_description" class="demo-ruleFormItem">
-                <el-input v-model="workInfo.work_description" disabled></el-input>
+                <el-input type="textarea" :rows='4' v-model="workInfo.work_description" readonly></el-input>
               </el-form-item>
             </el-form>
           </div>
@@ -235,6 +238,7 @@ export default {
       direction: "rtl",
       direction2: "ltr",
       checkDialogVisible: false,
+      
       //获取工作列表的参数对象
       queryInfo: {
         pagenum: 1,
@@ -247,6 +251,7 @@ export default {
         query: ""
       },
       workList: [],
+      weeklist:['未设置','星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
 
       favItem: [],
       total: 0,
