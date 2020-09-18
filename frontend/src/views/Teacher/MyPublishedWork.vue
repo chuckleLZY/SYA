@@ -58,6 +58,14 @@
               icon="el-icon-edit"
               size="medium"
             >编辑</el-button>
+            <el-button
+            @click="deleteWork(scope.row.work_id)"
+              type="warning"
+              icon="el-icon-edit"
+              size="medium"
+            >
+            删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -389,6 +397,48 @@ export default {
       // console.log(row);
       this.editdata = row;
       this.DialogVisible = true;
+    },
+    //删除工作
+    async deleteWork(id) {
+      //console.log(id);
+      const confirmResulte = await this.$confirm(
+        "此操作将永久删除该工作, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      ).catch(err => err);
+
+       if (confirmResulte !== "confirm") {
+       // return this.$message.info("已取消删除");
+        return this.$message({
+          message: '已取消删除',
+          type: 'info',
+          duration:1000
+        });
+
+      }
+      
+      const result = await axios.post(
+        this.$helper.endpointUrl("/Work/DeleteWork"),
+        {work_id:id},
+        {
+          withCredentials: true
+        }
+      );
+       console.log(result);
+      
+      if(result.data==-1){
+        this.$message.error("删除失败");
+      }
+      this.$message({
+          message: '已成功删除',
+          type: 'info',
+          duration:1000
+        });
+      this.getWorkList();
     },
 
     // 编辑工作
