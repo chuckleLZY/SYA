@@ -1,14 +1,16 @@
 <template>
   <div>
-        <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
-            <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
-            <el-breadcrumb-item>消息</el-breadcrumb-item>
-            <el-breadcrumb-item>请假管理</el-breadcrumb-item>
-        </el-breadcrumb>
+    <el-breadcrumb
+      separator-class="el-icon-arrow-right"
+      class="recruitment_breadcrumb"
+    >
+      <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
+      <el-breadcrumb-item>消息</el-breadcrumb-item>
+      <el-breadcrumb-item>请假管理</el-breadcrumb-item>
+    </el-breadcrumb>
 
-
-        <el-card class="teacher_card" style="margin-top:20px;">
-            <!--
+    <el-card class="teacher_card" style="margin-top:20px;">
+      <!--
             <el-row>
                 <el-col :span="7">
                     <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
@@ -44,14 +46,19 @@
         <el-table-column label="请假时间" prop="leave_time"></el-table-column>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.status==1">已同意</el-tag>
-            <el-tag type="danger" v-if="scope.row.status==2">已拒绝</el-tag>
-            <el-tag type="info" v-if="scope.row.status==0">未处理</el-tag>
+            <el-tag type="success" v-if="scope.row.status == 1">已同意</el-tag>
+            <el-tag type="danger" v-if="scope.row.status == 2">已拒绝</el-tag>
+            <el-tag type="info" v-if="scope.row.status == 0">未处理</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template v-slot:default="scope">
-            <el-tooltip effect="dark" content="进行处理" placement="top-start" :enterable="false">
+            <el-tooltip
+              effect="dark"
+              content="进行处理"
+              placement="top-start"
+              :enterable="false"
+            >
               <el-button
                 type="primary"
                 icon="el-icon-edit"
@@ -80,43 +87,46 @@
       <div style="width:400px;margin:auto;">
         <el-form status-icon label-width="auto" :model="messageData">
           <el-form-item label="请假原因">
-            <el-input disabled v-model="messageData.content"></el-input>
+            <el-input readonly v-model="messageData.content"></el-input>
           </el-form-item>
 
           <el-form-item label="请假人">
-            <el-input disabled v-model="messageData.student_name"></el-input>
+            <el-input readonly v-model="messageData.student_name"></el-input>
           </el-form-item>
           <el-form-item label="请假工作">
-            <el-input disabled v-model="messageData.work_name"></el-input>
+            <el-input readonly v-model="messageData.work_name"></el-input>
           </el-form-item>
           <el-form-item label="证明">
-            <el-input disabled v-model="messageData.proof"></el-input>
+            <el-input readonly v-model="messageData.proof"></el-input>
           </el-form-item>
 
           <div class="demo-drawer__footer" style="margin-top:10px">
-            <el-tag type="success" v-if="messageData.status==1">已同意</el-tag>
-            <el-tag type="danger" v-if="messageData.status==2">已拒绝</el-tag>
+            <el-tag type="success" v-if="messageData.status == 1"
+              >已同意</el-tag
+            >
+            <el-tag type="danger" v-if="messageData.status == 2">已拒绝</el-tag>
             <el-button
               type="info"
               icon="el-icon-star-on"
               plain
               @click="AgreeLea()"
               v-if="!messageData.status"
-            >同意请假</el-button>
+              >同意请假</el-button
+            >
             <el-button
               type="info"
               icon="el-icon-star-on"
               plain
               @click="RefuseLea()"
               v-if="!messageData.status"
-            >拒绝请假</el-button>
+              >拒绝请假</el-button
+            >
           </div>
         </el-form>
       </div>
     </el-dialog>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -134,10 +144,10 @@ export default {
       queryInfo: {
         pagenum: 1,
         pagesize: 10,
-        query: ""
+        query: "",
       },
       workMessageList: [],
-      total: 0
+      total: 0,
     };
   },
   created() {
@@ -171,10 +181,10 @@ export default {
         this.$helper.endpointUrl("/Leave/ProViewLeaves"),
         {
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
+          pagesize: this.queryInfo.pagesize,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       if (res.status !== 200) {
@@ -198,7 +208,7 @@ export default {
         this.$helper.endpointUrl("/Leave/ProViewLeaves"),
         {},
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       this.getWorkMessageList();
@@ -212,10 +222,10 @@ export default {
         this.$helper.endpointUrl("/Leave/ProManageLeave"),
         {
           leave_id: this.messageData.leave_id,
-          status: 1
+          status: 1,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       // console.log("aggr", this.messageData);
@@ -228,19 +238,19 @@ export default {
         {
           message_type: 0,
           content: this.messageData.work_name + "的请假已被接受",
-          receiver_id: this.messageData.student_id
+          receiver_id: this.messageData.student_id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
-      this.loading=true;
+      this.loading = true;
       //this.$message.info("已同意");
       this.$message({
-          message: '已同意',
-          type: 'info',
-          duration:1000
-        });
+        message: "已同意",
+        type: "info",
+        duration: 1000,
+      });
       this.checkDialogVisible = false;
       await this.getWorkMessageList();
       // console.log(res);
@@ -252,10 +262,10 @@ export default {
         this.$helper.endpointUrl("/Leave/ProManageLeave"),
         {
           leave_id: this.messageData.leave_id,
-          status: 2
+          status: 2,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       // console.log("refuse", this.messageData);
@@ -268,28 +278,25 @@ export default {
         {
           message_type: 0,
           content: this.messageData.work_name + "的请假已被拒绝",
-          receiver_id: this.messageData.student_id
+          receiver_id: this.messageData.student_id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
-      this.loading=true;
+      this.loading = true;
       //this.$message.info("已拒绝");
       this.$message({
-          message: '已拒绝',
-          type: 'info',
-          duration:1000
-        });
+        message: "已拒绝",
+        type: "info",
+        duration: 1000,
+      });
       this.checkDialogVisible = false;
       await this.getWorkMessageList();
       // console.log(res);
-    }
-  }
+    },
+  },
 };
 </script>
 
-
-<style scoped>
-</style>
-
+<style scoped></style>

@@ -1,8 +1,6 @@
 <template>
   <div class="outside">
-    <span>
-      <i class="el-icon-s-tools"></i>&emsp;个人信息
-    </span>
+    <span> <i class="el-icon-s-tools"></i>&emsp;个人信息 </span>
     <el-divider></el-divider>
     <el-form
       :model="ruleForm"
@@ -15,7 +13,11 @@
         <el-input placeholder="请输入昵称" v-model="ruleForm.name"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input placeholder="请输入密码" v-model="ruleForm.password" show-password></el-input>
+        <el-input
+          placeholder="请输入密码"
+          v-model="ruleForm.password"
+          show-password
+        ></el-input>
       </el-form-item>
       <el-form-item label="所在地" prop="region">
         <el-select v-model="ruleForm.region" placeholder="请选择所在地">
@@ -24,7 +26,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="手机号" prop="phonenumber">
-        <el-input placeholder="请输入手机号" v-model="ruleForm.phonenumber"></el-input>
+        <el-input
+          placeholder="请输入手机号"
+          v-model="ruleForm.phonenumber"
+        ></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
         <el-input placeholder="请输入邮箱" v-model="ruleForm.email"></el-input>
@@ -36,13 +41,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')"
+          >修改</el-button
+        >
         <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -101,7 +107,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .outside {

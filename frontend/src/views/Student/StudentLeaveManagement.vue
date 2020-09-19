@@ -39,15 +39,23 @@
                 type="primary"
                 size="medium"
                 icon="el-icon-search"
-                @click="getWorkInfo(scope.row.work_id);workVisible=true"
+                @click="
+                  getWorkInfo(scope.row.work_id);
+                  workVisible = true;
+                "
                 >工作详情</el-button
               >
               <el-button
                 type="success"
                 size="medium"
                 icon="el-icon-edit"
-                :disabled="scope.row.status!=0"
-                @click="getWorkInfo(scope.row.work_id);AbForm.leave_id=scope.row.leave_id;AbForm.work_id=scope.row.work_id;AbsentVisible=true"
+                :disabled="scope.row.status != 0"
+                @click="
+                  getWorkInfo(scope.row.work_id);
+                  AbForm.leave_id = scope.row.leave_id;
+                  AbForm.work_id = scope.row.work_id;
+                  AbsentVisible = true;
+                "
                 >修改申请</el-button
               >
             </template>
@@ -129,10 +137,12 @@
       </el-row>
       <el-row>
         <el-col :offset="7">
-          <p class="inlineTitle"><i class="el-icon-paperclip"></i> 工作名称 ：
+          <p class="inlineTitle">
+            <i class="el-icon-paperclip"></i> 工作名称 ：
             <span class="inlineInfo"> {{ WorkList.work_name }} </span>
           </p>
-          <p class="inlineTitle"><i class="el-icon-tickets "></i> 工作描述 ：
+          <p class="inlineTitle">
+            <i class="el-icon-tickets "></i> 工作描述 ：
             <span class="inlineInfo"> {{ WorkList.work_description }} </span>
           </p>
           <p class="inlineTitle">
@@ -183,71 +193,101 @@
     </el-dialog>
 
     <!--请假的信息-->
-         <el-dialog title="请假申请" :visible.sync="AbsentVisible" @close="AbFormClose();getLeaveList();" width="50%" center >
-            <el-form :model="AbForm" :rules="AbFormRules" label-width="100px" ref="AbFormRef" >
-                <el-form-item label="请假日期:" prop="leave_day">
-                    <el-col :span="8">
-                        <el-date-picker
-                        v-model="AbForm.leave_day"
-                        type="date"
-                        placeholder="开始日期"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
-                        style="width: 100%;"
-                        :picker-options="pickerOptions0">
-                        </el-date-picker>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="工作时间" required>
-                <el-col :span="8">
-                    <el-form-item prop="leave_start">
-                        <el-time-select
-                        placeholder="起始时间"
-                        v-model="AbForm.leave_start"
-                        :picker-options="{
-                        start: this.WorkList.start_time,
-                        step: '00:15',
-                        end: this.WorkList.end_time,
-                        }"
-                        style="width: 100%;">
-                    </el-time-select>
-                    </el-form-item>
-                </el-col>
-                 <el-col class="line" :span="2" style="text-align:center;">---</el-col>
-                <el-col :span="8">
-                    <el-form-item prop="leave_end">
-                        <el-time-select
-                        placeholder="结束时间"
-                        v-model="AbForm.leave_end"
-                        :picker-options="{
-                        start: this.WorkList.start_time,
-                        step: '00:15',
-                        end:this.WorkList.end_time,
-                        minTime:AbForm.leave_start
-                        }"
-                        style="width: 100%;">
-                       </el-time-select>
-                    </el-form-item>
-                </el-col>
-                </el-form-item>
+    <el-dialog
+      title="请假申请"
+      :visible.sync="AbsentVisible"
+      @close="
+        AbFormClose();
+        getLeaveList();
+      "
+      width="50%"
+      center
+    >
+      <el-form
+        :model="AbForm"
+        :rules="AbFormRules"
+        label-width="100px"
+        ref="AbFormRef"
+      >
+        <el-form-item label="请假日期:" prop="leave_day">
+          <el-col :span="8">
+            <el-date-picker
+              v-model="AbForm.leave_day"
+              type="date"
+              placeholder="开始日期"
+              format="yyyy-MM-dd"
+              value-format="yyyy-MM-dd"
+              style="width: 100%;"
+              :picker-options="pickerOptions0"
+            >
+            </el-date-picker>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="工作时间" required>
+          <el-col :span="8">
+            <el-form-item prop="leave_start">
+              <el-time-select
+                placeholder="起始时间"
+                v-model="AbForm.leave_start"
+                :picker-options="{
+                  start: this.WorkList.start_time,
+                  step: '00:15',
+                  end: this.WorkList.end_time,
+                }"
+                style="width: 100%;"
+              >
+              </el-time-select>
+            </el-form-item>
+          </el-col>
+          <el-col class="line" :span="2" style="text-align:center;">---</el-col>
+          <el-col :span="8">
+            <el-form-item prop="leave_end">
+              <el-time-select
+                placeholder="结束时间"
+                v-model="AbForm.leave_end"
+                :picker-options="{
+                  start: this.WorkList.start_time,
+                  step: '00:15',
+                  end: this.WorkList.end_time,
+                  minTime: AbForm.leave_start,
+                }"
+                style="width: 100%;"
+              >
+              </el-time-select>
+            </el-form-item>
+          </el-col>
+        </el-form-item>
 
-                <el-form-item label="请假理由 ：" prop="content">
-                    <el-input v-model="AbForm.content" placeholder="请输入请假理由" type="textarea" :rows="3" maxlength="300" show-word-limit style="width:80%"></el-input>
-                </el-form-item>
+        <el-form-item label="请假理由 ：" prop="content">
+          <el-input
+            v-model="AbForm.content"
+            placeholder="请输入请假理由"
+            type="textarea"
+            :rows="3"
+            maxlength="300"
+            show-word-limit
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
 
-                <el-form-item label="备注 ：" prop="proof">
-                    <el-input v-model="AbForm.proof" placeholder="此项选填" type="textarea" :rows="3" maxlength="300" show-word-limit style="width:80%"></el-input>
-                </el-form-item>
+        <el-form-item label="备注 ：" prop="proof">
+          <el-input
+            v-model="AbForm.proof"
+            placeholder="此项选填"
+            type="textarea"
+            :rows="3"
+            maxlength="300"
+            show-word-limit
+            style="width:80%"
+          ></el-input>
+        </el-form-item>
+      </el-form>
 
-            </el-form>
-
-            <span slot="footer" class="dialog-footer" >
-                <el-button @click="AbsentVisible = false">取 消</el-button>
-                <el-button type="primary" @click="updateAbsent();">确 认</el-button>
-            </span>
-        </el-dialog>
-        
-    
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="AbsentVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateAbsent()">确 认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -256,18 +296,18 @@ import axios from "axios";
 export default {
   data() {
     return {
-      loading:true,
+      loading: true,
       WorkList: [],
       LeaveList: [],
       workVisible: false,
       total: 20,
       AbsentVisible: false,
-      queryInfo:{
-                pagenum:1,
-                pagesize:5,
+      queryInfo: {
+        pagenum: 1,
+        pagesize: 5,
       },
       AbForm: {
-        leave_id:"",
+        leave_id: "",
         work_id: "",
         content: "",
         proof: "",
@@ -275,25 +315,21 @@ export default {
         leave_start: "",
         leave_end: "",
       },
-      AbFormRules:{
-                leave_day:[
-                    {required:true, message:"请选择时间"},
-                ],
-                content:[
-                    {required:true, message:"请输入请假理由"}
-                ],
-                 leave_start:[
-                    {required:true, message:"请选择请假的起始时间"},
-                ],
-                leave_end:[
-                    {required:true, message:"请选择请假的结束时间"},
-                ]
-
+      AbFormRules: {
+        leave_day: [{ required: true, message: "请选择时间" }],
+        content: [{ required: true, message: "请输入请假理由" }],
+        leave_start: [{ required: true, message: "请选择请假的起始时间" }],
+        leave_end: [{ required: true, message: "请选择请假的结束时间" }],
       },
-      pickerOptions0: { //设置日期必须在工作时间之间
-      	    disabledDate: (time) => {
-                return  new Date(this.WorkList.start_day).getTime()> time.getTime() || new Date(this.WorkList.end_day).getTime()< time.getTime() || time.getDay()!=(this.WorkList.week_day%7)
-            }
+      pickerOptions0: {
+        //设置日期必须在工作时间之间
+        disabledDate: (time) => {
+          return (
+            new Date(this.WorkList.start_day).getTime() > time.getTime() ||
+            new Date(this.WorkList.end_day).getTime() < time.getTime() ||
+            time.getDay() != this.WorkList.week_day % 7
+          );
+        },
       },
     };
   },
@@ -302,16 +338,14 @@ export default {
   },
   methods: {
     async getLeaveList() {
-      const {
-        data: res,
-      } = await axios.post(
+      const { data: res } = await axios.post(
         this.$helper.endpointUrl("/Leave/ViewLeave"),
         this.queryInfo,
         { withCredentials: true }
       );
       this.LeaveList = res.leavelist;
       this.total = res.total;
-      this.loading=false;
+      this.loading = false;
     },
     handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize;
@@ -337,30 +371,28 @@ export default {
         if (!valid) {
           //this.$message.error("请按照验证提示正确填写请假申请后再进行");
           this.$message({
-          message: '请按照验证提示正确填写请假申请后再进行',
-          type: 'error',
-          duration:1000
-        });
+            message: "请按照验证提示正确填写请假申请后再进行",
+            type: "error",
+            duration: 1000,
+          });
           return;
         }
         if (this.AbForm.proof == "") {
           this.AbForm.proof = "无备注";
         }
-        const {
-          data: res,
-        } = await axios.post(
+        const { data: res } = await axios.post(
           this.$helper.endpointUrl("/Leave/UpdateLeave"),
           this.AbForm,
           { withCredentials: true }
         );
         //this.$message.success("请假申请更新成功!");
         this.$message({
-          message: '请假申请更新成功',
-          type: 'success',
-          duration:1000
+          message: "请假申请更新成功",
+          type: "success",
+          duration: 1000,
         });
         this.AbsentVisible = false;
-        this.loading=false;
+        this.loading = false;
       });
     },
   },
@@ -396,13 +428,13 @@ export default {
   width: 60%;
   margin-left: 20%;
 }
-.inlineTitle{
-    font-weight:bold;
-    color: grey;
-    margin-top:1cm;
+.inlineTitle {
+  font-weight: bold;
+  color: grey;
+  margin-top: 1cm;
 }
-.inlineInfo{
-    font-weight: normal;
-    color: black;
+.inlineInfo {
+  font-weight: normal;
+  color: black;
 }
 </style>

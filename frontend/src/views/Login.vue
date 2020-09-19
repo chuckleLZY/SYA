@@ -10,6 +10,7 @@
         <td class="color-dark-light">登录</td>
       </tr>
     </el-divider>
+
     <el-divider direction="vertical"></el-divider>
     <br />
     <el-divider direction="vertical"></el-divider>
@@ -72,19 +73,36 @@
       <!-- <div class="avatar_box">
         <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599575737996&di=22f8c24ab5079385e3ff45d8576179c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915192557_JSFLK.jpeg" alt />
       </div>-->
-      <el-form ref="loginFormRef" label-width="0px" class="login_form" :model="logInForm" :rules="loginFormRules">
+      <el-form
+        ref="loginFormRef"
+        label-width="0px"
+        class="login_form"
+        :model="logInForm"
+        :rules="loginFormRules"
+      >
         <!-- 用户名 -->
         <el-form-item prop="username">
-          <el-input prefix-icon="el-icon-user" v-model="logInForm.username" placeholder="请输入用户名"></el-input>
+          <el-input
+            prefix-icon="el-icon-user"
+            v-model="logInForm.username"
+            placeholder="请输入用户名"
+          ></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item prop="Password">
-          <el-input prefix-icon="el-icon-unlock" v-model="logInForm.Password" type="password" placeholder="请输入密码"></el-input>
+          <el-input
+            prefix-icon="el-icon-unlock"
+            v-model="logInForm.Password"
+            type="password"
+            placeholder="请输入密码"
+          ></el-input>
         </el-form-item>
         <!-- 按钮 -->
         <el-form-item class="btns">
           <el-button type="primary" @click="login()">登录</el-button>
-          <el-button type="info" @click="$router.push('/Register')">注册</el-button>
+          <el-button type="info" @click="$router.push('/Register')"
+            >注册</el-button
+          >
           <el-button @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
@@ -109,11 +127,21 @@ export default {
       loginFormRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
         ],
         Password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" },
+          {
+            min: 3,
+            max: 10,
+            message: "长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
         ],
       },
       imagebox: [
@@ -179,7 +207,7 @@ export default {
           duration: 500,
         });
       }
-    }
+    },
   },
 };
 </script>

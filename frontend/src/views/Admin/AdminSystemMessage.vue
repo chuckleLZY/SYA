@@ -13,18 +13,39 @@
       </el-row>-->
 
       <!-- 列表区域 -->
-      <el-table :data="sysMessageList" :row-class-name="tableRowClassName" v-loading="loading">
+      <el-table
+        :data="sysMessageList"
+        :row-class-name="tableRowClassName"
+        v-loading="loading"
+      >
         <el-table-column label="#" type="index"></el-table-column>
-        <el-table-column prop="title" label="公告标题" width="280"></el-table-column>
-        <el-table-column prop="send_time" label="发送时间" width="280"></el-table-column>
-        <el-table-column prop="status" label="状态" width="280"></el-table-column>
+        <el-table-column
+          prop="title"
+          label="公告标题"
+          width="280"
+        ></el-table-column>
+        <el-table-column
+          prop="send_time"
+          label="发送时间"
+          width="280"
+        ></el-table-column>
+        <el-table-column
+          prop="status"
+          label="状态"
+          width="280"
+        ></el-table-column>
         <!-- <el-table-column
                     prop="address"
                     label="地址">
         </el-table-column>-->
         <el-table-column label="操作">
           <template v-slot:default="scope">
-            <el-tooltip effect="dark" content="查看详情" placement="top-start" :enterable="false">
+            <el-tooltip
+              effect="dark"
+              content="查看详情"
+              placement="top-start"
+              :enterable="false"
+            >
               <el-button
                 type="primary"
                 icon="el-icon-edit"
@@ -33,7 +54,12 @@
                 circle
               ></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="删除" placement="top-start" :enterable="false">
+            <el-tooltip
+              effect="dark"
+              content="删除"
+              placement="top-start"
+              :enterable="false"
+            >
               <el-button
                 type="primary"
                 icon="el-icon-delete"
@@ -73,7 +99,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from "axios";
 export default {
@@ -90,10 +115,10 @@ export default {
       queryInfo: {
         query: "",
         pagenum: 1,
-        pagesize: 5
+        pagesize: 5,
       },
       sysMessageList: [],
-      total: 0
+      total: 0,
 
       /* workList: [{
             date: '2016-05-02',
@@ -150,10 +175,10 @@ export default {
         this.$helper.endpointUrl("/Announce/GetAnnounce"),
         {
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
+          pagesize: this.queryInfo.pagesize,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       if (res.status !== 200) {
@@ -174,25 +199,25 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
-      ).catch(err => err);
+      ).catch((err) => err);
       //console.log(confirmResulte);
       if (confirmResulte !== "confirm") {
         //return this.$message.info("已取消删除");
         return this.$message({
-          message: '已取消删除',
-          type: 'info',
-          duration:1000
+          message: "已取消删除",
+          type: "info",
+          duration: 1000,
         });
       }
       const res = await axios.post(
         this.$helper.endpointUrl("/Announce/DeleteAnnounce"),
         {
-          announcement_id: id
+          announcement_id: id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
 
@@ -202,10 +227,10 @@ export default {
       }
       //this.$message.info("已成功删除");
       this.$message({
-          message: '已成功删除',
-          type: 'info',
-          duration:1000
-        });
+        message: "已成功删除",
+        type: "info",
+        duration: 1000,
+      });
 
       this.getSysMessageList();
     },
@@ -216,21 +241,18 @@ export default {
       const res = await axios.post(
         this.$helper.endpointUrl("/Announce/GetAnnounceContent"),
         {
-          announcement_id: row.announcement_id
+          announcement_id: row.announcement_id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 
-
-<style scoped>
-</style>
-
+<style scoped></style>
 
 <style>
 .el-table .havenot-row {

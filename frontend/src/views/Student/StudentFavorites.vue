@@ -11,7 +11,8 @@
             size="mini"
             icon="el-icon-s-order"
             @click="dialogCreateVisible = true"
-          >新建收藏夹</el-button>
+            >新建收藏夹</el-button
+          >
           <!-- <el-button type="text" @click="Create()">新建收藏夹</el-button> -->
           <!-- <el-button type="text" @click="dialog = true">新建收藏夹</el-button> -->
           <br />
@@ -19,7 +20,10 @@
           <!-- 表格数据 -->
           <el-table :data="FavoriteList" border stripe>
             <el-table-column type="index"></el-table-column>
-            <el-table-column label="收藏夹名称" prop="favorite_name"></el-table-column>
+            <el-table-column
+              label="收藏夹名称"
+              prop="favorite_name"
+            ></el-table-column>
             <el-table-column label="工作数量" prop="work_num"></el-table-column>
             <el-table-column label="操作" width="300px">
               <template slot-scope="scope_favorite">
@@ -28,19 +32,27 @@
                   icon="el-icon-edit"
                   size="mini"
                   @click="showDrawer(scope_favorite.row.favorite_id)"
-                >查看</el-button>
+                  >查看</el-button
+                >
                 <el-button
                   type="success"
                   icon="el-icon-edit"
                   size="mini"
-                  @click="showUpdateDialog(scope_favorite.row.favorite_id,scope_favorite.row.favorite_name)"
-                >编辑</el-button>
+                  @click="
+                    showUpdateDialog(
+                      scope_favorite.row.favorite_id,
+                      scope_favorite.row.favorite_name
+                    )
+                  "
+                  >编辑</el-button
+                >
                 <el-button
                   type="danger"
                   icon="el-icon-edit"
                   size="mini"
                   @click="Delete(scope_favorite.row.favorite_id)"
-                >删除</el-button>
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
             <!-- <el-table-column label="操作" width="340px">
@@ -66,8 +78,13 @@
       <el-aside width="200px"></el-aside>
     </el-container>
 
-    <el-drawer title="收藏夹的工作内容!" :visible.sync="table"
-    :before-close="handleClose" direction="rtl" size="40%">
+    <el-drawer
+      title="收藏夹的工作内容!"
+      :visible.sync="table"
+      :before-close="handleClose"
+      direction="rtl"
+      size="40%"
+    >
       <el-table :data="Favorite_work" :model="Favorite_work_table">
         <el-table-column
           property="work_name"
@@ -100,7 +117,8 @@
               icon="el-icon-edit"
               size="mini"
               @click="DeleteWork(scope_work.row.work_id)"
-            >删除工作</el-button>
+              >删除工作</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -131,8 +149,16 @@
         <el-input v-model="form.favid" autocomplete="off" placeholder="请输入收藏夹id，为一个数字"></el-input>
           </el-form-item>-->
           <!-- 收藏夹名字 -->
-          <el-form-item label="名字" :label-width="formLabelWidth" prop="favname">
-            <el-input v-model="form.favname" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
+          <el-form-item
+            label="名字"
+            :label-width="formLabelWidth"
+            prop="favname"
+          >
+            <el-input
+              v-model="form.favname"
+              autocomplete="off"
+              placeholder="请输入收藏夹名字"
+            ></el-input>
           </el-form-item>
           <!-- 工作数量 -->
         </el-form>
@@ -154,11 +180,27 @@
       <div class="demo-drawer__content" size="40%">
         <el-form :model="formUpdate">
           <!-- 收藏夹名字 -->
-          <el-form-item label="旧的名字" :label-width="formLabelWidth" prop="favname">
-            <el-input v-model="formUpdate.favname" autocomplete="off" :disabled="true"></el-input>
+          <el-form-item
+            label="旧的名字"
+            :label-width="formLabelWidth"
+            prop="favname"
+          >
+            <el-input
+              v-model="formUpdate.favname"
+              autocomplete="off"
+              :disabled="true"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="新的名字" :label-width="formLabelWidth" prop="favnamenew">
-            <el-input v-model="formUpdate.favnamenew" autocomplete="off" placeholder="请输入收藏夹名字"></el-input>
+          <el-form-item
+            label="新的名字"
+            :label-width="formLabelWidth"
+            prop="favnamenew"
+          >
+            <el-input
+              v-model="formUpdate.favnamenew"
+              autocomplete="off"
+              placeholder="请输入收藏夹名字"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div class="demo-drawer__footer">
@@ -178,14 +220,14 @@ import axios from "axios";
 export default {
   data() {
     return {
-      loading:true,
+      loading: true,
       queryInfo: {
         query: "",
         pagenum: 1,
-        pagesize: 10
+        pagesize: 10,
       },
       Favorite_work_table: {
-        id: Number
+        id: Number,
       },
       //收藏夹列表
       FavoriteList: [],
@@ -196,13 +238,13 @@ export default {
       dialog: false,
       loading: false,
       form: {
-        favname: ""
+        favname: "",
       },
       formUpdate: {
-        id: Number
+        id: Number,
       },
       formLabelWidth: "80px",
-      timer: null
+      timer: null,
     };
   },
   created() {
@@ -219,13 +261,13 @@ export default {
     //   console.log(newSize)
     //   this.queryInfo.pagesize1=newSize
     // },
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
     //监听页码改变的事件
     handleCurrentChange(newPage) {
       //console.log(newPage)
@@ -261,15 +303,15 @@ export default {
     },
     //获取favorite列表内容
     async getfavoritelist() {
-      this.loading=true;
+      this.loading = true;
       const res = await axios.post(
         this.$helper.endpointUrl("/Favorite/GetFavorite"),
         {
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
+          pagesize: this.queryInfo.pagesize,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       if (res.status !== 200) {
@@ -280,7 +322,7 @@ export default {
       this.total = res.data.totalpage;
       this.pagesize = res.data.totalpage / res.data.pagenum;
       this.pagenum = res.data.pagenum;
-      this.loading=false;
+      this.loading = false;
     },
     // 删除收藏夹中的工作
     async DeleteWork(workIdDeleteWork) {
@@ -288,7 +330,7 @@ export default {
         this.$helper.endpointUrl("/Favorite/DeleteFavoriteWork"),
         {
           favorite_id: this.Favorite_work_table.id,
-          work_id: workIdDeleteWork
+          work_id: workIdDeleteWork,
         },
         { withCredentials: true }
       );
@@ -306,7 +348,7 @@ export default {
       const result = await axios.post(
         this.$helper.endpointUrl("/Favorite/DeleteFavorite"),
         {
-          favorite_id: favoriteIdDelete
+          favorite_id: favoriteIdDelete,
         },
         { withCredentials: true }
       );
@@ -319,59 +361,60 @@ export default {
       }
     },
     // 创建新的收藏夹
-async Create() {
-      if(this.form.favname !=""){
-      const result = await axios.post(
-        this.$helper.endpointUrl("/Favorite/CreateFavorite"),
-        {
-          // favorite_id: parseInt(this.form.favid),
-          favorite_name: this.form.favname,
-          // work_num: parseInt(this.form.favworknum)
-        },
-        { withCredentials: true }
-      );
+    async Create() {
+      if (this.form.favname != "") {
+        const result = await axios.post(
+          this.$helper.endpointUrl("/Favorite/CreateFavorite"),
+          {
+            // favorite_id: parseInt(this.form.favid),
+            favorite_name: this.form.favname,
+            // work_num: parseInt(this.form.favworknum)
+          },
+          { withCredentials: true }
+        );
 
-      if (result.status == 200) {
-        this.dialogCreateVisible =false;
-        this.getfavoritelist();
-        this.$message.success("创建成功");
+        if (result.status == 200) {
+          this.dialogCreateVisible = false;
+          this.getfavoritelist();
+          this.$message.success("创建成功");
+        } else {
+          this.$message.error("发生了一些错误");
+        }
+      } else {
+        this.$message.error("不能创建名字为空的收藏夹");
       }
-      else{
-        this.$message.error("发生了一些错误");
-      }
-      }
-      else{this.$message.error("不能创建名字为空的收藏夹");}
     },
     //更新收藏夹名字函数1
     //更新收藏夹名字
-    async Update(){
-      if(this.formUpdate.favnamenew !=""){
-       const result = await axios.put(
-        this.$helper.endpointUrl("/Favorite/UpdateFavorite"),
-        {
-          favorite_id: this.formUpdate.id,
-          favorite_name: this.formUpdate.favnamenew
-        },
-        { withCredentials: true }
-      );
+    async Update() {
+      if (this.formUpdate.favnamenew != "") {
+        const result = await axios.put(
+          this.$helper.endpointUrl("/Favorite/UpdateFavorite"),
+          {
+            favorite_id: this.formUpdate.id,
+            favorite_name: this.formUpdate.favnamenew,
+          },
+          { withCredentials: true }
+        );
 
-      if (result.status == 200) {
-        this.dialogUpdateVisible=false;
-        this.formUpdate.favnamenew = "";
-        this.getfavoritelist();
-        this.$message.success("更新成功");
+        if (result.status == 200) {
+          this.dialogUpdateVisible = false;
+          this.formUpdate.favnamenew = "";
+          this.getfavoritelist();
+          this.$message.success("更新成功");
+        } else {
+          this.$message.error("发生了一些错误");
+        }
+      } else {
+        this.$message.error("不能更新名字为空的收藏夹");
       }
-      else{
-        this.$message.error("发生了一些错误");
-      }}
-      else{this.$message.error("不能更新名字为空的收藏夹");}
     },
     cancelForm() {
       this.loading = false;
       this.dialog = false;
       clearTimeout(this.timer);
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -25,7 +25,9 @@
               <div>
                 <span v-if="workList[0]">
                   <i class="el-icon-wallet"></i>
-                  &emsp;{{workList[0].address}}发布新工作:{{workList[0].work_name}}
+                  &emsp;{{ workList[0].address }}发布新工作:{{
+                    workList[0].work_name
+                  }}
                 </span>
                 <!-- <p>
                   {{workList[0].work_description}}aaaaa
@@ -33,21 +35,29 @@
                 <el-divider></el-divider>
                 <span v-if="workList[1]">
                   <i class="el-icon-wallet"></i>
-                  &emsp;{{workList[1].address}}发布新工作:{{workList[1].work_name}}
+                  &emsp;{{ workList[1].address }}发布新工作:{{
+                    workList[1].work_name
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span v-if="workList[2]">
                   <i class="el-icon-wallet"></i>
-                  &emsp;{{workList[2].address}}发布新工作:{{workList[2].work_name}}
+                  &emsp;{{ workList[2].address }}发布新工作:{{
+                    workList[2].work_name
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span v-if="workList[3]">
                   <i class="el-icon-wallet"></i>
-                  &emsp;{{workList[3].address}}发布新工作:{{workList[3].work_name}}
+                  &emsp;{{ workList[3].address }}发布新工作:{{
+                    workList[3].work_name
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <el-link type="primary" @click="moreRecruitment()">点击查看更多>></el-link>
+                  <el-link type="primary" @click="moreRecruitment()"
+                    >点击查看更多>></el-link
+                  >
                 </span>
               </div>
             </div>
@@ -57,26 +67,36 @@
               <div>
                 <span v-if="annoList[0]">
                   <i class="el-icon-message-solid"></i>
-                  &emsp;{{annoList[0].send_time}}新公告:{{annoList[0].title}}
+                  &emsp;{{ annoList[0].send_time }}新公告:{{
+                    annoList[0].title
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span v-if="annoList[1]">
                   <i class="el-icon-message-solid"></i>
-                  &emsp;{{annoList[1].send_time}}新公告:{{annoList[1].title}}
+                  &emsp;{{ annoList[1].send_time }}新公告:{{
+                    annoList[1].title
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span v-if="annoList[2]">
                   <i class="el-icon-message-solid"></i>
-                  &emsp;{{annoList[2].send_time}}新公告:{{annoList[2].title}}
+                  &emsp;{{ annoList[2].send_time }}新公告:{{
+                    annoList[2].title
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span v-if="annoList[3]">
                   <i class="el-icon-message-solid"></i>
-                  &emsp;{{annoList[3].send_time}}新公告:{{annoList[3].title}}
+                  &emsp;{{ annoList[3].send_time }}新公告:{{
+                    annoList[3].title
+                  }}
                 </span>
                 <el-divider></el-divider>
                 <span>
-                  <el-link type="primary" @click="moreStudentSystemMessage()">点击查看更多>></el-link>
+                  <el-link type="primary" @click="moreStudentSystemMessage()"
+                    >点击查看更多>></el-link
+                  >
                 </span>
               </div>
             </div>
@@ -84,13 +104,12 @@
         </el-row>
         <el-divider></el-divider>
         <div style="text-align:center">
-            <p class="syaSup">SYA——Show Your Ability</p>
+          <p class="syaSup">SYA——Show Your Ability</p>
         </div>
       </el-main>
     </el-container>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -102,15 +121,15 @@ export default {
         { id: 0, idView: require("../assets/imagebox/1.jpeg") },
         { id: 1, idView: require("../assets/imagebox/2.jpeg") },
         { id: 2, idView: require("../assets/imagebox/3.png") },
-        { id: 3, idView: require("../assets/imagebox/4.jpg") }
+        { id: 3, idView: require("../assets/imagebox/4.jpg") },
         //imagebox是assets下一个放图片的文件夹
       ],
       screenWidth: 0,
       workList: [],
       annoList: [],
-      totalpage : 0,
+      totalpage: 0,
       totalpage2: 0,
-      count : 0,
+      count: 0,
     };
   },
   created() {
@@ -128,10 +147,10 @@ export default {
         this.$helper.endpointUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
-          pagesize: 1
+          pagesize: 1,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       // console.log(res);
@@ -139,17 +158,17 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      this.totalpage=aaa.data.totalpage;
+      this.totalpage = aaa.data.totalpage;
       //console.log(aaa.data.totalpage);
       //console.log(this.totalpage);
       const res = await axios.post(
         this.$helper.endpointUrl("/Work/ViewAllWork"),
         {
           pagenum: 1,
-          pagesize: this.totalpage
+          pagesize: this.totalpage,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       //console.log(res);
@@ -157,10 +176,10 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-        this.workList[0] = res.data.worklist[this.totalpage-1];
-        this.workList[1] = res.data.worklist[this.totalpage-2];
-        this.workList[2] = res.data.worklist[this.totalpage-3];
-        this.workList[3] = res.data.worklist[this.totalpage-4];
+      this.workList[0] = res.data.worklist[this.totalpage - 1];
+      this.workList[1] = res.data.worklist[this.totalpage - 2];
+      this.workList[2] = res.data.worklist[this.totalpage - 3];
+      this.workList[3] = res.data.worklist[this.totalpage - 4];
       //console.log(res);
       this.$forceUpdate();
       //console.log(this.workList);
@@ -172,10 +191,10 @@ export default {
           this.$helper.endpointUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
-            pagesize: 1
+            pagesize: 1,
           },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
         // console.log("res111", res);
@@ -184,10 +203,10 @@ export default {
           this.$helper.endpointUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
-            pagesize: 1
+            pagesize: 1,
           },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
         // console.log("res222", res);
@@ -197,7 +216,7 @@ export default {
         this.$message.error("Unexpected response");
         return;
       }
-      this.totalpage2=bbb.data.totalpage;
+      this.totalpage2 = bbb.data.totalpage;
       //console.log(this.totalpage2);
       if (this.$store.state.role == 0) {
         var res;
@@ -205,10 +224,10 @@ export default {
           this.$helper.endpointUrl("/Announce/GetSendAnnounce"),
           {
             pagenum: 1,
-            pagesize: this.totalpage2
+            pagesize: this.totalpage2,
           },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
         // console.log("res111", res);
@@ -217,10 +236,10 @@ export default {
           this.$helper.endpointUrl("/Announce/GetAnnounce"),
           {
             pagenum: 1,
-            pagesize: this.totalpage2
+            pagesize: this.totalpage2,
           },
           {
-            withCredentials: true
+            withCredentials: true,
           }
         );
         // console.log("res222", res);
@@ -231,10 +250,10 @@ export default {
         return;
       }
       //this.annoList = res.data.announceItem;
-      this.annoList[0] = res.data.announceItem[this.totalpage2-1];
-      this.annoList[1] = res.data.announceItem[this.totalpage2-2];
-      this.annoList[2] = res.data.announceItem[this.totalpage2-3];
-      this.annoList[3] = res.data.announceItem[this.totalpage2-4];
+      this.annoList[0] = res.data.announceItem[this.totalpage2 - 1];
+      this.annoList[1] = res.data.announceItem[this.totalpage2 - 2];
+      this.annoList[2] = res.data.announceItem[this.totalpage2 - 3];
+      this.annoList[3] = res.data.announceItem[this.totalpage2 - 4];
       this.$forceUpdate();
       // this.pagesize=res.data.totalpage/res.data.pagenum;
       // this.pagenum=res.data.pagenum;
@@ -249,10 +268,10 @@ export default {
         this.$router.push("/StudentSystemMessage");
       } else if (this.$store.state.role == 2) {
         this.$router.push("/TeacherSystemMessage");
-      }else{
+      } else {
         this.$router.push("/PublishSystemMessage");
       }
-    }
+    },
   },
   mounted() {
     // 首次加载时,需要调用一次
@@ -263,10 +282,9 @@ export default {
       this.screenWidth = window.innerWidth;
       this.setSize();
     };
-  }
+  },
 };
 </script>
-
 
 <style scoped>
 .el-carousel__item h3 {

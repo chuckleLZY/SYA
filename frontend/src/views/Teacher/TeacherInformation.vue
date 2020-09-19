@@ -7,13 +7,14 @@
     </el-breadcrumb>
 
     <!--个人资料卡片-->
-    <el-card class="infoCard" v-if="cardVisible==true" v-loading="loading">
+    <el-card class="infoCard" v-if="cardVisible == true" v-loading="loading">
       <el-row>
         <el-col :span="5">
           <p class="title">我的资料</p>
         </el-col>
         <el-col :span="2" :offset="14" style="margin-top:0.7cm">
-          <el-button type="success" icon="el-icon-edit" @click="edit()">编辑个人资料</el-button>
+          <el-button type="success" icon="el-icon-edit" @click="edit()"
+            >编辑个人资料</el-button>
         </el-col>
       </el-row>
       <!--头像区域-->
@@ -25,7 +26,11 @@
           <!-- <img id="userAva" /> -->
           <!-- </el-avatar> -->
           <el-avatar shape="circle" style="height:100px;width:100px">
-            <el-image :src="UserInfo.avatar" fit="fill" style="height:100%;width:100%"></el-image>
+            <el-image
+              :src="UserInfo.avatar"
+              fit="fill"
+              style="height:100%;width:100%"
+            ></el-image>
           </el-avatar>
           <!-- <el-image :src="UserInfo.avatar" fit="fill" style="height:100px;width:100px"></el-image> -->
         </div>
@@ -34,17 +39,30 @@
       </el-row>
       <!--用户名区域-->
       <el-row class="name_Row">
-        <p class="stuID">{{UserInfo.user_name}}</p>
+        <p class="stuID">{{ UserInfo.user_name }}</p>
       </el-row>
       <el-row>
-        <p v-if="UserInfo.user_role==1" style="font-weight:bold; font-size:20px;">
-          <i class="el-icon-s-custom"></i> 学生
+        <p
+          v-if="UserInfo.user_role == 2"
+          style="font-weight:bold; font-size:20px;"
+        >
+          <i class="el-icon-s-custom"></i> 老师
         </p>
       </el-row>
-      <el-tag type="primary" style="zoom:150%" effect="dark" v-if="UserInfo.gender==true">
+      <el-tag
+        type="primary"
+        style="zoom:150%"
+        effect="dark"
+        v-if="UserInfo.gender == true"
+      >
         <i class="el-icon-male"></i>
       </el-tag>
-      <el-tag type="danger" style="zoom:150%" effect="dark" v-if="UserInfo.gender==false">
+      <el-tag
+        type="danger"
+        style="zoom:150%"
+        effect="dark"
+        v-if="UserInfo.gender == false"
+      >
         <i class="el-icon-female"></i>
       </el-tag>
       <!--信息-->
@@ -59,15 +77,21 @@
                 <i class="el-icon-phone-outline"></i> 绑定手机 ：
               </p>
             </div>
-            <el-input class="infoItem" readonly v-model="UserInfo.tel"></el-input>
+            <el-input
+              class="infoItem"
+              readonly
+              v-model="UserInfo.tel"
+            ></el-input>
           </el-form-item>
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
-              <p class="itemName">
-                <i class="el-icon-message"></i> 邮箱 :
-              </p>
+              <p class="itemName"><i class="el-icon-message"></i> 邮箱 :</p>
             </div>
-            <el-input class="infoItem" readonly v-model="UserInfo.email"></el-input>
+            <el-input
+              class="infoItem"
+              readonly
+              v-model="UserInfo.email"
+            ></el-input>
           </el-form-item>
           <el-form-item class="itemRow">
             <div class="itemNameContainer">
@@ -75,7 +99,11 @@
                 <i class="el-icon-bank-card"></i> 银行卡号 :
               </p>
             </div>
-            <el-input class="infoItem" readonly v-model="UserInfo.bank"></el-input>
+            <el-input
+              class="infoItem"
+              readonly
+              v-model="UserInfo.bank"
+            ></el-input>
           </el-form-item>
         </el-form>
       </el-row>
@@ -124,16 +152,23 @@
     </el-card>
 
     <!--资料编辑卡片-->
-    <el-card v-if="cardVisible==false" style="margin-top:1cm">
+    <el-card v-if="cardVisible == false" style="margin-top:1cm">
       <el-row>
         <el-col :span="5">
           <p class="title">个人资料编辑</p>
         </el-col>
         <el-col :span="2" :offset="12" style="margin-top:0.7cm">
-          <el-button type="success" icon="el-icon-edit" @click="saveedit()">保存修改</el-button>
+          <el-button type="success" icon="el-icon-edit" @click="saveedit()"
+            >保存修改</el-button
+          >
         </el-col>
         <el-col :span="2" :offset="1" style="margin-top:0.7cm">
-          <el-button type="danger" icon="el-icon-edit" @click="dialogVisible=true">退出编辑</el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-edit"
+            @click="dialogVisible = true"
+            >退出编辑</el-button
+          >
         </el-col>
       </el-row>
       <!-- 头像 -->
@@ -178,15 +213,25 @@
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" center>
       <span>需要保存编辑吗？</span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel();dialogVisible=false">取 消</el-button>
-        <el-button type="primary" @click="saveedit();dialogVisible=false">确 定</el-button>
+        <el-button
+          @click="
+            cancel();
+            dialogVisible = false;
+          "
+          >取 消</el-button
+        >
+        <el-button
+          type="primary"
+          @click="
+            saveedit();
+            dialogVisible = false;
+          "
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
- 
-
-
 
 <script>
 import axios from "axios";
@@ -216,18 +261,20 @@ export default {
         gender: true,
         avatar: "A.png",
         tel: "",
-        bank: ""
+        bank: "",
       },
       editFormRules: {
         tel: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
-          { validator: checkMobile, trigger: "blur" }
+          { validator: checkMobile, trigger: "blur" },
         ],
-        bank: [{ required: true, message: "请输入银行卡号", trigger: "blur" },
-        { validator: checkBank }]
+        bank: [
+          { required: true, message: "请输入银行卡号", trigger: "blur" },
+          { validator: checkBank },
+        ],
       },
       dialogVisible: false,
-      loading: false
+      loading: false,
     };
   },
   async created() {
@@ -262,7 +309,7 @@ export default {
       this.editForm.avatar = this.UserInfo.avatar;
     },
     saveedit() {
-      this.$refs.editRef.validate(async valid => {
+      this.$refs.editRef.validate(async (valid) => {
         if (!valid) {
           this.$message.error("请按照验证提示正确填写个人资料后后再进行保存");
           return;
@@ -285,7 +332,7 @@ export default {
             gender: this.editForm.gender,
             avatar: this.editForm.avatar,
             tel: this.editForm.tel,
-            bank: this.editForm.bank
+            bank: this.editForm.bank,
           },
           { withCredentials: true }
         );
@@ -317,7 +364,7 @@ export default {
       //定义唯一的文件名，打印出来的uid其实就是时间戳
       client()
         .multipartUpload(fileName, file.file)
-        .then(result => {
+        .then((result) => {
           // console.log(result);
           this.editForm.avatar = this.$helper.ossFileUrl(result.name);
         });
@@ -336,12 +383,10 @@ export default {
       }
 
       return (isJPEG || isJPG || isPNG) && isLt500K;
-    }
-  }
+    },
+  },
 };
 </script>
-
-
 
 <style scoped>
 .syaSup {

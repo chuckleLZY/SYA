@@ -4,15 +4,29 @@
       <el-row>
         <el-col :span="6" style="width: 0;margin-bottom:10px">
           <div>
-            <el-button type="primary" @click="dialogVisible=true">发布公告</el-button>
+            <el-button type="primary" @click="dialogVisible = true"
+              >发布公告</el-button
+            >
           </div>
         </el-col>
       </el-row>
       <template>
         <el-table :data="tableData" style="width: 100%">
-          <el-table-column label="#" type="index" width="180px"></el-table-column>
-          <el-table-column prop="title" label="标题" width="280px"></el-table-column>
-          <el-table-column prop="send_time" label="时间" width="280px"></el-table-column>
+          <el-table-column
+            label="#"
+            type="index"
+            width="180px"
+          ></el-table-column>
+          <el-table-column
+            prop="title"
+            label="标题"
+            width="280px"
+          ></el-table-column>
+          <el-table-column
+            prop="send_time"
+            label="时间"
+            width="280px"
+          ></el-table-column>
           <!-- <el-table-column prop="edit" label="编辑" width="280px">
             <template>
               <el-tooltip effect="dark" content="编辑" placement="top">
@@ -25,7 +39,9 @@
           </el-table-column>-->
           <el-table-column label width="280px">
             <template slot-scope="scope">
-              <el-button type="text" size="mini" @click="getMoreInfo(scope.row)">查看详情</el-button>
+              <el-button type="text" size="mini" @click="getMoreInfo(scope.row)"
+                >查看详情</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -36,7 +52,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageInfo.pagenum"
-          :page-sizes="[5, 10,15,20]"
+          :page-sizes="[5, 10, 15, 20]"
           :page-size="pageInfo.pagesize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="this.total"
@@ -51,7 +67,11 @@
           <el-input v-model="addForm.title" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="内容" autosize>
-          <el-input type="textarea" v-model="addForm.content" autocomplete="off"></el-input>
+          <el-input
+            type="textarea"
+            v-model="addForm.content"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -61,16 +81,34 @@
     </el-dialog>
 
     <!-- 查看公告详情弹窗 -->
-    <el-dialog title="查看详情" :visible.sync="dialogSystemMessageVisible" width="30%">
+    <el-dialog
+      title="查看详情"
+      :visible.sync="dialogSystemMessageVisible"
+      width="30%"
+    >
       <el-form :model="systemDataData" status-icon label-width="90px">
         <el-form-item label="标题">
-          <el-input v-model="systemDataData.title" autocomplete="off" disabled></el-input>
+          <el-input
+            v-model="systemDataData.title"
+            autocomplete="off"
+            disabled
+          ></el-input>
         </el-form-item>
         <el-form-item label="内容" autosize>
-          <el-input type="textarea" v-model="systemDataData.content" autocomplete="off" disabled></el-input>
+          <el-input
+            type="textarea"
+            v-model="systemDataData.content"
+            autocomplete="off"
+            disabled
+          ></el-input>
         </el-form-item>
         <el-form-item label="时间" autosize>
-          <el-input type="textarea" v-model="systemDataData.send_time" autocomplete="off" disabled></el-input>
+          <el-input
+            type="textarea"
+            v-model="systemDataData.send_time"
+            autocomplete="off"
+            disabled
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -79,7 +117,6 @@
     </el-dialog>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -92,17 +129,17 @@ export default {
       //表单数据
       addForm: {
         title: "",
-        content: ""
+        content: "",
       },
       //转圈圈
       loading: true,
       total: 0,
       pageInfo: {
         pagenum: 1,
-        pagesize: 10
+        pagesize: 10,
       },
       //查看详情的data
-      systemDataData: {}
+      systemDataData: {},
     };
   },
   methods: {
@@ -166,10 +203,10 @@ export default {
       const result = await axios.post(
         this.$helper.endpointUrl("/Announce/DeleteAnnounceAll"),
         {
-          announcement_id: this.systemDataData.announcement_id
+          announcement_id: this.systemDataData.announcement_id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       // console.log(result);
@@ -178,15 +215,14 @@ export default {
         this.dialogSystemMessageVisible = false;
         await this.getAllAnnounce();
       }
-    }
+    },
   },
 
   async mounted() {
     await this.getAllAnnounce();
-  }
+  },
 };
 </script>
-
 
 <style scoped>
 .el-card {

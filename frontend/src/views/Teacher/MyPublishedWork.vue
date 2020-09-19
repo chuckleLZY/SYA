@@ -57,14 +57,15 @@
               type="success"
               icon="el-icon-edit"
               size="medium"
-            >编辑</el-button>
+              >编辑</el-button
+            >
             <el-button
-            @click="deleteWork(scope.row.work_id)"
+              @click="deleteWork(scope.row.work_id)"
               type="danger"
               icon="el-icon-delete"
               size="medium"
             >
-            删除
+              删除
             </el-button>
           </template>
         </el-table-column>
@@ -98,8 +99,7 @@
             show-word-limit
           ></el-input>
         </el-form-item>
-        <el-form-item label="工作图像" required>
-        </el-form-item>
+        <el-form-item label="工作图像" required> </el-form-item>
         <!-- 上传 -->
         <el-tooltip
           class="item"
@@ -210,7 +210,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="DialogVisible=false">取 消</el-button>
+        <el-button @click="DialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="Editework('editdate')"
           >确 认</el-button
         >
@@ -374,38 +374,38 @@ export default {
 
     //编辑信息
     editInfo(row) {
-       console.log(this.editdata);
-       this.editdata.work_id=row.work_id;
-       this.editdata.work_name=row.work_name;
-       this.editdata.cover=row.cover;
-       this.editdata.work_description=row.work_description;
-       this.editdata.address=row.address;
-       this.editdata.salary=row.salary;
-       this.editdata.start_day=row.start_day;
-       this.editdata.end_day=row.end_day;
-       this.editdata.start_time=row.start_time;
-       this.editdata.end_time=row.end_time;
-       if(row.week_day==1){
-         this.editdata.week_day="星期一";
-       }
-       if(row.week_day==2){
-         this.editdata.week_day="星期二";
-       }
-       if(row.week_day==3){
-         this.editdata.week_day="星期三";
-       }
-       if(row.week_day==4){
-         this.editdata.week_day="星期四";
-       }
-       if(row.week_day==5){
-         this.editdata.week_day="星期五";
-       }
-       if(row.week_day==6){
-         this.editdata.week_day="星期六";
-       }
-       if(row.week_day==7){
-         this.editdata.week_day="星期日";
-       }
+      console.log(this.editdata);
+      this.editdata.work_id = row.work_id;
+      this.editdata.work_name = row.work_name;
+      this.editdata.cover = row.cover;
+      this.editdata.work_description = row.work_description;
+      this.editdata.address = row.address;
+      this.editdata.salary = row.salary;
+      this.editdata.start_day = row.start_day;
+      this.editdata.end_day = row.end_day;
+      this.editdata.start_time = row.start_time;
+      this.editdata.end_time = row.end_time;
+      if (row.week_day == 1) {
+        this.editdata.week_day = "星期一";
+      }
+      if (row.week_day == 2) {
+        this.editdata.week_day = "星期二";
+      }
+      if (row.week_day == 3) {
+        this.editdata.week_day = "星期三";
+      }
+      if (row.week_day == 4) {
+        this.editdata.week_day = "星期四";
+      }
+      if (row.week_day == 5) {
+        this.editdata.week_day = "星期五";
+      }
+      if (row.week_day == 6) {
+        this.editdata.week_day = "星期六";
+      }
+      if (row.week_day == 7) {
+        this.editdata.week_day = "星期日";
+      }
       this.DialogVisible = true;
     },
     //删除工作
@@ -417,64 +417,63 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
-      ).catch(err => err);
+      ).catch((err) => err);
 
-       if (confirmResulte !== "confirm") {
-       // return this.$message.info("已取消删除");
+      if (confirmResulte !== "confirm") {
+        // return this.$message.info("已取消删除");
         return this.$message({
-          message: '已取消删除',
-          type: 'info',
-          duration:1000
+          message: "已取消删除",
+          type: "info",
+          duration: 1000,
         });
-
       }
-      
+
       const result = await axios.post(
         this.$helper.endpointUrl("/Work/DeleteWork"),
-        {work_id:id},
+        { work_id: id },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
-       console.log(result);
-      
-      if(result.data==-1){
+      console.log(result);
+
+      if (result.data == -1) {
         this.$message.error("删除失败");
       }
       this.$message({
-          message: '已成功删除',
-          type: 'info',
-          duration:1000
-        });
+        message: "已成功删除",
+        type: "info",
+        duration: 1000,
+      });
       this.getWorkList();
     },
 
     // 编辑工作
     async Editework() {
-      if(this.editdata.week_day=="星期一"){
-         this.editdata.week_day=1;
-       }
-       if(this.editdata.week_day=="星期二"){
-         this.editdata.week_day=2;
-       }
-       if(this.editdata.week_day=="星期三"){
-         this.editdata.week_day=3;
-       }
-       if(this.editdata.week_day=="星期四"){
-         this.editdata.week_day=4;
-       }
-       if(this.editdata.week_day=="星期五"){
-         this.editdata.week_day=5;
-       }
-       if(this.editdata.week_day=="星期六"){
-         this.editdata.week_day=6;
-       }
-        if(this.editdata.week_day=="星期日"){
-         this.editdata.week_day=7;
-       }
-      this.editdata.week_day=parseInt(this.editdata.week_day);
+      if (this.editdata.week_day == "星期一") {
+        this.editdata.week_day = 1;
+      }
+      if (this.editdata.week_day == "星期二") {
+        this.editdata.week_day = 2;
+      }
+      if (this.editdata.week_day == "星期三") {
+        this.editdata.week_day = 3;
+      }
+      if (this.editdata.week_day == "星期四") {
+        this.editdata.week_day = 4;
+      }
+      if (this.editdata.week_day == "星期五") {
+        this.editdata.week_day = 5;
+      }
+      if (this.editdata.week_day == "星期六") {
+        this.editdata.week_day = 6;
+      }
+      if (this.editdata.week_day == "星期日") {
+        this.editdata.week_day = 7;
+      }
+      this.editdata.week_day = parseInt(this.editdata.week_day);
       console.log(this.editdata);
       this.$refs.thisform.validate(async (valid) => {
         if (!valid) {
@@ -491,7 +490,7 @@ export default {
         if (result.status == 200) {
           //console.log("edit success");
           this.$message.success("修改成功");
-          this.DialogVisible=false;
+          this.DialogVisible = false;
           //console.log("edit success222");
           this.getOnePageworklist();
           //console.log("edit success333");

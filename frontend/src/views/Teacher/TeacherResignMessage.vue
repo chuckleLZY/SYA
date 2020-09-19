@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" class="recruitment_breadcrumb">
+    <el-breadcrumb
+      separator-class="el-icon-arrow-right"
+      class="recruitment_breadcrumb"
+    >
       <el-breadcrumb-item :to="{ path: '/home' }">教师</el-breadcrumb-item>
       <el-breadcrumb-item>消息</el-breadcrumb-item>
       <el-breadcrumb-item>辞职消息</el-breadcrumb-item>
@@ -43,14 +46,19 @@
         <el-table-column label="发送时间" prop="message_time"></el-table-column>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.status==1">已读</el-tag>
-            <el-tag type="info" v-if="scope.row.status==0">未读</el-tag>
+            <el-tag type="success" v-if="scope.row.status == 1">已读</el-tag>
+            <el-tag type="info" v-if="scope.row.status == 0">未读</el-tag>
           </template>
         </el-table-column>
 
         <el-table-column label="操作">
           <template v-slot:default="scope">
-            <el-tooltip effect="dark" content="查看详情" placement="top-start" :enterable="false">
+            <el-tooltip
+              effect="dark"
+              content="查看详情"
+              placement="top-start"
+              :enterable="false"
+            >
               <el-button
                 type="success"
                 icon="el-icon-edit"
@@ -58,7 +66,12 @@
                 @click="viewMesInfo(scope.row)"
               ></el-button>
             </el-tooltip>
-            <el-tooltip effect="dark" content="删除" placement="top-start" :enterable="false">
+            <el-tooltip
+              effect="dark"
+              content="删除"
+              placement="top-start"
+              :enterable="false"
+            >
               <el-button
                 type="danger"
                 icon="el-icon-delete"
@@ -87,21 +100,20 @@
       <div style="width:400px;margin:auto;">
         <el-form status-icon label-width="auto" :model="messageData">
           <el-form-item label="内容">
-            <el-input disabled v-model="messageData.content"></el-input>
+            <el-input readonly v-model="messageData.content"></el-input>
           </el-form-item>
 
           <el-form-item label="发送时间">
-            <el-input disabled v-model="messageData.message_time"></el-input>
+            <el-input readonly v-model="messageData.message_time"></el-input>
           </el-form-item>
           <el-form-item label="发送人">
-            <el-input disabled v-model="messageData.sender_name"></el-input>
+            <el-input readonly v-model="messageData.sender_name"></el-input>
           </el-form-item>
         </el-form>
       </div>
     </el-dialog>
   </div>
 </template>
-
 
 <script>
 import axios from "axios";
@@ -119,10 +131,10 @@ export default {
       queryInfo: {
         pagenum: 1,
         pagesize: 5,
-        query: ""
+        query: "",
       },
       workMessageList: [],
-      total: 0
+      total: 0,
     };
   },
   created() {
@@ -155,10 +167,10 @@ export default {
         this.$helper.endpointUrl("/Message/FindReceiveResign"),
         {
           pagenum: this.queryInfo.pagenum,
-          pagesize: this.queryInfo.pagesize
+          pagesize: this.queryInfo.pagesize,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       if (res.status !== 200) {
@@ -179,10 +191,10 @@ export default {
       const res = await axios.post(
         this.$helper.endpointUrl("/Message/ViewedMessage"),
         {
-          message_id: row.message_id
+          message_id: row.message_id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
       this.getWorkMessageList();
@@ -211,25 +223,24 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
-      ).catch(err => err);
+      ).catch((err) => err);
       //console.log(confirmResulte);
       if (confirmResulte !== "confirm") {
         return this.$message({
-          message: '已取消删除',
-          type: 'info',
-          duration:1000
+          message: "已取消删除",
+          type: "info",
+          duration: 1000,
         });
-
       }
       const res = await axios.post(
         this.$helper.endpointUrl("/Message/DeleteMessage"),
         {
-          message_id: id
+          message_id: id,
         },
         {
-          withCredentials: true
+          withCredentials: true,
         }
       );
 
@@ -239,19 +250,14 @@ export default {
       }
       //this.$message.info("已成功删除");
       this.$message({
-          message: '已成功删除',
-          type: 'info',
-          duration:1000
-        });
+        message: "已成功删除",
+        type: "info",
+        duration: 1000,
+      });
       this.getWorkMessageList();
-    }
-  }
+    },
+  },
 };
 </script>
 
-
-<style scoped>
-</style>
-
-
-
+<style scoped></style>
