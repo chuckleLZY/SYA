@@ -253,11 +253,6 @@ const routes = [
             path: '/TeacherFavorites',
             name: 'TeacherFavorites',
             component: TeacherFavorites
-        },
-        {
-            path: '*',
-            name: 'notfount',
-            // component: notfount
         }
         ]
     },
@@ -267,6 +262,7 @@ const routes = [
 
 
 const router = new VueRouter({
+    mode: 'history',
     routes
 });
 
