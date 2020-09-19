@@ -1,0 +1,11 @@
+{
+  "API_URL": "http://localhost:5000",
+  "OSS_CONF": {
+    "region": "oss-cn-beijing",
+    "accessKeyId": "myaccesskey",
+    "accessKeySecret": "myaccesssecrect",
+    "bucket": "bucket"
+  },
+  "OSS_URL": "https://myawesomebucket.com/",
+  "DEFAULT_AVATAR": "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+}
