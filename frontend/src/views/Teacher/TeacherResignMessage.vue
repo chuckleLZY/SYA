@@ -39,12 +39,12 @@
       <!-- 列表区域 -->
       <el-table :data="workMessageList" v-loading="loading">
         <el-table-column label="#" type="index"></el-table-column>
-        <el-table-column label="发件人" prop="sender_name"></el-table-column>
+        <el-table-column label="发件人" width='200' prop="sender_name"></el-table-column>
 
         <el-table-column label="消息内容" prop="content"></el-table-column>
 
         <el-table-column label="发送时间" prop="message_time"></el-table-column>
-        <el-table-column label="状态" prop="status">
+        <el-table-column label="状态" width="80" prop="status">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == 1">已读</el-tag>
             <el-tag type="info" v-if="scope.row.status == 0">未读</el-tag>
