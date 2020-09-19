@@ -1,73 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Main from '../components/Main.vue'
-
-import Register from '../views/Register.vue'
-import LogIn from '../views/Login.vue'
-
-import Home from '../views/Home.vue'
-import TeacherTable from '../components/TeacherTable.vue'
-import AdminTable from '../components/AdminTable.vue'
-import StudentMessage from '../components/StudentMessage.vue'
-import TeacherMessage from '../components/TeacherMessage.vue'
-import AdminMessage from '../components/AdminMessage.vue'
-import StudentMine from '../components/StudentMine.vue'
-import TeacherMine from '../components/TeacherMine.vue'
-// import AdminMine from '../components/AdminMine.vue'
-
-import Recruitment from '../views/Student/Recruitment.vue'
-import StudentFavorites from '../views/Student/StudentFavorites.vue'
-import TeacherFavorites from '../views/Teacher/TeacherFavorites.vue'
-import StudentSystemMessage from '../views/Student/StudentSystemMessage.vue'
-import StudentWorkMessage from '../views/Student/StudentWorkMessage.vue'
-
-import StudentInformation from '../views/Student/StudentInformation.vue'
-import StudentResume from '../views/Student/StudentResume.vue'
-import StudentWorkManagement from '../views/Student/StudentWorkManagement.vue'
-import StudentLeaveManagement from '../views/Student/StudentLeaveManagement.vue'
-
-import ReceivedResume from '../views/Teacher/ReceivedResume.vue'
-import PublishWorkMessage from '../views/Teacher/PublishWorkMessage.vue'
-import MyPublishedWork from '../views/Teacher/MyPublishedWork.vue'
-
-import TeacherSystemMessage from '../views/Teacher/TeacherSystemMessage.vue'
-import TeacherWorkMessage from '../views/Teacher/TeacherWorkMessage.vue'
-import TeacherResignMessage from '../views/Teacher/TeacherResignMessage.vue'
-
-
-import TeacherInformation from '../views/Teacher/TeacherInformation.vue'
-// import TeacherQualification from '../views/Teacher/TeacherQualification.vue'
-
-
-import PublishSystemMessage from '../views/Admin/PublishSystemMessage.vue'
-import AuditWork from '../views/Admin/AuditWork.vue'
-
-
-import AdminSystemMessage from '../views/Admin/AdminSystemMessage.vue'
-
-// import AdminInformation from '../views/Admin/AdminInformation.vue'
-// import AdminQualification from '../views/Admin/AdminQualification.vue'
-
-
-
-
 Vue.use(VueRouter)
 
 const routes = [
-    // {
-    //   path: '/',
-    //   name: 'Home',
-    //   component: Home
-    // },
-    // {
-    //   path: '/about',
-    //   name: 'About',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    // }
     {
         path: '/',
         redirect: '/LogIn',
@@ -75,184 +11,163 @@ const routes = [
     {
         path: '/LogIn',
         name: 'LogIn',
-        component: LogIn,
+        component: () => import('../views/Login.vue'),
     },
     {
         path: '/Register',
         name: 'Register',
-        component: Register
+        component: () => import('../views/Register.vue'),
     },
     {
         path: '/Main',
         name: 'Main',
-        component: Main,
+        component: () => import('../components/Main.vue'),
         redirect: '/Home',
         children: [{
             path: '/Home',
             name: 'Home',
-            component: Home
+            component: () => import('../views/Home.vue'),
         },
         {
             path: '/Recruitment',
             name: 'Recruitment',
-            component: Recruitment
+            component: () => import('../views/Student/Recruitment.vue'),
         },
         {
             path: '/TeacherTable',
             name: 'TeacherTable',
-            component: TeacherTable,
+            component: () => import('../components/TeacherTable.vue'),
             redirect: '/ReceivedResume',
             children: [{
                 path: '/ReceivedResume',
                 name: 'ReceivedResume',
-                component: ReceivedResume,
+                component: () => import('../views/Teacher/ReceivedResume.vue'),
             },
             {
                 path: '/PublishWorkMessage',
                 name: 'PublishWorkMessage',
-                component: PublishWorkMessage,
+                component: () => import('../views/Teacher/PublishWorkMessage.vue'),
             },
             {
                 path: '/MyPublishedWork',
                 name: 'MyPublishedWork',
-                component: MyPublishedWork,
+                component: () => import('../views/Teacher/MyPublishedWork.vue'),
             }
             ]
         },
         {
             path: '/AdminTable',
             name: 'AdminTable',
-            component: AdminTable,
+            component: () => import('../components/AdminTable.vue'),
             children: [{
                 path: '/PublishSystemMessage',
                 name: 'PublishSystemMessage',
-                component: PublishSystemMessage,
+                component: () => import('../views/Admin/PublishSystemMessage.vue'),
             },
             {
                 path: '/AuditWork',
                 name: 'AuditWork',
-                component: AuditWork,
+                component: () => import('../views/Admin/AuditWork.vue'),
             }
             ]
         },
         {
             path: '/StudentMessage',
             name: 'StudentMessage',
-            component: StudentMessage,
+            component: () => import('../components/StudentMessage.vue'),
             redirect: '/StudentSystemMessage',
             children: [{
                 path: '/StudentSystemMessage',
                 name: 'StudentSystemMessage',
-                component: StudentSystemMessage,
+                component: () => import('../views/Student/StudentSystemMessage.vue'),
             },
             {
                 path: '/StudentWorkMessage',
                 name: 'StudentWorkMessage',
-                component: StudentWorkMessage,
+                component: () => import('../views/Student/StudentWorkMessage.vue'),
             }
             ]
         },
         {
             path: '/TeacherMessage',
             name: 'TeacherMessage',
-            component: TeacherMessage,
+            component: () => import('../components/TeacherMessage.vue'),
             redirect: '/TeacherSystemMessage',
             children: [{
                 path: '/TeacherSystemMessage',
                 name: 'TeacherSystemMessage',
-                component: TeacherSystemMessage,
+                component: () => import('../views/Teacher/TeacherSystemMessage.vue'),
             },
             {
                 path: '/TeacherWorkMessage',
                 name: 'TeacherWorkMessage',
-                component: TeacherWorkMessage,
+                component: () => import('../views/Teacher/TeacherWorkMessage.vue'),
             },
             {
                 path: '/TeacherResignMessage',
                 name: 'TeacherResignMessage',
-                component: TeacherResignMessage,
+                component: () => import('../views/Teacher/TeacherResignMessage.vue'),
             }
             ]
         },
         {
             path: '/AdminMessage',
             name: 'AdminMessage',
-            component: AdminMessage,
+            component: () => import('../components/AdminMessage.vue'),
             children: [{
                 path: '/AdminSystemMessage',
                 name: 'AdminSystemMessage',
-                component: AdminSystemMessage,
+                component: () => import('../views/Admin/AdminSystemMessage.vue'),
             },]
         },
         {
             path: '/StudentMine',
             name: 'StudentMine',
-            component: StudentMine,
+            component: () => import('../components/StudentMine.vue'),
             redirect: '/StudentInformation',
             children: [{
                 path: '/StudentInformation',
                 name: 'StudentInformation',
-                component: StudentInformation,
+                component: () => import('../views/Student/StudentInformation.vue'),
             },
             {
                 path: '/StudentResume',
                 name: 'StudentResume',
-                component: StudentResume,
+                component: () => import('../views/Student/StudentResume.vue'),
             },
             {
                 path: '/StudentWorkManagement',
                 name: 'StudentWorkManagement',
-                component: StudentWorkManagement,
+                component: () => import('../views/Student/StudentWorkManagement.vue'),
             },
             {
                 path: '/StudentLeaveManagement',
                 name: 'StudentLeaveManagement',
-                component: StudentLeaveManagement,
+                component: () => import('../views/Student/StudentLeaveManagement.vue'),
             },
             ]
         },
         {
             path: '/TeacherMine',
             name: 'TeacherMine',
-            component: TeacherMine,
+            component: () => import('../components/TeacherMine.vue'),
             redirect: '/TeacherInformation',
             children: [{
                 path: '/TeacherInformation',
                 name: 'TeacherInformation',
-                component: TeacherInformation,
+                component: () => import('../views/Teacher/TeacherInformation.vue'),
             },
-                // {
-                //     path: '/TeacherQualification',
-                //     name: 'TeacherQualification',
-                //     component: TeacherQualification,
-                // }Qu
             ]
         },
-        // {
-        //     path: '/AdminMine',
-        //     name: 'AdminMine',
-        //     component: AdminMine,
-        //     children: [{
-        //         path: '/AdminInformation',
-        //         name: 'AdminInformation',
-        //         component: AdminInformation,
-        //     },
-        //     {
-        //         path: '/AdminQualification',
-        //         name: 'AdminQualification',
-        //         component: AdminQualification,
-        //     }
-        //     ]
-        // },
         {
             path: '/StudentFavorites',
             name: 'StudentFavorites',
-            component: StudentFavorites
+            component: () => import('../views/Student/StudentFavorites.vue'),
         },
         {
             path: '/TeacherFavorites',
             name: 'TeacherFavorites',
-            component: TeacherFavorites
+            component: () => import('../views/Teacher/TeacherFavorites.vue'),
         }
         ]
     },
