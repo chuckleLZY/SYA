@@ -622,7 +622,7 @@ export default {
   box-shadow: 0 10px 10px rgba(0, 0.25, 0, 0.25) !important;
   margin: auto;
   width: 390px !important;
-  height: 80% !important;
+  height: 75% !important;
   overflow: auto;
   background-color: #fff;
 }
