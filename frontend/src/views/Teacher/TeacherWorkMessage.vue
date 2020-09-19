@@ -43,7 +43,9 @@
 
         <el-table-column label="工作名称" prop="work_name"></el-table-column>
 
-        <el-table-column label="请假时间" prop="leave_time"></el-table-column>
+        <el-table-column label="请假日期" prop="leave_day"></el-table-column>
+        <el-table-column label="开始时间" prop="leave_start"></el-table-column>
+        <el-table-column label="结束时间" prop="leave_end"></el-table-column>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.status == 1">已同意</el-tag>

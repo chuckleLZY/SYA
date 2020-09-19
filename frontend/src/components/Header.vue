@@ -114,7 +114,11 @@ export default {
         this.$store.commit("logOut");
         //将vuex里的信息保存到sessionStorage里
         sessionStorage.setItem("store", {});
-        this.$message.success("退出成功");
+        this.$message({
+          message: "您已退出成功",
+          type: "success",
+          duration: 1000,
+        });
         this.$router.push("/LogIn");
       }
     }
