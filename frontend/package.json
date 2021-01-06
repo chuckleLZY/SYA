@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "ali-oss": "^6.10.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cnpm": "^6.1.1",
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
